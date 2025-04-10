@@ -1,0 +1,18 @@
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# venv
+.venv
+
+# build file
+book/_build/
+book/notebooks/.ipynb_checkpoints
+
+# macOS
+.DS_Store
+.python-version

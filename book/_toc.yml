@@ -1,0 +1,45 @@
+format: jb-book
+root: intro
+options:
+  numbered: True
+chapters:
+- file: chapter01/intro
+  sections:
+  - file: chapter01/01
+  - file: chapter01/02
+  - file: notebooks/01
+
+- file: chapter02/intro
+  sections:
+  - file: chapter02/01
+  - file: chapter02/02
+  - file: chapter02/03
+
+- file: chapter03/intro
+  sections:
+  - file: chapter03/01
+  - file: chapter03/02
+
+- file: chapter04/intro
+  sections:
+  - file: chapter04/01
+  - file: chapter04/02
+
+- file: chapter05/intro
+  sections:
+  - file: chapter05/01
+  - file: chapter05/02
+  - file: chapter05/03
+
+- file: chapter06/intro
+- file: chapter07/intro
+- file: chapter08/intro
+- file: chapter09/intro
+- file: chapter10/intro
+- file: chapter11/intro
+- file: chapter12/intro
+- file: chapter13/intro
+- file: chapter14/intro
+- file: chapter15/intro
+  
+- file: genindex
