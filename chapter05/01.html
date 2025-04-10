@@ -1,0 +1,955 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5.1. 線形単回帰分析 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter05/01';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="5.2. 多項式回帰" href="02.html" />
+    <link rel="prev" title="5. 回帰分析" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">5. 回帰分析</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter05/01.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter05/01.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter05/01.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>線形単回帰分析</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1.1. データの確認</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.2. データクリーニング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.3. 最小二乗法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.4. 性能評価</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">5.1. </span>線形単回帰分析<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span class="section-number">5.1.1. </span>データの確認<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>カリフォルニア住宅価格データを使って予測してみましょう。
+このデータは、1990年のアメリカ合衆国の国勢調査に基づいて作成されたカリフォルニア州の住宅に関する情報を含んでいます。
+データ数は約2万で、以下の8つの特徴量があります。</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>特徴量</p></th>
+<th class="head"><p>説明</p></th>
+<th class="head"><p>単位</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>MedInc</p></td>
+<td><p>その地域の世帯収入の中央値</p></td>
+<td><p>なし（スケーリング済み）</p></td>
+</tr>
+<tr class="row-odd"><td><p>HouseAge</p></td>
+<td><p>その地域の住宅の平均年齢</p></td>
+<td><p>年</p></td>
+</tr>
+<tr class="row-even"><td><p>AveRooms</p></td>
+<td><p>平均部屋数</p></td>
+<td><p>部屋数</p></td>
+</tr>
+<tr class="row-odd"><td><p>AveBedrms</p></td>
+<td><p>平均寝室数</p></td>
+<td><p>部屋数</p></td>
+</tr>
+<tr class="row-even"><td><p>Population</p></td>
+<td><p>その地域の人口</p></td>
+<td><p>人</p></td>
+</tr>
+<tr class="row-odd"><td><p>AveOccup</p></td>
+<td><p>平均世帯人数</p></td>
+<td><p>人</p></td>
+</tr>
+<tr class="row-even"><td><p>Latitude</p></td>
+<td><p>緯度</p></td>
+<td><p>度</p></td>
+</tr>
+<tr class="row-odd"><td><p>Longitude</p></td>
+<td><p>経度</p></td>
+<td><p>度</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>この8つの特徴量から住宅価格を予測します。
+予測のために使われるデータを<span class="target" id="index-0"></span>特徴量、
+予測するデータを<span class="target" id="index-1"></span>目的変数といいます。
+ここでの目的変数は住宅価格になります。</p>
+<p>pythonでデータを確認するプログラムを書いてみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos">2</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="linenos">3</span>
+<span class="linenos">4</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
+<span class="linenos">5</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">dataset</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+<span class="linenos">6</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">target</span>
+<span class="linenos">7</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MedInc</th>
+      <th>HouseAge</th>
+      <th>AveRooms</th>
+      <th>AveBedrms</th>
+      <th>Population</th>
+      <th>AveOccup</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>8.3252</td>
+      <td>41.0</td>
+      <td>6.984127</td>
+      <td>1.023810</td>
+      <td>322.0</td>
+      <td>2.555556</td>
+      <td>37.88</td>
+      <td>-122.23</td>
+      <td>4.526</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>8.3014</td>
+      <td>21.0</td>
+      <td>6.238137</td>
+      <td>0.971880</td>
+      <td>2401.0</td>
+      <td>2.109842</td>
+      <td>37.86</td>
+      <td>-122.22</td>
+      <td>3.585</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>7.2574</td>
+      <td>52.0</td>
+      <td>8.288136</td>
+      <td>1.073446</td>
+      <td>496.0</td>
+      <td>2.802260</td>
+      <td>37.85</td>
+      <td>-122.24</td>
+      <td>3.521</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>5.6431</td>
+      <td>52.0</td>
+      <td>5.817352</td>
+      <td>1.073059</td>
+      <td>558.0</td>
+      <td>2.547945</td>
+      <td>37.85</td>
+      <td>-122.25</td>
+      <td>3.413</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>3.8462</td>
+      <td>52.0</td>
+      <td>6.281853</td>
+      <td>1.081081</td>
+      <td>565.0</td>
+      <td>2.181467</td>
+      <td>37.85</td>
+      <td>-122.25</td>
+      <td>3.422</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>このプログラムを実行すると、カリフォルニア住宅価格データセットの最初の5行が表示され、各特徴量と住宅価格（Price）を確認できます。</p>
+<p>2行目は<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>ライブラリからデータセットを取得する関数をインポートしています。
+<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>は、Pythonのための機械学習ライブラリです。
+データ分析や統計モデリングのために広く使用されており、多様な機械学習アルゴリズムを提供しています。</p>
+<p>5行目は<code class="docutils literal notranslate"><span class="pre">pandas</span></code>を使って、データセットの特徴量データをデータフレームに変換します。
+<code class="docutils literal notranslate"><span class="pre">dataset.data</span></code>には特徴量の数値データが、<code class="docutils literal notranslate"><span class="pre">dataset.feature_names</span></code>には特徴量の名前が含まれています。
+これにより、各列に適切な名前が付けられたデータフレームが作成されます。
+6行目はデータフレームに新しい列<code class="docutils literal notranslate"><span class="pre">Price</span></code>を追加し、そこにデータセットの目的変数（住宅価格）を格納します。
+<code class="docutils literal notranslate"><span class="pre">dataset.target</span></code>には住宅価格のデータが含まれています。</p>
+<p>住宅価格と相関が高い特徴量を選ぶと予測が当てやすくなると思います。
+住宅価格とそれぞれの特徴量との相関係数を計算し、ヒートマップとして視覚化するコードを書きます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">corr_matrix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="linenos"> 8</span><span class="n">heatmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr_matrix</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;相関係数のヒートマップ&quot;</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">15</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/dbbc321ade786ad56aa539df8d18c1301e440685d5a31bd1c3a341ead640fb3e.png" src="../_images/dbbc321ade786ad56aa539df8d18c1301e440685d5a31bd1c3a341ead640fb3e.png" />
+</div>
+</div>
+<p>対角線は自分との相関なのですべて1になります。
+これは、ある変数が自身と完全に相関しているためです。</p>
+<p><code class="docutils literal notranslate"><span class="pre">df.corr()</span></code>は、データフレーム（df）内の数値列間の相関係数を計算します。</p>
+<p>プログラムの結果から、MedIncが住宅価格と最も相関が高そうなので、
+特徴量をMedInc、目的変数を住宅価格として考えます。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">5.1.2. </span>データクリーニング<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>次に、MedIncと住宅価格がどのような関係になっているかを図で確認してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/2b9102839adbe19a5f45a41f1d93903f7b7e50619bfb18423d30136d5f961030.png" src="../_images/2b9102839adbe19a5f45a41f1d93903f7b7e50619bfb18423d30136d5f961030.png" />
+</div>
+</div>
+<p>この図を見ると、Priceが5のところに一直線に並んでいたり、
+MedIncが10以上のところでまばらに存在しています。
+このようなデータは予測に悪影響を及ぼす可能性があります。</p>
+<p>そのため、これらのデータポイントを適切に処理する必要があります。
+外れ値を除去したり、変換したりすれば、より信頼性の高い分析が可能になります。</p>
+<p><a class="reference internal" href="../chapter03/02.html#subsec-normal"><span class="std std-ref">正規分布</span></a>のところでも述べたように、平均から3標準偏差以上離れたデータを異常値や外れ値とする方法があり、
+ここでは、その方法でデータの分布を改善してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">remove_outliers_sigma</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">-</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">std</span>
+    <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">mean</span> <span class="o">+</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">std</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">upper_bound</span><span class="p">)]</span>
+
+<span class="n">df_cleaned</span> <span class="o">=</span> <span class="n">remove_outliers_sigma</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;MedInc&#39;</span><span class="p">)</span>
+<span class="n">df_cleaned</span> <span class="o">=</span> <span class="n">remove_outliers_sigma</span><span class="p">(</span><span class="n">df_cleaned</span><span class="p">,</span> <span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="mf">2.6</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/0de132ab9ec68a8ae87ff4468fd4750508963e323b7df5e846613264f5b1cdcf.png" src="../_images/0de132ab9ec68a8ae87ff4468fd4750508963e323b7df5e846613264f5b1cdcf.png" />
+</div>
+</div>
+<p>前よりは改善されたのではないでしょうか。
+住宅価格（Price）に関しては3シグマではなく、2.6シグマを採用しました。
+この値は様々な試行を経て決定しました。
+厳密な理論的根拠はありませんが、結果としておよそ99%のデータが保持されるようになっています。</p>
+</section>
+<section id="id4">
+<h2><span class="section-number">5.1.3. </span>最小二乗法<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>さて、このデータを使って予測をしてみましょう。
+MedIncから住宅価格を予測するので、以下のような関数<span class="math notranslate nohighlight">\(f\)</span>を求めればよいでしょう。</p>
+<div class="math notranslate nohighlight">
+\[\text{住宅価格} = f(\text{MedInc})\]</div>
+<p>これだけでは関数の具体的な形は分かりません。
+この関数<span class="math notranslate nohighlight">\(f\)</span>の形を決定するために、<span class="target" id="index-2"></span>回帰モデルを使用します。</p>
+<p>回帰モデルは、特徴量と目的変数の関係を数学的に表現する方法です。
+最も単純で広く使用されている回帰モデルは<span class="target" id="index-3"></span>線形回帰モデルです。
+線形回帰モデルでは、関数<span class="math notranslate nohighlight">\(f\)</span>を直線で近似します。</p>
+<div class="math notranslate nohighlight">
+\[f(\text{MedInc}) = a \cdot \text{MedInc} + b\]</div>
+<p>では、このモデルの未知のパラメータ<span class="math notranslate nohighlight">\(a\)</span>と<span class="math notranslate nohighlight">\(b\)</span>をどのように決定すれば良いでしょうか。ここで最小二乗法を使います。</p>
+<p>最小二乗法は、実際の観測値と予測値の差（残差）の二乗和を最小化するようなパラメータを見つける方法です。
+具体的には、以下の式を最小化します。</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^n (y_i - (b + a x_i))^2\]</div>
+<p>ここで、<span class="math notranslate nohighlight">\(y_i\)</span>は実際の住宅価格、<span class="math notranslate nohighlight">\(x_i\)</span>はMedIncの値、<span class="math notranslate nohighlight">\(n\)</span>はデータポイントの総数です。</p>
+<p>この最小化問題を解けば、データに最もフィットする直線、つまり最適な<span class="math notranslate nohighlight">\(a\)</span>と<span class="math notranslate nohighlight">\(b\)</span>を見つけられます。</p>
+<p>では、この最小化問題を解くプログラムを書きましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">X</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;MedInc&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 5</span><span class="n">y</span> <span class="o">=</span> <span class="n">df_cleaned</span><span class="p">[</span><span class="s1">&#39;Price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="linenos"> 8</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最適なパラメータ: a (傾き) = </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, b (切片) = </span><span class="si">{</span><span class="n">model</span><span class="o">.</span><span class="n">intercept_</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;MedInc&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Price&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_cleaned</span><span class="p">,</span> 
+<span class="linenos">13</span>            <span class="n">scatter_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;white&#39;</span><span class="p">},</span>
+<span class="linenos">14</span>            <span class="n">line_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">}</span>
+<span class="linenos">15</span>            <span class="p">)</span>
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;MedInc&#39;</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;住宅価格&#39;</span><span class="p">)</span>
+<span class="linenos">19</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>最適なパラメータ: a (傾き) = 0.4059, b (切片) = 0.4269
+</pre></div>
+</div>
+<img alt="../_images/e14e4de059672bb7c797840bae87eea2cdefb744adb87b60e9a9f779284a9e41.png" src="../_images/e14e4de059672bb7c797840bae87eea2cdefb744adb87b60e9a9f779284a9e41.png" />
+</div>
+</div>
+<p>最小二乗法を使って傾きと切片を求めて直線を引いたものが図中の赤線になります。</p>
+<p>プログラムの2行目は<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>ライブラリの<code class="docutils literal notranslate"><span class="pre">linear_model</span></code>モジュールにある<code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code>クラスをインポートしています。
+<code class="docutils literal notranslate"><span class="pre">linear_model</span></code>は線形モデルに関連する様々な機能があり、その中でも最小二乗法による線形回帰をするクラスが<code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code>です。</p>
+<p>4、5行目では、dfのデータを<code class="docutils literal notranslate"><span class="pre">LinearRegression</span></code>が扱えるデータへ変換しています。
+<code class="docutils literal notranslate"><span class="pre">df_cleaned['MedInc'].values</span></code>は、MedInc列からデータをNumPy配列として取り出します。
+<code class="docutils literal notranslate"><span class="pre">.reshape(-1,</span> <span class="pre">1)</span></code>は1次元の配列を2次元の配列に変換します。
+<code class="docutils literal notranslate"><span class="pre">-1</span></code> は「この次元のサイズを自動的に決定する」という意味です。
+<code class="docutils literal notranslate"><span class="pre">1</span></code> は「各行が1つの要素を持つ」という意味です。
+結果として、<span class="math notranslate nohighlight">\(n\)</span>行1列の2次元配列が生成されます。ここで<span class="math notranslate nohighlight">\(n\)</span>はデータの数です。
+この変換は、scikit-learnの多くの関数が特徴量として2次元配列、
+目的変数として1次元配列の形式のデータ入力を必要とするためです。</p>
+<p>7行目で線形回帰モデルを作り、8行目でそのモデルに対してfitメソッドを呼びます。
+fitメソッドは、準備したデータ（XとY）を使ってモデルを調整します。
+この過程を<strong>学習</strong>と呼びます。
+学習とは、モデルがデータの特徴やパターンを理解し、それに基づいて最適な予測ができるようになることを指します。</p>
+<p>10行目は学習後のモデルから、最適な直線の傾き（coefficient）と切片（intercept）を取得して表示しています。
+12行目の<code class="docutils literal notranslate"><span class="pre">regplot</span></code>は、seabornライブラリの関数で、散布図と回帰直線を同時に描画します。</p>
+</section>
+<section id="id5">
+<h2><span class="section-number">5.1.4. </span>性能評価<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>先ほどのプログラムではすべてのデータを使って直線を求めていました。
+しかし、これでは新しいデータを得るまで、そのモデルの精度（性能）を評価できません。
+また、モデルの性能評価はどのようにすればよいのでしょうか。</p>
+<p>この問題を解決し、モデルの性能を適切に評価するために、データを2つのグループに分けます。
+最小二乗法を使用して最適なパラメータを求めるための<strong>訓練データ</strong>と
+モデルを評価するための<strong>テストデータ</strong>です。
+訓練に使用していないテストデータで予測を行い、その結果と実際の値を比較することで、モデルの性能を評価します。</p>
+<p>ここではモデルの性能評価方法として2つ紹介します。</p>
+<ul class="simple">
+<li><p><span class="target" id="index-4"></span>平均二乗誤差（<span class="target" id="index-5"></span>MSE: Mean Squared Error）</p></li>
+<li><p><span class="target" id="index-6"></span>決定係数（<span class="target" id="index-7"></span>R²: Coefficient of Determination）</p></li>
+</ul>
+<p>この方法は回帰問題での性能評価でよく使われます。</p>
+<p>MSEは、予測値と実際の値の差（誤差）の二乗の平均です。
+数式で表すと</p>
+<div class="math notranslate nohighlight">
+\[\text{MSE} = \frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2\]</div>
+<p>となります。
+この値が0に近いほど良いモデルといえます。</p>
+<p>決定係数は、モデルがデータの変動をどれだけ説明できるかを示す指標です。</p>
+<p>数式で表すと</p>
+<div class="math notranslate nohighlight">
+\[R^2 = 1 - \frac{\displaystyle\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\displaystyle\sum_{i=1}^n (y_i - \bar{y})^2}\]</div>
+<p>となります。
+最大で1の値となり、1に近いほど良いモデルといえます。</p>
+<p>ここで、<span class="math notranslate nohighlight">\(y_i\)</span>は実際の値、<span class="math notranslate nohighlight">\(\hat{y}_i\)</span>は予測値、<span class="math notranslate nohighlight">\(\bar{y}\)</span>は<span class="math notranslate nohighlight">\(y\)</span>の平均値、<span class="math notranslate nohighlight">\(n\)</span> はデータ数です。</p>
+<p>では、データを分割してモデルを評価するプログラムを書きます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="linenos"> 2</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean_squared_error</span><span class="p">,</span> <span class="n">r2_score</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">()</span>
+<span class="linenos"> 7</span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;MSE: </span><span class="si">{</span><span class="n">mean_squared_error</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R2: </span><span class="si">{</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_test</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;実際のデータ&#39;</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">X_test</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">y</span><span class="o">=</span><span class="n">y_pred</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;予測&#39;</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;MedInc&#39;</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Price&#39;</span><span class="p">)</span>
+<span class="linenos">18</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MSE: 0.55
+R2: 0.42
+</pre></div>
+</div>
+<img alt="../_images/acd2cf1622a8e5c6ef565bdc53c3e161bd7d23e5c14e25655da9b580aeb586d7.png" src="../_images/acd2cf1622a8e5c6ef565bdc53c3e161bd7d23e5c14e25655da9b580aeb586d7.png" />
+</div>
+</div>
+<p>4行目は<code class="docutils literal notranslate"><span class="pre">train_test_split</span></code>を使ってデータを2つに分割しています。
+<code class="docutils literal notranslate"><span class="pre">test_size=0.2</span></code>は、全データの20%をテスト用、80%を訓練用に使うという意味です。</p>
+<p>11行目は<code class="docutils literal notranslate"><span class="pre">mean_squared_error</span></code>を使って平均二乗誤差を計算、12行目は<code class="docutils literal notranslate"><span class="pre">r2_score</span></code>を使って決定係数を計算し、モデルの良さを確認しています。
+決定係数は<span class="math notranslate nohighlight">\(R^2\)</span>あまり高くはないため、モデルに改善の余地があるといえます。</p>
+<p>13行目からのプログラムでテストデータと予測結果をグラフ上に描画しています。
+青い点は実際のテストデータを表し、赤い線は予測を表しています。
+この予測線は、訓練データを使って学習した線形回帰モデルによるものです。</p>
+<p>線形回帰の場合、予測結果は直線になります。
+これは、線形回帰が入力変数と出力変数の間に線形の関係を仮定しているためです。
+したがって、予測値はこの直線上に位置します。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter05"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>回帰分析</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">5.2. </span>多項式回帰</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.1.1. データの確認</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.1.2. データクリーニング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.1.3. 最小二乗法</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.1.4. 性能評価</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

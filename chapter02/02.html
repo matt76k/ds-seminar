@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.2. ヒストグラム（Histogram） &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter02/02';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="2.3. 散布図と相関係数" href="03.html" />
+    <link rel="prev" title="2.1. データ取得・保存" href="01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">2. データ処理と可視化</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter02/02.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter02/02.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter02/02.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>ヒストグラム（Histogram）</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.2.1. 気温の分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2.2. 降水量の分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.3. 天気の分析</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="histogram">
+<h1><span class="section-number">2.2. </span>ヒストグラム（Histogram）<a class="headerlink" href="#histogram" title="Link to this heading">#</a></h1>
+<p><strong>ヒストグラム</strong>はデータの分布を視覚的に表現するための棒グラフです。
+データをいくつかの区間（階級）に分け、それぞれの区間に含まれるデータの数（度数）を棒の高さで表します。
+これにより、データの中心傾向、散らばり、形状などの特徴を一目で把握できます。</p>
+<section id="id1">
+<h2><span class="section-number">2.2.1. </span>気温の分析<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>天気データの気温の分布を見てみます。
+Pythonを使ってヒストグラムを描いてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;気温のヒストグラム&#39;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/be970236a92215fdf738bbc4cede77c357747fca00dbde742704199d86876dbd.png" src="../_images/be970236a92215fdf738bbc4cede77c357747fca00dbde742704199d86876dbd.png" />
+</div>
+</div>
+<p>プログラムの説明をします。
+1行目は<code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>というライブラリの<code class="docutils literal notranslate"><span class="pre">pypolot</span></code>を<code class="docutils literal notranslate"><span class="pre">plt</span></code>という名前で使えるようにインポートしています。
+Matplotlibはグラフ作成でよく使われるライブラリです。さまざまな種類のグラフや図を作成できます。
+2行目は<code class="docutils literal notranslate"><span class="pre">japanize_matplotlib</span></code>をインポートしています。
+これは日本語のフォントをMatplotlibで使用できるようにするライブラリです。</p>
+<p>7行目は<code class="docutils literal notranslate"><span class="pre">plt.hist()</span></code>関数を使用してヒストグラムを作成しています。
+この関数は以下の引数を受け取っています。</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">df['気温(℃)']</span></code></p>
+<ul class="simple">
+<li><p>表示するデータの配列です。天気データから気温のみを指定して渡しています。</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bins=25</span></code></p>
+<ul class="simple">
+<li><p>階級数（区間の数）の指定です。今回は25に指定しました。</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">edgecolor='black'</span></code></p>
+<ul class="simple">
+<li><p>各バーの輪郭の色を指定します。今回は黒色に指定しました。</p></li>
+</ul>
+</li>
+</ol>
+<p><code class="docutils literal notranslate"><span class="pre">bins=25</span></code>や<code class="docutils literal notranslate"><span class="pre">edgecolor='black'</span></code>は今まで見てきた引数の渡し方とは違うと気づいたでしょうか。
+これは<strong>キーワード引数</strong>と呼ばれる引数の渡し方です。
+キーワード引数を使うと、引数の名前（キーワード）を指定して値を渡せます。</p>
+<p>キーワード引数には以下のような利点があります。</p>
+<ul class="simple">
+<li><p>引数の順序を気にせずに指定できる</p></li>
+<li><p>省略可能な引数を簡単に扱える</p></li>
+<li><p>コードの読みやすさが向上する</p></li>
+</ul>
+<p>例えば、<code class="docutils literal notranslate"><span class="pre">plt.hist()</span></code>関数には多くのオプションがありますが、キーワード引数を使うと必要な部分だけを指定できます。</p>
+<p>今回のプログラムでは、<code class="docutils literal notranslate"><span class="pre">bins</span></code>と<code class="docutils literal notranslate"><span class="pre">edgecolor</span></code>がキーワード引数です。
+これらは省略可能で、指定しない場合はデフォルト値が使用されます。
+デフォルト値とは、引数が指定されなかった場合に自動的に使用される、あらかじめ決められた値です。</p>
+<p>8-10行目では、x軸ラベル、y軸ラベル、グラフのタイトルを設定しています。
+最後にplt.show()でグラフを表示します。</p>
+<p>ちなみに、キーワード引数を使わず、binsのみデフォルトの値を使う場合のプログラムを書いてみます。
+Matplotlibの<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html">ドキュメント</a>によると、
+binsのデフォルトの値は10のようです。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="linenos"> 8</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">)</span>
+<span class="linenos"> 9</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;気温のヒストグラム&#39;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d2cfb58d77de884a96fb221e06384b3c15a0423ff138695b47130e7e0c2f59f2.png" src="../_images/d2cfb58d77de884a96fb221e06384b3c15a0423ff138695b47130e7e0c2f59f2.png" />
+</div>
+</div>
+<p>最初のヒストグラムと印象が変わっていると思います。
+階級数（bins）の設定は非常に重要になります。
+階級数は、データをどのように区分けするかを決定し、ヒストグラムの形状に大きな影響を与えます。
+適切な階級数を選ぶことで、データの分布をより正確に表現できます。
+階級数が少なすぎると、データの細かな特徴が失われます。
+逆に、階級数が多すぎると、ノイズが増えてデータの全体的な傾向が見えにくくなります。
+一般的には、データの量や性質に応じて階級数を調整します。
+例えば、データ数の平方根を階級数とする方法や、スタージェスの公式<a class="reference internal" href="#equation-sturges">(2.1)</a>を使う方法などがあります。
+ただし、最適な階級数は状況によって異なるため、複数の階級数でヒストグラムを作成し、比較検討するとよいでしょう。</p>
+<div class="math notranslate nohighlight" id="equation-sturges">
+<span class="eqno">(2.1)<a class="headerlink" href="#equation-sturges" title="Link to this equation">#</a></span>\[k = \log_2 N + 1\]</div>
+<p>スタージェスの公式<a class="reference internal" href="#equation-sturges">(2.1)</a>を使ってプログラムを書いてみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="c1"># スタージェスの公式を使用して階級数を計算</span>
+<span class="linenos"> 9</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">])</span>
+<span class="linenos">10</span><span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;気温(℃)&#39;</span><span class="p">)</span>
+<span class="linenos">14</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;気温のヒストグラム（階級数：</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s1">）&#39;</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/efe4b7f582858e9faf0b00c54e35b82621b06f87d0d95db310d6c7b6b54be8e1.png" src="../_images/efe4b7f582858e9faf0b00c54e35b82621b06f87d0d95db310d6c7b6b54be8e1.png" />
+</div>
+</div>
+<p>プログラムの10行目を説明します。
+<code class="docutils literal notranslate"><span class="pre">math.log2()</span></code>関数を使って、データ数<code class="docutils literal notranslate"><span class="pre">n</span></code>の底<code class="docutils literal notranslate"><span class="pre">2</span></code>の対数を計算します。
+スタージェスの公式の計算結果は小数になります。Pythonでは小数を表すデータは<strong>浮動小数点数</strong>と呼ばれています。
+ヒストグラムの階級数は整数である必要があるため、浮動小数点数から整数に変換する必要があります。
+<code class="docutils literal notranslate"><span class="pre">int()</span></code>関数はその変換をしてくれます。</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">2.2.2. </span>降水量の分析<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>降水量の分布を見てみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;降水量のヒストグラム&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b1d97993dd0dc52741956aa8847c50799388b29ac6b052e2830c74715af5191f.png" src="../_images/b1d97993dd0dc52741956aa8847c50799388b29ac6b052e2830c74715af5191f.png" />
+</div>
+</div>
+<p>図を見ると0が極端に多いため、他の値がわかりにくくなっています。
+今回の天気データは4月から6月のデータですが、この期間は雨の日も多くあるものの、
+毎時雨が降っているわけではないため、降水量0の時間が多くなっていると考えられます。</p>
+<p>では、0を除いて表示してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="linenos"> 6</span><span class="n">df_rain</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="linenos"> 7</span><span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_rain</span><span class="p">[</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">]))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df_rain</span><span class="p">[</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;降水量(mm)&#39;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="linenos">12</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;気温のヒストグラム&#39;</span><span class="p">)</span>
+<span class="linenos">13</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c964ef2d2435f98ebdf8096c752feee10c2470cecadf7df79132e405e38fcaa9.png" src="../_images/c964ef2d2435f98ebdf8096c752feee10c2470cecadf7df79132e405e38fcaa9.png" />
+</div>
+</div>
+<p>6行目は降水量が0より大きいデータを抽出しています。
+詳しく説明すると以下のような処理を行っています。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">df['降水量(mm)']</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>は、'降水量(mm)'列の各値が0より大きいかどうかを判定し、真偽値（TrueまたはFalse）のデータを生成します。</p></li>
+<li><p>外側の<code class="docutils literal notranslate"><span class="pre">df[...]</span></code> は、データフレーム <code class="docutils literal notranslate"><span class="pre">df</span></code> から条件に合う行だけを選択します。ここでは、<code class="docutils literal notranslate"><span class="pre">df['降水量(mm)']</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>で生成された真偽値のデータがTrueとなる行のみが選択されます。</p></li>
+<li><p>選択された行（降水量が0より大きい行）だけで構成される新しいデータフレームが作成され、それに<code class="docutils literal notranslate"><span class="pre">df_rain</span></code>という名前をつけています。</p></li>
+</ul>
+<p>以上の処理により、<code class="docutils literal notranslate"><span class="pre">df_rain</span></code>には降水量が0より大きい時間のデータのみになります。
+これによって、実際に雨が降った時間だけのデータでヒストグラムを作成しています。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">2.2.3. </span>天気の分析<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>天気の分布を見てみます。
+天気は名義尺度のため、ヒストグラムで表すのは適切ではありません。
+ここでは、パイチャート（Pie Chart）を使って各カテゴリの割合を表してみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">w</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)[</span><span class="s1">&#39;天気&#39;</span><span class="p">]</span>
+<span class="linenos"> 6</span><span class="n">counts</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">counts</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="n">centre_circle</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mf">0.80</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+<span class="linenos">11</span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gcf</span><span class="p">()</span>
+<span class="linenos">12</span><span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">centre_circle</span><span class="p">)</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;カテゴリ&#39;</span><span class="p">)</span>
+<span class="linenos">15</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;度数&#39;</span><span class="p">)</span>
+<span class="linenos">16</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;天気の分布&#39;</span><span class="p">)</span>
+<span class="linenos">17</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/927305f20faca4c2a4bb5254508e40aa66552a0f305dbaf966a5004b725e3010.png" src="../_images/927305f20faca4c2a4bb5254508e40aa66552a0f305dbaf966a5004b725e3010.png" />
+</div>
+</div>
+<p>5行目では天気の列に<code class="docutils literal notranslate"><span class="pre">w</span></code>という名前をつけています。
+これまではCSVファイルを読み込んでデータフレームにし、そのデータフレームから列を取り出していました。
+今回は、その流れを1行で書いています。</p>
+<p>6行目の<code class="docutils literal notranslate"><span class="pre">value_counts()</span></code>は、データの中の各値がいくつあるかを数えて列として返すメソッドです。
+ちなみにpandasの列はシリーズといい、インデックスと値のペアで構成されています。
+<code class="docutils literal notranslate"><span class="pre">value_counts()</span></code>メソッドの結果もシリーズとして返されます。</p>
+<p>7行目はパイチャートを作成しています。
+<code class="docutils literal notranslate"><span class="pre">counts.values</span></code>は各天気の出現回数になり、これがグラフの各部分の大きさを決めます。
+<code class="docutils literal notranslate"><span class="pre">labels=counts.index</span></code>は各部分に付けるラベルとなります。</p>
+<p>図中のラベルは天気のコードで、その意味は<a class="reference internal" href="#code-w"><span class="std std-numref">表 2.1</span></a>になります。
+表は<a class="reference external" href="https://www.data.jma.go.jp/obd/stats/data/mdrr/man/tenki_kigou.html">こちら</a>から抜粋しました。</p>
+<div class="pst-scrollable-table-container"><table class="table" id="code-w">
+<caption><span class="caption-number">表 2.1 </span><span class="caption-text">天気のコード</span><a class="headerlink" href="#code-w" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>コード</p></th>
+<th class="head"><p>天気</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>晴れ</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>曇り</p></td>
+</tr>
+<tr class="row-even"><td><p>8</p></td>
+<td><p>霧</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>にわか雨</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>雨氷</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">2.1. </span>データ取得・保存</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="03.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">2.3. </span>散布図と相関係数</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.2.1. 気温の分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2.2. 降水量の分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2.3. 天気の分析</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1028 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>14. グラフの応用 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter14/intro';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="15. 強化学習" href="../chapter15/intro.html" />
+    <link rel="prev" title="13. グラフ理論の基礎" href="../chapter13/intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter14/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter14/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter14/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>グラフの応用</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.1. 最短経路</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.2. コミュニティ検出</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">14.3. グラフ埋め込み</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">14. </span>グラフの応用<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>前章では基本的なグラフの操作方法について学びました。
+今回は、実際のデータを使ってグラフを分析していきましょう。</p>
+<p>使うデータセットは<code class="docutils literal notranslate"><span class="pre">Zachary's</span> <span class="pre">Karate</span> <span class="pre">Club</span></code>といい、人間関係ネットワークです。</p>
+<p>このデータの特徴は以下の通りです。</p>
+<ul class="simple">
+<li><p>海外の大学の空手クラブで２人のリーダーが仲間割れしたときの内部の人間関係</p></li>
+<li><p>部員をノード、交友関係をエッジとして表している</p></li>
+<li><p>ノードは34個、エッジは78本です</p></li>
+<li><p>ノードIDが0は空手クラブの会長、ノードIDが33はインストラクターです</p></li>
+<li><p>ノードは、会長派とインストラクター派に分かれています</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">karate_club_graph</span><span class="p">()</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">true_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">n</span><span class="p">][</span><span class="s1">&#39;club&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
+<span class="linenos"> 6</span><span class="n">color_map</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Mr. Hi&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;Officer&#39;</span><span class="p">:</span> <span class="s1">&#39;blue&#39;</span><span class="p">}</span>
+<span class="linenos"> 7</span><span class="n">node_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">color_map</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">true_labels</span><span class="p">]</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="linenos">10</span><span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">node_colors</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/43e7f595a23fd1fb3a872a50281bb3595cc213d0ff394d1e8a03c9b1f8423e81.png" src="../_images/43e7f595a23fd1fb3a872a50281bb3595cc213d0ff394d1e8a03c9b1f8423e81.png" />
+</div>
+</div>
+<p>プログラムでこのネットワークの状況を表示しました。
+このプログラムについて説明します。</p>
+<p>1行目でnetworkxをインポートしています。networkxはnxとよく省略されます。
+3行目はnetworkxで準備されているkarate clubの情報をGという変数名で指すようにしています。</p>
+<p>5行目はそれぞれのノードの属性を取り出しています。
+<code class="docutils literal notranslate"><span class="pre">Mr.</span> <span class="pre">Hi</span></code>がインストラクター派、<code class="docutils literal notranslate"><span class="pre">Officer</span></code>が会長派になります。</p>
+<p>6、7行目はノードの属性を元にグラフでの色付けを決めています。</p>
+<p>では、このグラフからノードとエッジの情報のみを使って重要人物を考えたり、
+どのノードが会長派なのかを予測してみましょう。</p>
+<p>重要人物を考えるには、前章で学んだ中心性が使えるかもしれません。</p>
+<p>それぞれの中心性を求めて、上位2名を見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c0</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">betweenness_centrality</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">eigenvector_centrality</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">c0</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">c1</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">c2</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">c3</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[(33, 0.5151515151515151), (0, 0.48484848484848486)]
+[(0, 0.5689655172413793), (2, 0.559322033898305)]
+[(0, 0.43763528138528146), (33, 0.30407497594997596)]
+[(33, 0.37337121301323506), (0, 0.35548349418519426)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>多くの中心性で会長とインストラクターは重要だとわかります。
+ただ、近接中心性にはインストラクターが入ってません。
+この結果から何が言えるか、考えてみるとよいでしょう。</p>
+<section id="id2">
+<h2><span class="section-number">14.1. </span>最短経路<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>では、部員を派閥に分ける方法について考えてみましょう。
+たとえば、その部員から会長へ最短パスとインストラクターへの最短パスを求めて、より小さい方の派閥であると考えるのはどうでしょうか？</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
+
+<span class="c1"># 会長とインストラクターへの最短パス距離を計算</span>
+<span class="n">president_paths</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">instructor_paths</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="mi">33</span><span class="p">)</span>
+
+<span class="c1"># 結果を格納するデータフレームを作成</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="c1"># 各ノードについて情報を収集</span>
+<span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+    <span class="c1"># 予測派閥を決定</span>
+    <span class="k">if</span> <span class="n">president_paths</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">instructor_paths</span><span class="p">[</span><span class="n">node</span><span class="p">]:</span>
+        <span class="n">predicted_label</span> <span class="o">=</span> <span class="s1">&#39;Mr. Hi&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">predicted_label</span> <span class="o">=</span> <span class="s1">&#39;Officer&#39;</span>
+    
+    <span class="c1"># 実際の派閥と一致するかどうか</span>
+    <span class="n">is_correct</span> <span class="o">=</span> <span class="n">predicted_label</span> <span class="o">==</span> <span class="n">true_labels</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+    
+    <span class="c1"># 結果をリストに追加</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;ノード&#39;</span><span class="p">:</span> <span class="n">node</span><span class="p">,</span>
+        <span class="s1">&#39;会長までの距離&#39;</span><span class="p">:</span> <span class="n">president_paths</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+        <span class="s1">&#39;インストラクターまでの距離&#39;</span><span class="p">:</span> <span class="n">instructor_paths</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+        <span class="s1">&#39;予測派閥&#39;</span><span class="p">:</span> <span class="n">predicted_label</span><span class="p">,</span>
+        <span class="s1">&#39;実際の派閥&#39;</span><span class="p">:</span> <span class="n">true_labels</span><span class="p">[</span><span class="n">node</span><span class="p">],</span>
+        <span class="s1">&#39;正誤&#39;</span><span class="p">:</span> <span class="s1">&#39;正&#39;</span> <span class="k">if</span> <span class="n">is_correct</span> <span class="k">else</span> <span class="s1">&#39;誤&#39;</span>
+    <span class="p">})</span>
+
+<span class="c1"># データフレームに変換</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+<span class="c1"># 表として表示</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;fancy_grid&#39;</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+
+<span class="c1"># 正確度を計算</span>
+<span class="n">correct</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;予測派閥&#39;</span><span class="p">],</span> <span class="n">true_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">予測精度: </span><span class="si">{</span><span class="n">correct</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>╒══════════╤══════════════════╤══════════════════════════════╤════════════╤══════════════╤════════╕
+│   ノード │   会長までの距離 │   インストラクターまでの距離 │ 予測派閥   │ 実際の派閥   │ 正誤   │
+╞══════════╪══════════════════╪══════════════════════════════╪════════════╪══════════════╪════════╡
+│        0 │                0 │                            2 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        1 │                1 │                            2 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        2 │                1 │                            2 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        3 │                1 │                            2 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        4 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        5 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        6 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        7 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        8 │                1 │                            1 │ Officer    │ Mr. Hi       │ 誤     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│        9 │                2 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       10 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       11 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       12 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       13 │                1 │                            1 │ Officer    │ Mr. Hi       │ 誤     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       14 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       15 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       16 │                2 │                            4 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       17 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       18 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       19 │                1 │                            1 │ Officer    │ Mr. Hi       │ 誤     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       20 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       21 │                1 │                            3 │ Mr. Hi     │ Mr. Hi       │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       22 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       23 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       24 │                2 │                            2 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       25 │                2 │                            2 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       26 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       27 │                2 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       28 │                2 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       29 │                3 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       30 │                2 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       31 │                1 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       32 │                2 │                            1 │ Officer    │ Officer      │ 正     │
+├──────────┼──────────────────┼──────────────────────────────┼────────────┼──────────────┼────────┤
+│       33 │                2 │                            0 │ Officer    │ Officer      │ 正     │
+╘══════════╧══════════════════╧══════════════════════════════╧════════════╧══════════════╧════════╛
+
+予測精度: 31/34 = 91.18%
+</pre></div>
+</div>
+</div>
+</div>
+<p>3名しか間違ってないですね。他にも自分なりの方法で考えてみましょう。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">14.2. </span>コミュニティ検出<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>コミュニティ検出とは、ネットワークの中で、お互いに強く結びついているグループを見つけ出す方法です。
+今回のように部員同士の繋がりからグループを分類するタスクにぴったりの方法になります。</p>
+<p>ここで、コミュニティ検出で重要な考え方であるモジュラリティについて説明します。
+モジュラリティは、見つけたグループが「<strong>どれだけ</strong>良いグループか」を数値で表しています。</p>
+<p>良いグループとは</p>
+<ol class="arabic simple">
+<li><p>グループ内の人たちは互いによく繋がっている</p></li>
+<li><p>異なるグループ間の繋がりは少ない</p></li>
+</ol>
+<p>と考え、数式で表すと以下のようになるでしょう。</p>
+<div class="math notranslate nohighlight">
+\[Q = \frac{1}{2m}\sum_{i,j} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c_i, c_j)\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(A_{ij}\)</span> はノード<span class="math notranslate nohighlight">\(i\)</span>と<span class="math notranslate nohighlight">\(j\)</span>の間に繋がりがあれば1、なければ0</p></li>
+<li><p><span class="math notranslate nohighlight">\(k_i\)</span> はノード<span class="math notranslate nohighlight">\(i\)</span>の繋がりの数</p></li>
+<li><p><span class="math notranslate nohighlight">\(m\)</span> はネットワーク全体の繋がりの総数</p></li>
+<li><p><span class="math notranslate nohighlight">\(c_i\)</span> はノード<span class="math notranslate nohighlight">\(i\)</span>が属するコミュニティ</p></li>
+<li><p><span class="math notranslate nohighlight">\(\delta(c_i, c_j)\)</span> は<span class="math notranslate nohighlight">\(i\)</span>と<span class="math notranslate nohighlight">\(j\)</span>が同じコミュニティなら1、違えば0</p></li>
+</ul>
+<p>難しく見えますが、要するに「実際の繋がり」と「ランダムな場合に予想される繋がり」の差を計算していて、この値が大きいほど良いグループ分けができているといえます。</p>
+<p>このモジュラリティを最大化するようにグラフを分ける方法がLouvain法になります。</p>
+<p>Louvain法のアルゴリズムは、</p>
+<div class="proof algorithm admonition" id="louvain-algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 14.1 </span> (Louvain法)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>入力:</strong> グラフ</p>
+<p><strong>出力:</strong> 分類されたグラフ</p>
+<ol class="arabic simple">
+<li><p>最初、全てのノードを別々のコミュニティとする</p></li>
+<li><p>各ノードを隣接するコミュニティに移動させてみて、モジュラリティが上がれば移動を確定</p></li>
+<li><p>コミュニティを一つのノードにまとめる</p></li>
+<li><p>モジュラリティが上がらなくなるまで2と3を繰り返す</p></li>
+</ol>
+</section>
+</div><p>こうして自然なグループ分けができるのです。</p>
+<p>では実際にLouvain法を使って<code class="docutils literal notranslate"><span class="pre">Karate</span> <span class="pre">Club</span></code>をグループ分けしてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">community.community_louvain</span><span class="w"> </span><span class="kn">import</span> <span class="n">best_partition</span>
+
+<span class="c1"># カラテクラブグラフを生成</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">karate_club_graph</span><span class="p">()</span>
+
+<span class="c1"># Louvain法によるコミュニティ検出</span>
+<span class="n">partition</span> <span class="o">=</span> <span class="n">best_partition</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+<span class="n">louvain_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">partition</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
+
+<span class="c1"># 検出されたコミュニティに基づいてノードに色を付ける</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">partition</span><span class="p">[</span><span class="n">node</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>  <span class="c1"># レイアウトを固定するためにシードを設定</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">node_color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">tab10</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">font_color</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/b1bd378698ab836b1100ac8aeb4358aa970401681d5e7807cbea52404b592627.png" src="../_images/b1bd378698ab836b1100ac8aeb4358aa970401681d5e7807cbea52404b592627.png" />
+</div>
+</div>
+<p>コミュニティが4つできましたね。
+正解は2つなので、4つから2つに直して正解率を出してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">unique_communities</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">louvain_labels</span><span class="p">)</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_communities</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="c1"># コミュニティサイズを計算</span>
+    <span class="n">community_sizes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">comm</span> <span class="ow">in</span> <span class="n">unique_communities</span><span class="p">:</span>
+        <span class="n">community_sizes</span><span class="p">[</span><span class="n">comm</span><span class="p">]</span> <span class="o">=</span> <span class="n">louvain_labels</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">comm</span><span class="p">)</span>
+    
+    <span class="c1"># 上位2つのコミュニティを残す</span>
+    <span class="n">top_communities</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">community_sizes</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">top_comm_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">comm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">comm</span> <span class="ow">in</span> <span class="n">top_communities</span><span class="p">]</span>
+    
+    <span class="c1"># 残りのコミュニティを最も近いトップコミュニティに割り当て</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">louvain_labels</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">top_comm_ids</span><span class="p">:</span>
+            <span class="c1"># 最も近いトップコミュニティに割り当て</span>
+            <span class="n">connections</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">top_comm</span> <span class="ow">in</span> <span class="n">top_comm_ids</span><span class="p">:</span>
+                <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">neighbor</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">louvain_labels</span><span class="p">[</span><span class="n">neighbor</span><span class="p">]</span> <span class="o">==</span> <span class="n">top_comm</span><span class="p">:</span>
+                        <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">connections</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">top_comm</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+            
+            <span class="n">best_match</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">connections</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">louvain_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">best_match</span>
+
+<span class="c1"># ラベルをバイナリに変換（0と1のみに）</span>
+<span class="n">louvain_unique</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">louvain_labels</span><span class="p">))</span>
+<span class="n">louvain_binary</span> <span class="o">=</span> <span class="p">[</span><span class="n">louvain_unique</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">label</span><span class="p">)</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">louvain_labels</span><span class="p">]</span>
+<span class="n">true_labels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="s1">&#39;club&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Officer&#39;</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">()]</span>
+
+<span class="n">correct_0</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">louvain_binary</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">correct_1</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">louvain_binary</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">correct_1</span> <span class="o">&gt;</span> <span class="n">correct_0</span><span class="p">:</span>
+    <span class="n">louvain_binary</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span> <span class="o">-</span> <span class="n">label</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">louvain_binary</span><span class="p">]</span>
+
+<span class="n">accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">louvain_binary</span><span class="p">,</span> <span class="n">true_labels</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">j</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">true_labels</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 0.9706
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">14.3. </span>グラフ埋め込み<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>Word2Vecの考え方をグラフに適応した方法がDeepWalkで、
+ランダムウォークを使ってグラフを文のように扱えばノードは単語となり、
+Word2Vecを使うことでノードのベクトル表現が得られるという発想です。</p>
+<p>まずはグラフ上でランダムウォークを実行してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">random_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">start_node</span><span class="p">,</span> <span class="n">walk_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;グラフ上でランダムウォークを実行し、ノードの系列を生成&quot;&quot;&quot;</span>
+    <span class="n">walk</span> <span class="o">=</span> <span class="p">[</span><span class="n">start_node</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">walk_length</span><span class="p">):</span>
+        <span class="n">current_node</span> <span class="o">=</span> <span class="n">walk</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">neighbors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">current_node</span><span class="p">))</span>
+        <span class="n">next_node</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">neighbors</span><span class="p">)</span>
+        <span class="n">walk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_node</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">walk</span>
+
+<span class="n">walk</span> <span class="o">=</span> <span class="n">random_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Steps in random walk:&#39;</span><span class="p">,</span> <span class="n">walk</span><span class="p">)</span>
+
+<span class="n">walk_graph</span> <span class="o">=</span> <span class="n">G</span><span class="o">.</span><span class="n">subgraph</span><span class="p">(</span><span class="n">walk</span><span class="p">)</span>
+<span class="n">pos</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">spring_layout</span><span class="p">(</span><span class="n">walk_graph</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx</span><span class="p">(</span><span class="n">walk_graph</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">pos</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Steps in random walk: [6, 16, 6, 4, 0, 17, 0, 1, 17, 0, 3, 13, 2, 28, 31, 33, 30, 8, 0, 19, 1]
+</pre></div>
+</div>
+<img alt="../_images/8440d9bc47a6cd09b6a9335134d418a4708bfdd0e388b748785b262dc64606e7.png" src="../_images/8440d9bc47a6cd09b6a9335134d418a4708bfdd0e388b748785b262dc64606e7.png" />
+</div>
+</div>
+<p>このプログラムでは、特定のノードから開始して、そのノードから移動できる（繋がっている）ノードに移動していき、
+指定された個数のノードを移動したらランダムウォークを終了しています。</p>
+<p>このようにして得られたノードの列を文として考えると、それぞれのノードは単語となり、
+その系列をWord2Vecで学習すると、ノードのベクトル表現が得られます。</p>
+<p>では、このベクトル表現を可視化してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">networkx</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">nx</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">gensim.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Word2Vec</span>
+<span class="linenos"> 5</span>
+<span class="linenos"> 6</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">def</span><span class="w"> </span><span class="nf">generate_walks</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">num_walks</span><span class="p">,</span> <span class="n">walk_length</span><span class="p">):</span>
+<span class="linenos">10</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;全ノードからランダムウォークを複数回実行&quot;&quot;&quot;</span>
+<span class="linenos">11</span>    <span class="n">walks</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">12</span>    <span class="n">nodes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+<span class="linenos">13</span>    
+<span class="linenos">14</span>    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_walks</span><span class="p">):</span>
+<span class="linenos">15</span>        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="linenos">16</span>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">:</span>
+<span class="linenos">17</span>            <span class="n">walks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random_walk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">walk_length</span><span class="p">))</span>
+<span class="linenos">18</span>    
+<span class="linenos">19</span>    <span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">walk</span><span class="p">))</span> <span class="k">for</span> <span class="n">walk</span> <span class="ow">in</span> <span class="n">walks</span><span class="p">]</span>
+<span class="linenos">20</span>
+<span class="linenos">21</span><span class="k">def</span><span class="w"> </span><span class="nf">train_deepwalk_gensim</span><span class="p">(</span><span class="n">walks</span><span class="p">,</span> <span class="n">vec_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+<span class="linenos">22</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;gensimのWord2Vecを使ってDeepWalkを学習&quot;&quot;&quot;</span>
+<span class="linenos">23</span>    <span class="c1"># Word2Vecモデルの学習</span>
+<span class="linenos">24</span>    <span class="n">model</span> <span class="o">=</span> <span class="n">Word2Vec</span><span class="p">(</span><span class="n">sentences</span><span class="o">=</span><span class="n">walks</span><span class="p">,</span> 
+<span class="linenos">25</span>                    <span class="n">vector_size</span><span class="o">=</span><span class="n">vec_dim</span><span class="p">,</span>
+<span class="linenos">26</span>                    <span class="n">window</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span>
+<span class="linenos">27</span>                    <span class="n">min_count</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="linenos">28</span>                    <span class="n">sg</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<span class="linenos">29</span>                    <span class="n">workers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+<span class="linenos">30</span>                    <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">)</span>
+<span class="linenos">31</span>    
+<span class="linenos">32</span>    <span class="k">return</span> <span class="n">model</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="k">def</span><span class="w"> </span><span class="nf">visualize_embeddings</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="linenos">35</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;埋め込みを可視化&quot;&quot;&quot;</span>
+<span class="linenos">36</span>    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="linenos">37</span>    
+<span class="linenos">38</span>    <span class="c1"># ノードの埋め込みベクトルを取得</span>
+<span class="linenos">39</span>    <span class="n">node_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span>
+<span class="linenos">40</span>    <span class="n">node_embeddings</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">wv</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">])</span>
+<span class="linenos">41</span>    
+<span class="linenos">42</span>    <span class="c1"># クラブ属性に基づいて色を設定</span>
+<span class="linenos">43</span>    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span> <span class="k">if</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;club&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;Officer&#39;</span> <span class="k">else</span> <span class="s1">&#39;b&#39;</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">node_ids</span><span class="p">]</span>
+<span class="linenos">44</span>    
+<span class="linenos">45</span>    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">node_embeddings</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">node_embeddings</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="linenos">46</span>    
+<span class="linenos">47</span>    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+<span class="linenos">48</span>    
+<span class="linenos">49</span>    <span class="c1"># ノード番号を表示</span>
+<span class="linenos">50</span>    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">node</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node_ids</span><span class="p">):</span>
+<span class="linenos">51</span>        <span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+<span class="linenos">52</span>    
+<span class="linenos">53</span>    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;DeepWalk Node Embeddings (Gensim Implementation)&#39;</span><span class="p">)</span>
+<span class="linenos">54</span>    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimension 1&#39;</span><span class="p">)</span>
+<span class="linenos">55</span>    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimension 2&#39;</span><span class="p">)</span>
+<span class="linenos">56</span>    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="linenos">57</span>    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="linenos">58</span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos">59</span>
+<span class="linenos">60</span><span class="k">def</span><span class="w"> </span><span class="nf">run_deepwalk</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">num_walks</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">walk_length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">vec_dim</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="linenos">61</span>    <span class="c1"># ランダムウォークを生成</span>
+<span class="linenos">62</span>    <span class="n">walks</span> <span class="o">=</span> <span class="n">generate_walks</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">num_walks</span><span class="p">,</span> <span class="n">walk_length</span><span class="p">)</span>
+<span class="linenos">63</span>    
+<span class="linenos">64</span>    <span class="c1"># Word2Vecで学習</span>
+<span class="linenos">65</span>    <span class="n">model</span> <span class="o">=</span> <span class="n">train_deepwalk_gensim</span><span class="p">(</span><span class="n">walks</span><span class="p">,</span> <span class="n">vec_dim</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">epochs</span><span class="p">)</span>
+<span class="linenos">66</span>    
+<span class="linenos">67</span>    <span class="c1"># 埋め込みを可視化</span>
+<span class="linenos">68</span>    <span class="n">visualize_embeddings</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="linenos">69</span>    
+<span class="linenos">70</span>    <span class="k">return</span> <span class="n">model</span>
+<span class="linenos">71</span>
+<span class="linenos">72</span><span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">karate_club_graph</span><span class="p">()</span>
+<span class="linenos">73</span><span class="n">model</span> <span class="o">=</span> <span class="n">run_deepwalk</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/22f9a4a376c976bdb89662d5b7c45bf6bf74836e59ecd586ab5410cf3d66a77c.png" src="../_images/22f9a4a376c976bdb89662d5b7c45bf6bf74836e59ecd586ab5410cf3d66a77c.png" />
+</div>
+</div>
+<p>実行結果の図を見ると、会長派とインストラクター派がそれぞれのグループに分かれていることがわかります。</p>
+<p>プログラムの説明をします。</p>
+<p>9行目の<code class="docutils literal notranslate"><span class="pre">generate_walks</span></code>は、全てのノードからランダムに1つのノードを選び、ランダムウォークを<code class="docutils literal notranslate"><span class="pre">num_walks</span></code>回実行して、ノードの系列を生成します。
+19行目は、ノードの系列を文字列にしています。これは、Word2Vecの入力形式に合わせるためです。</p>
+<p>21行目の<code class="docutils literal notranslate"><span class="pre">train_deepwalk_gensim</span></code>は、Word2Vecを学習する関数です。
+<code class="docutils literal notranslate"><span class="pre">sentences</span></code>には、ノードの系列が入っています。
+<code class="docutils literal notranslate"><span class="pre">vector_size</span></code>は、ノードのベクトル表現の次元数です。
+今回はプロットしやすくするため、2次元にしています。</p>
+<p>34行目の<code class="docutils literal notranslate"><span class="pre">visualize_embeddings</span></code>は、ノードのベクトル表現を可視化する関数です。40行目の<code class="docutils literal notranslate"><span class="pre">model.wv</span></code>でノードのベクトル表現を取得しています。</p>
+<ul class="simple">
+<li><p>境界線を引いてみましょう。</p></li>
+<li><p>ノードの長さを変えるとどんな結果になりますか？</p></li>
+<li><p>Word2Vecの<code class="docutils literal notranslate"><span class="pre">vector_size</span></code>を変えて表示してみましょう。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter14"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter13/intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>グラフ理論の基礎</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter15/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">15. </span>強化学習</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">14.1. 最短経路</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">14.2. コミュニティ検出</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">14.3. グラフ埋め込み</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

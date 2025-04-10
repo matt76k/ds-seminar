@@ -1,0 +1,804 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2.1. データ取得・保存 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter02/01';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="2.2. ヒストグラム（Histogram）" href="02.html" />
+    <link rel="prev" title="2. データ処理と可視化" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">2. データ処理と可視化</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter02/01.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter02/01.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter02/01.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>データ取得・保存</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">2.1. </span>データ取得・保存<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>データ収集の方法として、手動でデータをノートへ記録する従来の方法があります。
+しかし、この方法には以下の課題があります。</p>
+<ul class="simple">
+<li><p>平均値の計算など、データ処理を手作業で行う必要がある。</p></li>
+<li><p>時間と労力がかかる。</p></li>
+<li><p>人為的ミスのリスクが高い。</p></li>
+</ul>
+<p>これに対し、データをコンピュータで保存・管理する方法には以下の利点があります。</p>
+<ul class="simple">
+<li><p>Pythonなどのプログラミング言語を使用して効率的にデータ処理ができる。</p></li>
+<li><p>作業時間が大幅に短縮される。</p></li>
+<li><p>複雑な統計分析や可視化が容易に行える。</p></li>
+</ul>
+<p>インターネット上の公開データを取得する方法として、<span class="target" id="index-0"></span>Webスクレイピングという方法があります。
+これは、Webサイトから自動的に情報を収集する方法です。
+Webスクレイピングを行うためには、それ専用のプログラムを作る必要があります。
+今回そのようなプログラムは作成しません。
+代わりに、Webからデータを直接取得します。</p>
+<p>ここでは、気象庁が公開している<a class="reference external" href="https://www.data.jma.go.jp/gmd/risk/obsdl/">過去の気象データ</a>を取得しました。
+内容は2023年の4月から6月までの3ヶ月分の気温・天気・降水量データです。</p>
+<p>収集したデータは<code class="docutils literal notranslate"><span class="pre">data.csv</span></code>というファイル名でCSV形式で保存されています。
+これはCSVと呼ばれる形式になっています。
+<span class="target" id="index-1"></span>CSV（Comma-Separated Values）は以下の特徴を持つデータ形式です。</p>
+<ul class="simple">
+<li><p>テキストベースのファイル形式</p></li>
+<li><p>データの各項目がカンマ（,）で区切られている</p></li>
+<li><p>表形式のデータを簡潔に表現できる</p></li>
+</ul>
+<p>この形式は、多くのソフトウェアやプログラミング言語で容易に読み取り・処理が可能であり、
+データの保存や交換に広く使用されています。</p>
+<p>今回取得したファイルの構造は以下のようになっています。</p>
+<ul class="simple">
+<li><p>各行が1つのデータ項目（例：1時間ごとの気温・天気・降水量の観測結果）を表しています。</p></li>
+<li><p>各行内で、個別の情報（例：気温、天気、降水量）がカンマで区切られています。</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">data.csv</span></code>の一部を示します。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>年月日時,気温(℃),天気,降水量(mm)
+2023/4/1 1:00,14,2,0
+2023/4/1 2:00,13,2,0
+2023/4/1 3:00,12.7,2,0
+2023/4/1 4:00,12.2,2,0
+2023/4/1 5:00,13,2,0
+</pre></div>
+</div>
+<p>この例では</p>
+<ul class="simple">
+<li><p>1行目は列の名前（見出し）を示しています。</p></li>
+<li><p>2行目以降が実際のデータで、各行が天気情報の1時間分を表しています。</p></li>
+<li><p>各行内では、カンマで区切られた部分がそれぞれ異なる種類の情報（気温、天気、降水量）を表しています。</p></li>
+</ul>
+<p>この構造により、CSVファイルは表形式のデータを簡単にテキストファイルとして保存し、多くのソフトウェアやプログラミング言語で扱えます。</p>
+<p>このデータを確認するプログラムを作成します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;data.csv&#39;</span><span class="p">)</span>
+<span class="linenos">4</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>年月日時</th>
+      <th>気温(℃)</th>
+      <th>天気</th>
+      <th>降水量(mm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2023/4/1 1:00</td>
+      <td>14.0</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2023/4/1 2:00</td>
+      <td>13.0</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2023/4/1 3:00</td>
+      <td>12.7</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2023/4/1 4:00</td>
+      <td>12.2</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2023/4/1 5:00</td>
+      <td>13.0</td>
+      <td>2</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>出力結果は、<code class="docutils literal notranslate"><span class="pre">data.csv</span></code>の中身の5行分を表示しています。</p>
+<p>プログラムの説明をします。
+1行目は<code class="docutils literal notranslate"><span class="pre">pandas</span></code>というライブラリを<code class="docutils literal notranslate"><span class="pre">pd</span></code>という名前で使えるようにインポートしています。
+Pandasはデータクリーニングやデータ変換などの処理に便利なライブラリで、よく使われています。
+そのため、<code class="docutils literal notranslate"><span class="pre">pandas</span></code>という名前のまま使うのではなく、<code class="docutils literal notranslate"><span class="pre">pd</span></code>という省略した名前で使われています。</p>
+<p>3行目の<code class="docutils literal notranslate"><span class="pre">read_csv</span></code>は、<code class="docutils literal notranslate"><span class="pre">data.csv</span></code>という名前のファイルを読み込み、データフレームと呼ばれる2次元の表形式のデータに変換します。
+データフレームは、行と列で構成され、各列には一意の名前（列名）があります。</p>
+<p>4行目の<code class="docutils literal notranslate"><span class="pre">df.head</span></code>は、データフレームの最初の5行を表示します。
+これは、大きなデータセットの内容を素早く確認する時に便利です。</p>
+<p><code class="docutils literal notranslate"><span class="pre">df.head</span></code>という書き方は初めて出てきたので詳しく説明します。
+今までは<code class="docutils literal notranslate"><span class="pre">pd.read_csv</span></code>というようにライブラリ名の後に関数名が続いていました。
+今回は変数名の後に機能の名前が続いています。
+このように変数が指しているデータに対しての機能名は<strong>メソッド</strong>と呼ばれ、データが属する<strong>クラス</strong>に書かれています。
+クラスとは、データと、そのデータを操作する機能（メソッド）をまとめた概念で、例えるなら「設計図」や「テンプレート」のようなものです。</p>
+<p>クラスを家の設計図を例に説明してみましょう。</p>
+<ul class="simple">
+<li><p>家の設計図（クラス）には以下が含まれます。</p>
+<ul>
+<li><p>部屋の配置、サイズ、設備などの仕様（データ）</p></li>
+<li><p>家の機能（窓の開閉、照明のオン/オフなど）の操作方法（メソッド）</p></li>
+</ul>
+</li>
+<li><p>設計図を基に実際に家を建てることを、クラスの「<strong>インスタンス</strong>化」と呼びます。</p></li>
+<li><p>同じ設計図（クラス）から複数の家（インスタンス）を建てれます。</p>
+<ul>
+<li><p>各家は同じ設計に基づいていますが、独立した建物です。</p></li>
+<li><p>内装を変えたり（データの変更）、機能を使用したり（メソッドの実行）できます。</p></li>
+</ul>
+</li>
+<li><p>設計図に記載された機能（メソッド）は、その特定の家（インスタンス）にのみ適用されます。</p>
+<ul>
+<li><p>「窓を開ける」という操作は、ある家の窓にのみ適用され、他の家の窓には影響しません。</p></li>
+</ul>
+</li>
+<li><p>新しい設計図（<strong>サブクラス</strong>）を作る際、既存の設計図（親クラス）を基に、新しい部屋や機能を追加できます（<strong>継承</strong>）。</p></li>
+</ul>
+<p>Pandasには<code class="docutils literal notranslate"><span class="pre">DataFrame</span></code>クラスがあり、<code class="docutils literal notranslate"><span class="pre">pd.read_csv()</span></code>でCSVファイルを読み込むと、DataFrameの具体的なデータテーブル（インスタンス）が作られます。
+<code class="docutils literal notranslate"><span class="pre">df.head()</span></code>はそのインスタンス（<code class="docutils literal notranslate"><span class="pre">df</span></code>）でメソッドの実行しています。</p>
+<p>データテーブルの基本的な統計情報を表示したいときは、<code class="docutils literal notranslate"><span class="pre">describe</span></code>というメソッドを使います。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>気温(℃)</th>
+      <th>天気</th>
+      <th>降水量(mm)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>2183.000000</td>
+      <td>2183.000000</td>
+      <td>2183.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>20.675218</td>
+      <td>4.593220</td>
+      <td>0.317224</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>4.865710</td>
+      <td>3.097912</td>
+      <td>1.335130</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>4.900000</td>
+      <td>2.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>17.200000</td>
+      <td>2.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>21.000000</td>
+      <td>4.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>24.350000</td>
+      <td>4.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>33.000000</td>
+      <td>15.000000</td>
+      <td>20.500000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>出力結果は、以下の統計情報を計算し、表示しています。</p>
+<ul class="simple">
+<li><p>count: 非欠損値の数</p></li>
+<li><p>mean: 平均値</p></li>
+<li><p>std: 標準偏差</p></li>
+<li><p>min: 最小値</p></li>
+<li><p>25%: 第1四分位数（25パーセンタイル）</p></li>
+<li><p>50%: 中央値（メディアン）</p></li>
+<li><p>75%: 第3四分位数（75パーセンタイル）</p></li>
+<li><p>max: 最大値</p></li>
+</ul>
+<p>なお、<strong>パーセンタイル</strong>とは、小さいほうから順番に並べ、何パーセント目にあたるかを表しています。
+例えば、気温の25パーセンタイルを見ると17.2になっており、
+気温データのうち17.2度以下のデータが25%あるという意味になります。
+降水量で見ると75パーセンタイルが0となっているため、ほとんどのデータが0だとわかります。
+ちなみに、25パーセンタイルは第1四分位数、50パーセンタイルは中央値、75パーセンタイルは第3四分位数ともいいます。</p>
+<p>年月日時の列の情報がないのは、数値データでないためです。
+また、天気情報は数値データですが、<strong>名義尺度</strong>と呼ばれ平均値などに意味はありません。
+天気の数値（コード）の意味は<a class="reference external" href="https://www.data.jma.go.jp/obd/stats/data/mdrr/man/tenki_kigou.html">こちら</a></p>
+<p>このプログラムでは、前回の<code class="docutils literal notranslate"><span class="pre">import</span></code>文や<code class="docutils literal notranslate"><span class="pre">df</span></code>の定義を省略しています。
+これはJupyter Notebookなどの対話型環境で実行している場合、前のセルで定義した変数や関数を引き継いで使用できるためです。
+しかし、通常のPythonスクリプトとして実行する場合は、必要な<code class="docutils literal notranslate"><span class="pre">import</span></code>文や変数定義を毎回記述する必要があります。
+これ以降、プログラムが冗長になる場合は、このように必要な部分のみを記述しますので、注意してください。</p>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter02"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>データ処理と可視化</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">2.2. </span>ヒストグラム（Histogram）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

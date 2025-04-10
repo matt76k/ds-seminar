@@ -1,0 +1,1029 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1.1. 中心傾向の指標 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter01/01';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="1.2. ばらつきの指標" href="02.html" />
+    <link rel="prev" title="1. 記述統計" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">1. 記述統計</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter01/01.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter01/01.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter01/01.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>中心傾向の指標</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#average">1.1.1. 平均（Average）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#median">1.1.2. 中央値（Median）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2.1. 良いプログラムを書くには</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode">1.1.3. 最頻値（Mode）</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">1.1. </span>中心傾向の指標<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>中心傾向の指標とは、データの中心的な値や典型的な値を表す統計量です。
+主に以下の3つがあります。</p>
+<ul class="simple">
+<li><p>平均値（算術平均）</p>
+<ul>
+<li><p>すべての値の合計をデータ数で割った値</p></li>
+<li><p>最も一般的に使用される指標</p></li>
+<li><p>外れ値の影響を受けやすい</p></li>
+</ul>
+</li>
+<li><p>中央値</p>
+<ul>
+<li><p>データを小さい順に並べたときの真ん中の値</p></li>
+<li><p>偶数個のデータの場合は、中央の2つの値の平均</p></li>
+<li><p>外れ値の影響を受けにくい</p></li>
+</ul>
+</li>
+<li><p>最頻値</p>
+<ul>
+<li><p>データの中で最も頻繁に現れる値</p></li>
+<li><p>複数の最頻値が存在する場合もある</p></li>
+</ul>
+</li>
+</ul>
+<p>これらの指標は、データの分布（ばらつき具合）や性質によって適切な使用方法が異なります。
+例えば、正規分布<a class="footnote-reference brackets" href="#normal" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>に近いデータでは平均値が適していますが、極端な外れ値がある場合は中央値が適しています。</p>
+<p>これらの指標を組み合わせて使用すれば、データの特徴をより正確に把握できます。</p>
+<section id="average">
+<h2><span class="section-number">1.1.1. </span>平均（Average）<a class="headerlink" href="#average" title="Link to this heading">#</a></h2>
+<p>統計で最も知られている用語としては、<strong>平均値</strong>が挙げられるでしょう。
+例えば、A君の5教科の点数が<a class="reference internal" href="#table-a-score"><span class="std std-numref">表 1.1</span></a>だとします。</p>
+<div class="pst-scrollable-table-container"><table class="table" id="table-a-score">
+<caption><span class="caption-number">表 1.1 </span><span class="caption-text">A君の5教科</span><a class="headerlink" href="#table-a-score" title="Link to this table">#</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>国語</p></th>
+<th class="head"><p>数学</p></th>
+<th class="head"><p>社会</p></th>
+<th class="head"><p>理科</p></th>
+<th class="head"><p>英語</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>75</p></td>
+<td><p>82</p></td>
+<td><p>68</p></td>
+<td><p>90</p></td>
+<td><p>78</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>この場合、<span class="target" id="index-0"></span>平均値（Average）を求めるには式<a class="reference internal" href="#equation-math-average">(1.1)</a>のように計算できます。</p>
+<div class="math notranslate nohighlight" id="equation-math-average">
+<span class="eqno">(1.1)<a class="headerlink" href="#equation-math-average" title="Link to this equation">#</a></span>\[Average = \frac{75 + 82 + 68 + 90 + 78}{5} = \frac{393}{5} = 78.6\]</div>
+<p>では、この計算を行うプログラムをPythonで書いてみましょう。</p>
+<div class="cell tag_remove-output docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="n">average</span> <span class="o">=</span> <span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">scores</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">scores</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">scores</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="n">scores</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="mi">5</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Average:&quot;</span><span class="p">,</span> <span class="n">average</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>このプログラムが何をしているか1行ずつ説明していきます。</p>
+<p>1行目はデータの準備をしています。
+コンマ（,）で区切られた5つの数字はA君の5教科の点数を表しています。
+カギ括弧（[]）で囲むことで<strong>リスト</strong>という方法で5教科の点数をひとまとめにしています。
+リストはデータを整理して保存する方法の1つでPythonではよく使われます。
+<code class="docutils literal notranslate"><span class="pre">scores</span></code>はリストに付けられた名前になります。
+この名前を<strong>変数</strong>といいます。
+Pythonでは等式（=）を挟んで右側にデータを、左側に変数を置いてデータに名前をつけます。
+データに名前をつけると、後からその名前を使ってデータにアクセスできます。</p>
+<p>変数のイメージは重要なので、ここで詳しく説明します。
+変数には名前があり、その名前からデータを指している名札のようなものだと思ってください。
+そのイメージを<a class="reference internal" href="#variable"><span class="std std-numref">図 1.1</span></a>に示します。</p>
+<figure class="align-default" id="variable">
+<img alt="../_images/variable.png" src="../_images/variable.png" />
+<figcaption>
+<p><span class="caption-number">図 1.1 </span><span class="caption-text">変数とデータの関係</span><a class="headerlink" href="#variable" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>2行目は平均値の計算をしている部分になります。
+<code class="docutils literal notranslate"><span class="pre">scores[0]</span></code>は、リストの0番目にある値（75）を取り出しています。
+カギ括弧の中の数字は<strong>インデックス</strong>（index）と呼ばれ、リストでの位置を表しています。
+（/）は割り算の意味になります。リストの全ての値を足して5で割った結果に<code class="docutils literal notranslate"><span class="pre">average</span></code>という名前をつけています。</p>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>Pythonではリストの最初の値の位置は1からではなく、0からはじまるので注意しましょう。</p>
+</div>
+<p>3行目は計算結果を画面に表示しています。
+<code class="docutils literal notranslate"><span class="pre">print</span></code>は、()の中に書かれた内容を画面に表示する<strong>関数</strong>です。
+関数は通常、カッコで囲まれたデータ（<strong>引数</strong>）を受け取り、そのデータに処理を行い、その結果として値を返します。
+基本的には、関数は引数を取り値を返しますが、<code class="docutils literal notranslate"><span class="pre">print</span></code>のように値を返さない関数や引数を取らない関数もあります。</p>
+<p>関数は初めて出てくる用語なので、もう少し具体的に説明します。
+例えば、足し算は、<code class="docutils literal notranslate"><span class="pre">2</span></code>と<code class="docutils literal notranslate"><span class="pre">3</span></code>という引数を2つ渡し、<code class="docutils literal notranslate"><span class="pre">5</span></code>という結果が値として返ってくる関数と見ることができます。
+このように、関数に引数を与えて使うことを、「引数を渡して関数を呼ぶ」と言います。</p>
+<p>3行目ではprint関数に2つの引数を渡しています。
+1つ目は &quot;Average:&quot; という<strong>文字列</strong>で、2つ目は<code class="docutils literal notranslate"><span class="pre">average</span></code>という変数です。
+コンマ（,）で引数を区切ると、複数のデータを1つの<code class="docutils literal notranslate"><span class="pre">print</span></code>で表示できます。</p>
+<p><strong>文字列</strong>とはPythonが扱えるデータの種類の1つです。
+今までに出てきたデータの種類としては、5教科の点数で使った<strong>整数</strong>があります。
+文字列や整数は単一の値を表す基本的なデータの型です。</p>
+<p>一方、リストは複数の値をまとめて扱う方法で、データ構造と呼ばれます。
+データ構造には、データを整理し効率的に操作するための仕組みがあります。
+リストの場合、複数のデータを順序付けて保存し、個々のデータに簡単にアクセスできるという特徴があります。</p>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>printに変数を渡すと、その変数の指している値を表示します。
+正確には違いますが、ここではそのような理解で大丈夫です。</p>
+</div>
+<p>プログラムを実行すると、出力結果は次のようになります。</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Average: 78.6
+</pre></div>
+</div>
+</div>
+</div>
+<p>さて、このプログラムではリストの要素を1つずつ取り出していますが、もっとわかりやすく書く方法があります。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="linenos">2</span><span class="n">average</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos">3</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Average: </span><span class="si">{</span><span class="n">average</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Average: 78.6
+</pre></div>
+</div>
+</div>
+</div>
+<p>行の先頭にある数字は行番号を表していて、出力結果も続けて表示しています。
+1行目は同じですが、2行目からが違っていますので、これも説明していきます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">sum(scores)</span></code>はリストの中身を全て足した結果を計算してくれる関数です。
+<code class="docutils literal notranslate"><span class="pre">sum</span></code>を使えば、<code class="docutils literal notranslate"><span class="pre">scores</span></code>の値をそれぞれのインデックスで値を取り出す必要がなくなります。
+また、関数名（<code class="docutils literal notranslate"><span class="pre">sum</span></code>）がその動作を表しているため、処理が明確になります。</p>
+<p><code class="docutils literal notranslate"><span class="pre">len(scores)</span></code>はリストの要素数を教えてくれる関数です。
+ここでは、<code class="docutils literal notranslate"><span class="pre">scores</span></code>の要素数なので5になります。
+前のプログラムでは5と直接書いていましたが、この5がどのような意味を持つかは明確ではありませんでした。
+<code class="docutils literal notranslate"><span class="pre">len(scores)</span></code>と書けば、リストの要素数という意味が明確になります。
+ちなみに、<code class="docutils literal notranslate"><span class="pre">len</span></code>は<code class="docutils literal notranslate"><span class="pre">length</span></code>の省略形になります。</p>
+<p>printには、<code class="docutils literal notranslate"><span class="pre">f&quot;Average:</span> <span class="pre">{average}&quot;</span></code>という文字列を渡しています。
+これはf文字列（フォーマット文字列）と呼ばれる方法です。
+f文字列では、中括弧{}の中に変数や式を直接書くと、その値が文字列の中に埋め込まれます。
+今回の場合、<code class="docutils literal notranslate"><span class="pre">{average}</span></code>の部分に<code class="docutils literal notranslate"><span class="pre">average</span></code>変数の値が組み込まれて表示されます。</p>
+<p>このプログラムは前のプログラムと比べて簡潔で分かりやすくなっただけでなく、
+リストの要素数が変わったとしてもプログラムを書き直す必要がありません。</p>
+</section>
+<section id="median">
+<h2><span class="section-number">1.1.2. </span>中央値（Median）<a class="headerlink" href="#median" title="Link to this heading">#</a></h2>
+<p>中央値はデータを小さい順に並べたとき、ちょうど中央にある値です。
+データの数が偶数の場合は、中央の2つの値の平均を取ります。</p>
+<p>平均値はデータの中に極端に大きい値や小さい値があるとその影響を受けてしまいます。
+中央値はそのような影響を受けにくい特徴があります。
+例えば、ある町の世帯年収を調べたいとしましょう。
+その町に億万長者が1人いると平均値が大きく上昇しますが、中央値はほとんど影響を受けません。
+このような場合、中央値の方が一般的な世帯の年収を正確に表します。
+また、アンケートの満足度調査や成績の5段階評価など、数値に順序はあるが間隔に意味がない場合、中央値が適切です。</p>
+<p>中央値を求めるプログラムを書いてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span><span class="w"> </span><span class="nn">statistics</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="linenos">4</span><span class="n">median</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos">5</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">median</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Median: 78
+</pre></div>
+</div>
+</div>
+</div>
+<p>この例では、データを小さい順に並べると <code class="docutils literal notranslate"><span class="pre">[68,</span> <span class="pre">75,</span> <span class="pre">78,</span> <span class="pre">82,</span> <span class="pre">90]</span></code>となり、真ん中の78が中央値になり、その値が出力されます。</p>
+<p>1行目は、中央値を計算する関数<code class="docutils literal notranslate"><span class="pre">median</span></code>を持った<code class="docutils literal notranslate"><span class="pre">statistics</span></code>モジュールを使えるように準備しています。
+モジュールとは、関連する機能をまとめたものです。
+多くの場合、それは関数の集合ですが、変数や定数なども含みます。
+定数とは、プログラム内で変更されない固定の値です。
+例えば、数学や物理学で使われる重要な定数（<span class="math notranslate nohighlight">\(\pi\)</span>とか）がこれになります。</p>
+<p>Pythonには多くの機能がありますが、全ての機能を常に読み込んでおくと、プログラムの実行速度が遅くなったり、メモリを無駄に使ったりします。
+そのため、必要な機能だけを<code class="docutils literal notranslate"><span class="pre">import</span></code>して使うようになっています。</p>
+<p>通常、import文はプログラムの先頭に書きます。
+これにより、そのモジュールの機能をプログラム全体で使えるようになります。</p>
+<p>インポートしたモジュールの機能を使う時は、「モジュール名.関数名」の形式で書きます。
+例えば、4行目のstatistics.median(scores)は、statisticsモジュールのmedian関数を使ってscoresの中央値を計算しています。</p>
+<p>次は、statisticsモジュールを使わずに中央値を計算してみましょう。</p>
+<p>プログラムを書くコツは、どうような手順でその作業を行うかを前もって考えておくことです。
+料理を作る時と同じですね。処理の手順は<strong>アルゴリズム</strong>と呼ばれます。</p>
+<p>中央値を求めるアルゴリズムを書くとすると次のようになります。</p>
+<div class="proof algorithm admonition" id="median-algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 1.1 </span> (中央値を求めるアルゴリズム)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>入力:</strong> データが入ったリスト</p>
+<p><strong>出力:</strong> 中央値</p>
+<ol class="arabic simple">
+<li><p>データを小さい順に並べ替える</p></li>
+<li><p>データの個数<span class="math notranslate nohighlight">\(n\)</span>を求める</p></li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>が偶数なら</p>
+<ol class="arabic simple">
+<li><p>中央に近い2つの値の平均を返す</p></li>
+</ol>
+</li>
+<li><p><span class="math notranslate nohighlight">\(n\)</span>が奇数なら</p>
+<ol class="arabic simple">
+<li><p>中央の位置にある値を返す</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</div><p>このアルゴリズムにしたがってプログラムを記述すると、次のようになります。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="linenos"> 2</span><span class="c1"># データをソートする</span>
+<span class="linenos"> 3</span><span class="n">sorted_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos"> 4</span><span class="c1"># データの個数nを求める</span>
+<span class="linenos"> 5</span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_scores</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># nが偶数</span>
+<span class="linenos"> 8</span>    <span class="n">a</span> <span class="o">=</span> <span class="n">sorted_scores</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+<span class="linenos"> 9</span>    <span class="n">b</span> <span class="o">=</span> <span class="n">sorted_scores</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+<span class="linenos">10</span>    <span class="n">median</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="linenos">11</span><span class="k">else</span><span class="p">:</span>
+<span class="linenos">12</span>    <span class="n">median</span> <span class="o">=</span> <span class="n">sorted_scores</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+<span class="linenos">13</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">median</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Median: 78
+</pre></div>
+</div>
+</div>
+</div>
+<p>プログラムの説明をします。
+1行目はデータの準備になります。データが入ったリストに<code class="docutils literal notranslate"><span class="pre">scores</span></code>という名前を付けています。</p>
+<p>2行目はコメント文になります。
+コメント文はプログラムで実行されません。
+Pythonでは<code class="docutils literal notranslate"><span class="pre">#</span></code>以降の文がコメントになります。
+あとからプログラムを見直したいときなどにコメントを付けておくと便利です。
+ただし、プログラムそれ自体が分かりやすければとコメントは書かなくても構いません。
+分かりやすいプログラムを書くように心がけましょう。</p>
+<p>3行目の<code class="docutils literal notranslate"><span class="pre">sorted</span></code>関数はリストを並び替えた<strong>新しいリスト</strong>を作ります。
+<code class="docutils literal notranslate"><span class="pre">sorted_scores</span></code>という変数は、その新しいリストを指している点に注意しましょう。</p>
+<p>5行目はソートした（並び替えた）データの個数に<code class="docutils literal notranslate"><span class="pre">n</span></code>という名前を付けています。
+アルゴリズムの2のステップに対応します。</p>
+<p>7行目と11行目にある<code class="docutils literal notranslate"><span class="pre">if</span></code>と<code class="docutils literal notranslate"><span class="pre">else</span></code>は<strong>条件分岐</strong>というプログラムの処理の流れを制御する文になります。
+アルゴリズムの中の偶数と奇数で中央値の求め方を変えている部分に対応します。
+ちなみに、<code class="docutils literal notranslate"><span class="pre">if</span></code>と<code class="docutils literal notranslate"><span class="pre">else</span></code>は予約語という特別な名前なので、変数の名前として使えません。</p>
+<p>if文の書き方について説明します。
+if文はifのあとに条件があり、その式の最後に<code class="docutils literal notranslate"><span class="pre">:</span></code>（コロン）があります。
+<strong>条件が真</strong>ならコロンのあとの空白で揃えられた部分のプログラムが実行されます。
+Pythonでは見た目で処理がわかりやすくなるように、
+プログラムを空白で揃える<strong>インデント</strong>という方法で処理の流れを表します。
+このプログラムだと条件が真の時に実行されるプログラムは8-10行目になります。
+elseは条件に合わなかった場合の処理を記述します。
+こちらも、ifと同じように最後はコロンで、インデントされたプログラムが実行されます。
+条件に合わなかった場合の処理が必要ない場合は、elseを省略できます。</p>
+<p>さて、それでは7-10行目までを詳しく説明していきます。</p>
+<p>ifのあとにある文（<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">%</span> <span class="pre">2</span> <span class="pre">==</span> <span class="pre">0</span></code>）は条件と呼ばれ、nが偶数かどうかを調べています。
+Pythonでは、整数への演算として四則演算以外にも様々種類があり、<code class="docutils literal notranslate"><span class="pre">%</span></code>は割り算の余りを計算してくれます。
+<code class="docutils literal notranslate"><span class="pre">==</span></code>は比較演算子といい、左右の値が同じなら<code class="docutils literal notranslate"><span class="pre">True</span></code>（真）、そうでないなら<code class="docutils literal notranslate"><span class="pre">False</span></code>（偽）を返します。
+以上のことから、<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">%</span> <span class="pre">2</span> <span class="pre">==</span> <span class="pre">0</span></code>は、データの個数<code class="docutils literal notranslate"><span class="pre">n</span></code>を2で割った余りが0なら<code class="docutils literal notranslate"><span class="pre">n</span></code>は偶数であるという意味になります。</p>
+<p>8-9行目の<code class="docutils literal notranslate"><span class="pre">//</span></code>は整数除算を表しています。例えば、<code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">//</span> <span class="pre">2</span></code> は3になります。
+<code class="docutils literal notranslate"><span class="pre">7</span> <span class="pre">/</span> <span class="pre">2</span></code>だと3.5となり、整数の結果が得られないため、ここでは<code class="docutils literal notranslate"><span class="pre">//</span></code>を使っています。
+10行目で中央に近い2つの値の平均を計算し、<code class="docutils literal notranslate"><span class="pre">median</span></code>という名前を付けています。</p>
+<p>11-12行目は中央の位置にある値に<code class="docutils literal notranslate"><span class="pre">median</span></code>という名前を付けています。</p>
+<section id="id3">
+<h3><span class="section-number">1.1.2.1. </span>良いプログラムを書くには<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>今まで見てきたようにプログラムの書き方は複数あります。
+ライブラリの機能を使っても良いし、自分で実装しても良いのです。
+人によってはここで説明した中央値を求めるアルゴリズムと異なった方法を考えてプログラムを書くかもしれません。</p>
+<p>このようにプログラムの書き方は様々ですが、良いプログラムを書く原則があります。
+その1つが<strong>DRY原則</strong>として知られています。</p>
+<p>DRYは<code class="docutils literal notranslate"><span class="pre">Don't</span> <span class="pre">Repeat</span> <span class="pre">Yourself</span></code>（自分自身を繰り返すな）の頭文字です。
+この原則は、ソフトウェア開発において同じプログラムやロジックを繰り返し書くことを避けるべきだという考え方です。
+DRY原則の利点としては以下の点があります。</p>
+<ul class="simple">
+<li><p>プログラムの保守性向上</p></li>
+<li><p>バグの可能性減少</p></li>
+<li><p>プログラムの一貫性の維持</p></li>
+<li><p>プログラムの変更が容易</p></li>
+</ul>
+<p>例えば、先ほどの中央値を計算するプログラムは以下のように書き直せます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="n">sorted_scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_scores</span><span class="p">)</span>
+<span class="n">median</span> <span class="o">=</span> <span class="n">sorted_scores</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># nが偶数</span>
+    <span class="n">median</span> <span class="o">=</span> <span class="p">(</span><span class="n">sorted_scores</span><span class="p">[</span><span class="n">n</span> <span class="o">//</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">median</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Median: </span><span class="si">{</span><span class="n">median</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Median: 78
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">sorted_scores[n</span> <span class="pre">//</span> <span class="pre">2]</span></code>が何度も出てきているため、先に計算するように移動しています。
+プログラムが簡潔になり、条件分岐が1つになったことで理解しやすくなっています。</p>
+<p>プログラムが短ければ短いほど理解しやすいとは限りません。
+また、人によって理解しやすいプログラムは異なります。
+プログラミング経験が半年の人と10年の人では習熟度が異なるためです。</p>
+</section>
+</section>
+<section id="mode">
+<h2><span class="section-number">1.1.3. </span>最頻値（Mode）<a class="headerlink" href="#mode" title="Link to this heading">#</a></h2>
+<p>最頻値は、データの中で最も頻繁に現れる値です。</p>
+<p>中央値と同様に極端に大きいまたは小さい値に影響を受けにくい特徴があります。
+例えば、ある店舗での1日の客数を調べるとします。
+通常は50人程度ですが、特別なイベントがあった日に500人が来店したとしても、最頻値は変わりません。
+このような場合、最頻値は店舗の典型的な1日の客数をより正確に表します。</p>
+<p>最頻値の大きな特徴は、順序尺度や名義尺度のデータに適用できる点です。</p>
+<ul class="simple">
+<li><p>順序尺度</p>
+<ul>
+<li><p>データに順序はあるが、間隔に意味がない尺度。例えば、「満足度（非常に不満、不満、普通、満足、非常に満足）」や「学歴（小学校、中学校、高校、大学）」などがこれにあたります。これらは順序付けできますが、各段階の間隔が等しいとは限りません。</p></li>
+</ul>
+</li>
+<li><p>名義尺度</p>
+<ul>
+<li><p>データに順序がなく、単に分類を示す尺度です。例えば、「好きな色」「出身地」「職業」などがこれにあたります。これらは順序付けができず、単にカテゴリーを示します。</p></li>
+</ul>
+</li>
+</ul>
+<p>Pythonを使って最頻値を計算するプログラムを書いてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mode</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">82</span><span class="p">]</span>
+<span class="linenos">4</span><span class="n">mode_value</span> <span class="o">=</span> <span class="n">mode</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos">5</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mode: </span><span class="si">{</span><span class="n">mode_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mode: 82
+</pre></div>
+</div>
+</div>
+</div>
+<p>1行目は、statisticsモジュールからmode関数をインポートしています。
+中央値のプログラムとは少し書き方が異なるので注意してください。
+このインポート方法は、特定の関数だけをモジュールからインポートする方法です。
+これにより、<code class="docutils literal notranslate"><span class="pre">mode</span></code>関数を直接使用できるようになり、<code class="docutils literal notranslate"><span class="pre">statistics.mode</span></code>と書く必要がなくなります。</p>
+<p>3行目で、サンプルデータを用意しています。このデータでは82が最も頻繁に現れています。
+4行目で、mode関数を使って最頻値を計算し、その結果にmode_valueという名前を付けています。
+5行目で、計算結果を表示しています。</p>
+<p>次に、statisticsモジュールを使わずに最頻値を計算するプログラムを書いてみましょう。</p>
+<p>まず、アルゴリズムを考えます。</p>
+<div class="proof algorithm admonition" id="mode-algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 1.2 </span> (最頻値を求めるアルゴリズム)</p>
+<section class="algorithm-content" id="proof-content">
+<p><strong>入力:</strong> データが入ったリスト</p>
+<p><strong>出力:</strong> 最頻値</p>
+<ol class="arabic simple">
+<li><p>データの各値の出現回数を数える</p></li>
+<li><p>最も多く出現した回数を見つける</p></li>
+<li><p>その回数で出現した値（最頻値）を返す</p></li>
+</ol>
+</section>
+</div><p>このアルゴリズムに従ってプログラムを書くと、次のようになります。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">82</span><span class="p">]</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="c1"># 各点数の出現回数を数える</span>
+<span class="linenos"> 4</span><span class="n">score_counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="linenos"> 5</span><span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
+<span class="linenos"> 6</span>    <span class="k">if</span> <span class="n">score</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">score_counts</span><span class="p">:</span>
+<span class="linenos"> 7</span>        <span class="n">score_counts</span><span class="p">[</span><span class="n">score</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 8</span>    <span class="n">score_counts</span><span class="p">[</span><span class="n">score</span><span class="p">]</span> <span class="o">=</span> <span class="n">score_counts</span><span class="p">[</span><span class="n">score</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1"># 最も多く出現した回数を見つける</span>
+<span class="linenos">11</span><span class="n">max_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">12</span><span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">score_counts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+<span class="linenos">13</span>    <span class="k">if</span> <span class="n">count</span> <span class="o">&gt;</span> <span class="n">max_count</span><span class="p">:</span>
+<span class="linenos">14</span>        <span class="n">max_count</span> <span class="o">=</span> <span class="n">count</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="c1"># その回数で出現した点数（最頻値）を見つける</span>
+<span class="linenos">17</span><span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">score_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+<span class="linenos">18</span>    <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="n">max_count</span><span class="p">:</span>
+<span class="linenos">19</span>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最頻値: </span><span class="si">{</span><span class="n">score</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">20</span>        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>最頻値: 82
+</pre></div>
+</div>
+</div>
+</div>
+<p>このプログラムについて説明します。</p>
+<p>4行目は辞書（dictionary）というデータ構造を準備し、<code class="docutils literal notranslate"><span class="pre">score_counts</span></code>という名前をつけています。
+辞書は、キーと値のペアを格納するデータ構造で、ここではスコア（キー）とその出現回数（値）を保存します。</p>
+<p>5-8行目は<strong>ループ</strong>という処理を行っています。
+ループとはある処理を繰り返し行う方法です。
+インデントされた6-8行目をループ本体（loop body）といい、この部分が繰り返し実行されます。
+5行目にある<code class="docutils literal notranslate"><span class="pre">for</span></code>は予約語で、<code class="docutils literal notranslate"><span class="pre">if</span></code>と同様に変数名として使えません。
+forの後にある<code class="docutils literal notranslate"><span class="pre">score</span></code>は<strong>ループ変数</strong>といい、ループ本体でのみ使われる変数になります。</p>
+<p>5行目では、<code class="docutils literal notranslate"><span class="pre">scores</span></code>からリストの要素を1つずつ取り出し、その要素に<code class="docutils literal notranslate"><span class="pre">score</span></code>という名前を付けています。
+リストの中身すべてに対して、ループ本体を実行します。
+ちなみに、<code class="docutils literal notranslate"><span class="pre">in</span></code>も予約語です。</p>
+<p>6行目の<code class="docutils literal notranslate"><span class="pre">not</span></code>は否定になります。
+つまり、6行目の意味は<code class="docutils literal notranslate"><span class="pre">score_counts</span></code>にscoreをキーとして設定していないなら7行目を実行するという意味になります。
+ここでの<code class="docutils literal notranslate"><span class="pre">in</span></code>と5行目の<code class="docutils literal notranslate"><span class="pre">in</span></code>は使い方が違うので注意しましょう。</p>
+<p>7行目は、<code class="docutils literal notranslate"><span class="pre">score</span></code>をキーとして、そのペアの値を0としています。
+4行目は辞書データの準備だけなので、キーもそのキーのペアとなる値も準備されていません。
+そのため、7行目でキーとそのキーの値を設定する必要があります。
+<code class="docutils literal notranslate"><span class="pre">scores_counts[score]</span></code>というようにカギ括弧を使ってキーのペアの値にアクセスしている点に注意しましょう。
+リストの場合はカギ括弧の中はインデックスでしたが、辞書の場合はキーになる点が異なります。
+辞書はリストのように順番にデータを保存していませんが、プログラムでは似たような形でデータにアクセスします。</p>
+<p>8行目は、<code class="docutils literal notranslate"><span class="pre">score</span></code>をキーとしたペアの値に1足しています。
+（=）の右側にも左側にも<code class="docutils literal notranslate"><span class="pre">scores_counts[score]</span></code>がありますが、
+同時に値にアクセスするのではなく、右側の計算を先に実行して、その結果を左側に代入しています。
+このような値を更新する処理は頻繁に現れるので、<code class="docutils literal notranslate"><span class="pre">score_counts[score]</span> <span class="pre">+=</span> <span class="pre">1</span></code>のように簡略した書き方もあります。</p>
+<p>11-14行目は、最も多く出現した値の回数（最大の出現回数）を見つけるためのループです。</p>
+<p>11行目は最大の出現回数を保存するためのmax_countという変数を準備しています。
+最初は0という値を入れていますが、このように最初に値を準備することを<strong>初期化</strong>といったります。</p>
+<p>12行目の<code class="docutils literal notranslate"><span class="pre">score_counts.values()</span></code>について説明します。
+<code class="docutils literal notranslate"><span class="pre">score_counts</span></code>は辞書というキーとペアの値が入ったデータ構造でした。
+プログラムの例でいうと、[(75, 2)、(82, 3)、(68, 2)、(90, 1)、(78, 1)]のようにキーと値の組みになっています。
+<code class="docutils literal notranslate"><span class="pre">score_counts.values()</span></code>はこのデータの値の部分のみをリストとして取り出す関数です。
+この例では [2, 3, 2, 1, 1] となります。</p>
+<p>13行目のif文で、<code class="docutils literal notranslate"><span class="pre">count</span></code>が<code class="docutils literal notranslate"><span class="pre">max_count</span></code>より大きければ、
+14行目の代入文でmax_countを更新します。
+このループが終わると、max_countには出現回数が一番大きい値が保存されています。</p>
+<p>17-20行目は、最頻値（つまり、最大出現回数で出現した数）を見つけるためのループです。
+17行目の<code class="docutils literal notranslate"><span class="pre">score_counts.items()</span></code>は、辞書の各キーと値のペアをタプルとして返します。
+この例では、[(75, 2), (82, 3), (68, 2), (90, 1), (78, 1)] のようなリストを返します。</p>
+<p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">score,</span> <span class="pre">count</span> <span class="pre">in</span> <span class="pre">score_counts.items():</span></code>は、
+このリストの各要素（タプル）を score と count という2つの変数に分けて代入します。
+具体的には最初のループでは、<code class="docutils literal notranslate"><span class="pre">score</span></code>は75、<code class="docutils literal notranslate"><span class="pre">count</span></code>は2、次は<code class="docutils literal notranslate"><span class="pre">score</span></code>は82、<code class="docutils literal notranslate"><span class="pre">count</span></code>は3というように続きます。</p>
+<p>18行目のif分で、現在の<code class="docutils literal notranslate"><span class="pre">count</span></code>が最大出現回数と等しいかどうかをチェックします。
+19行目では、最大出現回数の<code class="docutils literal notranslate"><span class="pre">score</span></code>を最頻値として出力します。
+20行目の<code class="docutils literal notranslate"><span class="pre">break</span></code>は、ループを即座に終了させる命令です。
+最頻値が見つかったらそれ以降のループの処理を終わらせます。
+今回の例では初めて見つかった最頻値だけを表示するため、複数の最頻値がある場合はすべて表示したい場合は、<code class="docutils literal notranslate"><span class="pre">break</span></code>を削除するなどの変更が必要になります。</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="normal" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">1</a><span class="fn-bracket">]</span></span>
+<p>平均値を中心とした左右対称の形状をしており、 自然界や社会現象に広く見られるデータの分布パターン。詳しくは、<a class="reference internal" href="../chapter03/02.html#subsec-normal"><span class="std std-ref">正規分布</span></a>のところで説明。</p>
+</aside>
+</aside>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter01"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>記述統計</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="02.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">1.2. </span>ばらつきの指標</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#average">1.1.1. 平均（Average）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#median">1.1.2. 中央値（Median）</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">1.1.2.1. 良いプログラムを書くには</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mode">1.1.3. 最頻値（Mode）</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

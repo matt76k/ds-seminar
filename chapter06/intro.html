@@ -1,0 +1,910 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. 決定木 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter06/intro';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="7. クラスタリング" href="../chapter07/intro.html" />
+    <link rel="prev" title="5.3. ロジスティック回帰" href="../chapter05/03.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter06/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter06/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter06/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>決定木</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#impurity">6.1. 不純度（impurity）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.2. 決定木の実装例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">6.3. 特徴量の重要度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.4. 木の深さと過学習</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">6. </span>決定木<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">アキネーター</span></code>というゲームを知っていますか？
+このゲームは、プレイヤーが頭の中で考えたキャラクターや人物を、
+一連の質問を通じて当てるというものです。
+実は、このアキネーターの仕組みは、<span class="target" id="index-0"></span>決定木という概念をよく表しています。</p>
+<p>アキネーターの動作を細かく見てみましょう。</p>
+<ol class="arabic simple">
+<li><p>「あなたが考えているのは実在の人物ですか？」といった基本的な質問から始まります。</p></li>
+<li><p>プレイヤーの回答に応じて、次の質問が変わります。例えば、<code class="docutils literal notranslate"><span class="pre">はい</span></code>と答えれば「その人物は男性ですか？」、<code class="docutils literal notranslate"><span class="pre">いいえ</span></code>ならば「その存在はフィクションの世界のものですか？」といった具合です。</p></li>
+<li><p>各質問は、可能性のある答えの範囲を徐々に絞り込んでいきます。</p></li>
+<li><p>このプロセスを繰り返し、最終的に一つの答えに辿り着きます。</p></li>
+</ol>
+<p>このアキネーターの質問と回答のプロセスは、まさに決定木の構造そのものなのです。
+各質問が木のノード（節点）となり、回答によって次のノードへと分岐していきます。
+最終的に、木の葉に当たる部分で具体的な答えが得られます。</p>
+<p>決定木も、基本的には同じ原理で動作します。
+大量のデータから学習し、最も効率的に答えにたどり着ける質問（特徴）の順序を自動的に見つけ出すのです。
+例えば、顧客が商品を購入するかどうかを予測する場合、「年齢は？」、「年収は？」、「過去の購買履歴は？」
+といった質問を効率的に組み合わせて、最終的な予測を行います。</p>
+<p>この方法のメリットは、結果が解釈しやすく、どのような基準で判断が行われたのかを明確に説明できることです。
+また、線形回帰が直線（または超平面）でデータを近似するのに対し、決定木はデータを階層的に分割し、それぞれの領域で予測を行います。</p>
+<p>決定木の主な特徴をまとめると以下の通りです。</p>
+<ul class="simple">
+<li><p>特徴量の重要度を評価できる</p></li>
+<li><p>解釈がしやすい</p></li>
+<li><p>非線形の関係性を捉えられる</p></li>
+</ul>
+<section id="impurity">
+<h2><span class="section-number">6.1. </span>不純度（impurity）<a class="headerlink" href="#impurity" title="Link to this heading">#</a></h2>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/076a000f134d9bee642e0a2bdc0f833e130830e8fbee77f7d7f5a9cff17681c3.png" src="../_images/076a000f134d9bee642e0a2bdc0f833e130830e8fbee77f7d7f5a9cff17681c3.png" />
+</div>
+</div>
+<p>このようにデータが散らばっていて、軸に並行な線を引いて赤と青の点を分離しようとします。
+一本の線で分離はできず以下のように二本の線が必要になります。</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<img alt="../_images/ac37f3a1c4f7537ba5ce2fa5ac171aad81e159ae39e2ece6806113b2752c6265.png" src="../_images/ac37f3a1c4f7537ba5ce2fa5ac171aad81e159ae39e2ece6806113b2752c6265.png" />
+</div>
+</div>
+<p>データが赤かどうかを判別するには、<span class="math notranslate nohighlight">\(X \leq 4.5\)</span>の条件が成り立ち、かつ<span class="math notranslate nohighlight">\(Y \geq 2.5\)</span>の条件が成り立てば良いと言えます。</p>
+<p>では、何を基準にしてこの条件を決めれば良いのでしょうか。</p>
+<p>ここで不純度という考え方を導入します。
+不純度は、集合内のデータがどれだけ混ざっているかを表す指標です。
+つまり、不純度が小さいほどその集合はうまく分けられていると言えます。</p>
+<p>不純度を計算する方法として<strong>ジニ不純度</strong>と<strong>エントロピー</strong>がよく使われます。</p>
+<p>ジニ不純度は、ランダムに選んだデータが誤って分類される確率を表します。
+値が小さいほど純度が高く、0に近いほど良いとされます。</p>
+<p>ジニ不純度の計算式は</p>
+<div class="math notranslate nohighlight">
+\[\text{Gini} = 1 - \sum_{i=1}^{n} p_i^2\]</div>
+<p>です。<span class="math notranslate nohighlight">\(p_i\)</span>はクラスiの確率です。</p>
+<p>分ける前のジニ不純度は以下のように計算されます。</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = \displaystyle\frac{3}{6} = 0.5\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = \displaystyle\frac{3}{6} = 0.5\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Gini} = 1 - (0.5^2 + 0.5^2) = 1 - 0.5 = 0.5\]</div>
+<p>次に、<span class="math notranslate nohighlight">\(X=4.5\)</span>で分割した後の左側（<span class="math notranslate nohighlight">\(X \leq 4.5\)</span>）のジニ不純度を計算します。</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = \displaystyle\frac{3}{4} = 0.75\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = \displaystyle\frac{1}{4} = 0.25\)</span></p></li>
+</ul>
+<p>ジニ不純度は<span class="math notranslate nohighlight">\(\text{Gini}_{\text{左}} = 1 - (0.75^2 + 0.25^2) = 1 - 0.625 = 0.375\)</span>となり、</p>
+<p>右側（<span class="math notranslate nohighlight">\(X &gt; 4.5\)</span>）のジニ不純度は</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = 0\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = 1\)</span></p></li>
+</ul>
+<p>で、ジニ不純度は<span class="math notranslate nohighlight">\(\text{Gini}_{\text{右}} = 1 - (0^2 + 1^2) = 0\)</span>となります。</p>
+<p>分割後の重み付き平均ジニ不純度は
+<span class="math notranslate nohighlight">\(\text{Gini}_{\text{分割後}} = \displaystyle\frac{4}{6} \times 0.375 + \displaystyle\frac{2}{6} \times 0 = 0.375\)</span>
+です。</p>
+<p>例えば分割を<span class="math notranslate nohighlight">\(X = 3.5\)</span>ですると、
+分割後の重み付き平均ジニ不純度は</p>
+<div class="math notranslate nohighlight">
+\[\text{Gini}_{\text{X=3.5}} = \frac{3}{6} \cdot \{1 - \{\{\frac{2}{3}\}^2 + \{\frac{1}{3}\}^2\}\}  + \frac{3}{6} \cdot \{1 - \{\{\frac{1}{3}\}^2 + \{\frac{2}{3}\}^2\}\} = \frac{4}{9} \approx 0.4444\]</div>
+<p>です。</p>
+<p>このことから、Xを3.5で分けるより、Xを4.5で分けた方が不純度の値が小さいため、Xを4.5で分ける方が良い分け方だとわかります。</p>
+<p>分割前と分割後のジニ不純度の差を情報利得（Information Gain）といい、
+この情報利得が大きいほど、その分割が有効であると言えます。</p>
+<p>分割が決まれば、その分割した領域に対して、また不純度を計算して分割を繰り返します。
+これが決定木の分割アルゴリズムになります。</p>
+<div class="proof algorithm admonition" id="decision-tree-algo">
+<p class="admonition-title"><span class="caption-number">Algorithm 6.1 </span> (決定木のアルゴリズム)</p>
+<section class="algorithm-content" id="proof-content">
+<ol class="arabic simple">
+<li><p>特徴量で分割し、不純度を計算</p></li>
+<li><p>情報利得が最も大きな分割を選択</p></li>
+<li><p>分割後の領域に対して 1. から繰り返す</p></li>
+</ol>
+</section>
+</div><p>不純度の計算としてエントロピーを説明します。
+エントロピーは、データセットの無秩序さや不確実性を数値化します。</p>
+<p>エントロピーの特徴を以下に示します。</p>
+<ul class="simple">
+<li><p>値の範囲：0から1の間（二値分類の場合）</p></li>
+<li><p>解釈：</p>
+<ul>
+<li><p>低い値（0に近い）：高い純度、予測可能性が高い</p></li>
+<li><p>高い値（1に近い）：高い不純度、予測可能性が低い</p></li>
+</ul>
+</li>
+<li><p>最小値（0）：完全に均一なデータセット（すべてのサンプルが同じクラス）</p></li>
+<li><p>最大値（1）：完全にランダムなデータセット（各クラスが等確率で出現）</p></li>
+</ul>
+<p>エントロピーの計算式は以下の通りです。</p>
+<div class="math notranslate nohighlight">
+\[\text{Entropy} = -\sum_{i=1}^{n} p_i \log_2(p_i)\]</div>
+<p>ここで、<span class="math notranslate nohighlight">\(p_i\)</span>はクラス<span class="math notranslate nohighlight">\(i\)</span>の確率です。</p>
+<p>先ほどの例を使ってエントロピーを計算してみましょう。</p>
+<p>分割前のエントロピーは</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = \frac{3}{6} = 0.5\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = \frac{3}{6} = 0.5\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Entropy} = -\left(0.5 \log_2(0.5) + 0.5 \log_2(0.5)\right) = 1\]</div>
+<p>となります。</p>
+<p><span class="math notranslate nohighlight">\(X=4.5\)</span> で分割した後の左側（<span class="math notranslate nohighlight">\(X \leq 4.5\)</span>）のエントロピーは</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = \frac{3}{4} = 0.75\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = \frac{1}{4} = 0.25\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Entropy}_{\text{左}} = -\left(0.75 \log_2(0.75) + 0.25 \log_2(0.25)\right) \approx 0.8113\]</div>
+<p>右側（<span class="math notranslate nohighlight">\(X &gt; 4.5\)</span>）のエントロピーは</p>
+<ul class="simple">
+<li><p>赤の確率: <span class="math notranslate nohighlight">\(p_{\text{赤}} = 0\)</span></p></li>
+<li><p>青の確率: <span class="math notranslate nohighlight">\(p_{\text{青}} = 1\)</span></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Entropy}_{\text{右}} = -\left(0 \log_2(0) + 1 \log_2(1)\right) = 0\]</div>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>ここで、<span class="math notranslate nohighlight">\(0 \log_2(0)\)</span> は 0 と定義されています</p>
+</div>
+<p>分割後の重み付き平均エントロピーは</p>
+<div class="math notranslate nohighlight">
+\[\text{Entropy}_{\text{分割後}} = \frac{4}{6} \times 0.8113 + \frac{2}{6} \times 0 \approx 0.5409\]</div>
+<p>エントロピーを使用した場合の情報利得は：</p>
+<div class="math notranslate nohighlight">
+\[\text{Information Gain} = \text{Entropy}_{\text{分割前}} - \text{Entropy}_{\text{分割後}} = 1 - 0.5409 \approx 0.4591\]</div>
+<p>このように、エントロピーを使用しても、ジニ不純度と同様に分割の効果を評価できます。</p>
+<p>では、エントロピーとジニ不純度はどのように使い分ければ良いのでしょうか。
+それぞれの観点からの使い分けについて以下に示します。</p>
+<ul class="simple">
+<li><p>計算速度</p>
+<ul>
+<li><p>ジニ不純度の方が計算が速いため、大規模なデータセットや迅速な処理が必要な場合に適しています。</p></li>
+</ul>
+</li>
+<li><p>クラスの分布</p>
+<ul>
+<li><p>クラスが均等に分布している場合、両者はほぼ同じ結果を生みます。</p></li>
+<li><p>クラスの分布に偏りがある場合、ジニ不純度の方がより良い結果を出すことがあります。</p></li>
+</ul>
+</li>
+<li><p>多数クラスと少数クラス:</p>
+<ul>
+<li><p>エントロピーは少数クラスをより重視する傾向があります。</p></li>
+<li><p>ジニ不純度は多数クラスをより重視する傾向があります。</p></li>
+</ul>
+</li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>では、ジニ不純度がデフォルトとして使用されていますので、大抵の場合はジニ不純度で問題ないと思います。</p>
+</section>
+<section id="id2">
+<h2><span class="section-number">6.2. </span>決定木の実装例<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>Pythonの<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>を使用して、簡単な決定木の実装例を見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">DecisionTreeClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">accuracy_score</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.tree</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_tree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_informative</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                           <span class="n">n_redundant</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
+                           <span class="n">flip_y</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+
+<span class="c1"># データの分割</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># 決定木モデルの作成と学習</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># テストデータでの予測</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+
+<span class="c1"># 精度の計算</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># データポイントと決定境界の可視化</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># 決定境界の描画</span>
+<span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">),</span>
+                     <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">))</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu&#39;</span><span class="p">)</span>
+
+<span class="c1"># データポイントの描画</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;RdYlBu&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Feature 2&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Decision Tree Classification&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">)</span>
+
+<span class="c1"># 決定木の可視化</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plot_tree</span><span class="p">(</span><span class="n">clf</span><span class="p">,</span> <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">feature_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">],</span> <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Class 0&#39;</span><span class="p">,</span> <span class="s1">&#39;Class 1&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy: 0.90
+</pre></div>
+</div>
+<img alt="../_images/0ae3b30c4565a8cfb37b615107bc257f74a1c66fb125384cf0be4f483aa35e8a.png" src="../_images/0ae3b30c4565a8cfb37b615107bc257f74a1c66fb125384cf0be4f483aa35e8a.png" />
+<img alt="../_images/69cb9b094c001f1d2d7f470e6cf9b25286c4a653bc3fed363d66eae2475399d3.png" src="../_images/69cb9b094c001f1d2d7f470e6cf9b25286c4a653bc3fed363d66eae2475399d3.png" />
+</div>
+</div>
+<p>このプログラムでは、<code class="docutils literal notranslate"><span class="pre">sklearn.tree</span></code>モジュールから<code class="docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code>をインポートし、
+以下の手順で決定木を実装しています。</p>
+<ol class="arabic simple">
+<li><p>サンプルデータを生成</p></li>
+<li><p>データを訓練セットとテストセットに分割</p></li>
+<li><p>決定木モデルを作成し、訓練データで学習</p></li>
+<li><p>テストデータで予測を行い、精度を計算</p></li>
+<li><p>学習した決定木を可視化</p></li>
+</ol>
+<p>この例では、2つの特徴量を持つ二値分類問題を扱っています。
+実際のデータセットでは、より多くの特徴量や複雑な構造を持つ可能性がありますが、基本的なアプローチは同じです。</p>
+<p>決定木は直感的で解釈しやすいモデルですが、適切な使用にはハイパーパラメータの調整（木の深さの制限、最小サンプル数の設定など）が重要です。
+また、より高度なアンサンブル手法（ランダムフォレストやグラディエントブースティング）と組み合わせると、より高い性能を得られます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>の決定木では、デフォルトでジニ不純度が使用されますが、<code class="docutils literal notranslate"><span class="pre">criterion</span></code>パラメータを<code class="docutils literal notranslate"><span class="pre">entropy</span></code>に設定すれば
+エントロピーを使用できます。</p>
+<p>線形回帰との主な違いは以下の点です。</p>
+<ul class="simple">
+<li><p>モデルの作成：<code class="docutils literal notranslate"><span class="pre">DecisionTreeRegressor</span></code>を使用</p></li>
+<li><p>予測結果の可視化：決定木の予測は階段状になるため、細かい間隔で予測を行い、それをプロットしています</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2><span class="section-number">6.3. </span>特徴量の重要度<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>決定木では、特徴量の重要度を確認できます。
+以下のプログラムで特徴量の重要度を見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">feature_importance</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">feature_importances_</span>
+
+<span class="n">feature_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Feature 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Feature 2&#39;</span><span class="p">]</span>
+<span class="n">importance_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">feature_names</span><span class="p">,</span> <span class="s1">&#39;importance&#39;</span><span class="p">:</span> <span class="n">feature_importance</span><span class="p">})</span>
+
+<span class="n">importance_df</span> <span class="o">=</span> <span class="n">importance_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;importance&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature Importance:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">importance_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature Importance:
+     feature  importance
+1  Feature 2    0.770619
+0  Feature 1    0.229381
+</pre></div>
+</div>
+</div>
+</div>
+<p>この値は、決定木がデータを分割する際に、どの程度その特徴量を使用したかを示しています。
+値が大きいほど、その特徴量が予測に重要だと示しています。
+今回のデータでは、Feature2が分類にとってより重要だといえます。</p>
+</section>
+<section id="id4">
+<h2><span class="section-number">6.4. </span>木の深さと過学習<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>決定木は非常に柔軟なモデルであるため、訓練データに過度に適合してしまう（過学習）リスクがあります。
+これを制御するため、木の深さや葉の最小サンプル数などのハイパーパラメータを調整します。</p>
+<p>以下のプログラムでは、異なる最大深さの決定木モデルを作成し、その性能を比較しています。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span>
+
+<span class="n">max_depths</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="n">train_scores</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">test_scores</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">depth</span> <span class="ow">in</span> <span class="n">max_depths</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">max_depth</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+    <span class="n">train_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)))</span>
+    <span class="n">test_scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)))</span>
+
+<span class="n">x_axis</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">train_scores</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;訓練データ&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="n">test_scores</span><span class="p">,</span> <span class="s1">&#39;o-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;テストデータ&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;最大深さ&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;R2スコア&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;決定木の深さとモデルの性能&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+
+<span class="c1"># x軸のラベルを設定</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">,</span> <span class="s1">&#39;5&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">,</span> <span class="s1">&#39;None&#39;</span><span class="p">])</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/915c57b26ace840381a6e68850abe950ec5f5d71bb558c28984b757bf39aa201.png" src="../_images/915c57b26ace840381a6e68850abe950ec5f5d71bb558c28984b757bf39aa201.png" />
+</div>
+</div>
+<p>このグラフから、以下のことが分かります。</p>
+<ul class="simple">
+<li><p>木の深さが増えるにつれて訓練データに対する性能は向上</p></li>
+<li><p>テストデータに対する性能は一定以上深くなるとかえって低下する</p></li>
+</ul>
+<p>これは過学習の典型的な例になります。
+決定木の学習では適切な木の深さを選んで過学習を避ける必要があります。</p>
+<p>プログラム中の<code class="docutils literal notranslate"><span class="pre">max_depths</span></code>の最後の<code class="docutils literal notranslate"><span class="pre">None</span></code>は、決定木の深さに制限を設けないという意味になります。
+<code class="docutils literal notranslate"><span class="pre">DecisionTreeClassifier</span></code>の<code class="docutils literal notranslate"><span class="pre">max_depth</span></code>パラメータに<code class="docutils literal notranslate"><span class="pre">None</span></code>を指定すると、
+決定木は制限なく成長し、純粋なノード（全てのサンプルが同じクラスに属するノード）か、
+分割によって改善が見られなくなるまで分岐を続けます。</p>
+<p>これには以下の意味があります。</p>
+<ul class="simple">
+<li><p>最大の柔軟性：モデルの潜在的な最大性能を見るのに役立ちます。</p></li>
+<li><p>過学習の観察：制限のない木と制限のある木を比較し、過学習の影響を明確に観察する。</p></li>
+<li><p>最適な深さの探索：様々な深さ（1, 3, 5, 10）と無制限（None）を比較し、最適な深さを見つけるための指針を得る。</p></li>
+</ul>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter06"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter05/03.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">5.3. </span>ロジスティック回帰</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter07/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">7. </span>クラスタリング</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#impurity">6.1. 不純度（impurity）</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">6.2. 決定木の実装例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">6.3. 特徴量の重要度</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">6.4. 木の深さと過学習</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

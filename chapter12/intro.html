@@ -1,0 +1,906 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>12. テキストマイニングの応用 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter12/intro';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="13. グラフ理論の基礎" href="../chapter13/intro.html" />
+    <link rel="prev" title="11. テキストデータの分析" href="../chapter11/intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter12/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter12/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter12/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>テキストマイニングの応用</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">12.1. テキストのベクトル化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">12.1.1. Bag of Words (BoW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-term-frequency-inverse-document-frequency">12.1.2. TF-IDF (Term Frequency-Inverse Document Frequency)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">12.2. 感情分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.3. トピックモデリング</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">12. </span>テキストマイニングの応用<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>SNSの投稿、ニュース記事、商品レビュー、メール、ウェブサイトのコンテンツなど、テキストデータは私たちの周りに溢れています。
+これらの膨大なテキストデータから価値ある情報や洞察を引き出すことは、現代のビジネスや研究において極めて重要になっています。</p>
+<p>テキストマイニングとは、自然言語処理（NLP）と機械学習の技術を用いて、
+構造化されていないテキストデータから有用なパターンや情報を発見するプロセスです。
+人間が読むことを前提に書かれたテキストを、コンピュータが分析可能な形に変換し、そこから意味のある知見を抽出します。</p>
+<p>テキストマイニングの応用範囲は非常に広く、以下のような場面で活用されています：</p>
+<ul class="simple">
+<li><p>ビジネスインテリジェンス: 顧客の声や市場動向の分析</p></li>
+<li><p>ヘルスケア: 医療記録からの症例分析や疾病パターンの発見</p></li>
+<li><p>学術研究: 大量の論文から研究トレンドの把握</p></li>
+<li><p>マーケティング: 消費者感情の分析やブランド評判のモニタリング</p></li>
+<li><p>政治・社会分析: 世論調査や政策反応の分析</p></li>
+<li><p>セキュリティ: 不審なコミュニケーションパターンの検出</p></li>
+</ul>
+<p>この章では、テキストマイニングの主要な応用技術として、テキストのベクトル化、感情分析、トピックモデリングを取り上げます。
+これらの技術は、人間の言語という複雑なデータから、機械が理解・分析可能な形式への変換と、そこからの有益な情報抽出の基盤となるものです。</p>
+<p>テキストのベクトル化では、言葉をどのように数値表現に変換するかを学びます。
+感情分析では、テキストから書き手の感情や態度を自動的に検出する方法を探ります。
+トピックモデリングでは、大量の文書から自動的に主題やテーマを抽出する技術を見ていきます。</p>
+<section id="id2">
+<h2><span class="section-number">12.1. </span>テキストのベクトル化<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>テキストデータは、そのままでは機械学習モデルに入力できません。
+機械学習モデルは数値データを扱うため、テキストを数値表現（ベクトル）に変換する必要があります。
+この過程は<strong>テキストのベクトル化</strong>または<strong>特徴量抽出</strong>と呼ばれます。</p>
+<p>ここではBoW（Bag of Words）とTF-IDFについて説明します。</p>
+<section id="bag-of-words-bow">
+<h3><span class="section-number">12.1.1. </span>Bag of Words (BoW)<a class="headerlink" href="#bag-of-words-bow" title="Link to this heading">#</a></h3>
+<p>BoWは最も基本的なテキスト表現方法で、単語の出現回数のみを考慮します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span><span class="p">,</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sudachipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">dictionary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span> 
+
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;機械学習は人工知能の一種です。機械学習ではデータから学習します。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;深層学習は機械学習の一種で、ニューラルネットワークを使います。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;自然言語処理は機械学習を使ったテキスト分析技術です。&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tokenize_text</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">tokenizer_obj</span> <span class="o">=</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">Tokenizer</span><span class="o">.</span><span class="n">SplitMode</span><span class="o">.</span><span class="n">C</span>  <span class="c1"># 分割モードC（最も長い単位）</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenizer_obj</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">part_of_speech</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;名詞&#39;</span><span class="p">]:</span> <span class="c1"># 名詞のみ</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">dictionary_form</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+<span class="n">tokenized_texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">tokenize_text</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;トークン化されたテキスト:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokenized_texts</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;文書</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">text</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 1. Bag of Words（BoW）</span>
+<span class="n">bow_vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">()</span>
+<span class="n">X_bow</span> <span class="o">=</span> <span class="n">bow_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_texts</span><span class="p">)</span>
+
+<span class="n">bow_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">X_bow</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="n">bow_vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;文書1&quot;</span><span class="p">,</span> <span class="s2">&quot;文書2&quot;</span><span class="p">,</span> <span class="s2">&quot;文書3&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Bag of Words 表現:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">bow_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;simple&#39;</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>トークン化されたテキスト:
+文書1: 機械学習 人工知能 一種 機械学習 データ 学習
+文書2: 深層学習 機械学習 一種 ニューラル ネットワーク
+文書3: 自然言語処理 機械学習 テキスト 分析 技術
+Bag of Words 表現:
+         テキスト    データ    ニューラル    ネットワーク    一種    人工知能    分析    学習    技術    機械学習    深層学習    自然言語処理
+-----  ----------  --------  ------------  --------------  ------  ----------  ------  ------  ------  ----------  ----------  --------------
+文書1           0         1             0               0       1           1       0       1       0           2           0               0
+文書2           0         0             1               1       1           0       0       0       0           1           1               0
+文書3           1         0             0               0       0           0       1       0       1           1           0               1
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>特徴:</strong></p>
+<ul class="simple">
+<li><p>「機械学習」は3つの文書全てに出現するため、全ての行で値が入ります</p></li>
+<li><p>単純に出現回数をカウントするため、文書1では「機械学習」が2回出現し、値が2になっています</p></li>
+<li><p>単語の重要度は考慮されず、どの単語も同等に扱われます</p></li>
+</ul>
+</section>
+<section id="tf-idf-term-frequency-inverse-document-frequency">
+<h3><span class="section-number">12.1.2. </span>TF-IDF (Term Frequency-Inverse Document Frequency)<a class="headerlink" href="#tf-idf-term-frequency-inverse-document-frequency" title="Link to this heading">#</a></h3>
+<p>TF-IDFは単語の出現頻度だけでなく、その単語がどれだけ重要かも考慮します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># TF-IDFモデルの作成</span>
+<span class="n">tfidf_vectorizer</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">()</span>
+<span class="n">X_tfidf</span> <span class="o">=</span> <span class="n">tfidf_vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">tokenized_texts</span><span class="p">)</span>
+
+<span class="n">tfidf_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+    <span class="n">X_tfidf</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> 
+    <span class="n">columns</span><span class="o">=</span><span class="n">tfidf_vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(),</span>
+    <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;文書1&quot;</span><span class="p">,</span> <span class="s2">&quot;文書2&quot;</span><span class="p">,</span> <span class="s2">&quot;文書3&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">tfidf_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;plain&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>         テキスト    データ    ニューラル    ネットワーク      一種    人工知能      分析      学習      技術    機械学習    深層学習    自然言語処理
+文書1    0         0.448394      0               0         0.341015    0.448394  0         0.448394  0           0.529657    0               0
+文書2    0         0             0.504611        0.504611  0.38377     0         0         0         0           0.298032    0.504611        0
+文書3    0.479528  0             0               0         0           0         0.479528  0         0.479528    0.283217    0               0.479528
+</pre></div>
+</div>
+</div>
+</div>
+<p><strong>特徴:</strong></p>
+<ul class="simple">
+<li><p>「機械学習」は全ての文書に出現するため、IDF値は低めになりますが、文書1では出現頻度(TF)が高いため、結果的にTF-IDF値も他の文書より高くなっています</p></li>
+<li><p>「深層学習」や「自然言語処理」のような特定の文書だけに出現する単語は高いTF-IDF値を持ちます</p></li>
+</ul>
+</section>
+</section>
+<section id="id3">
+<h2><span class="section-number">12.2. </span>感情分析<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>多くの時間をネットで過ごしていると、さまざまなテキストに出会います。
+その中でもネガティブなテキストは私たちの気分や感情状態に深刻な影響を及ぼします。</p>
+<p>ある研究では以下のような結果が出ています。</p>
+<ul class="simple">
+<li><p>ネガティブな情報を多く閲覧するほど、不安・抑うつ、社会的回避や強迫的行動が顕著に表れる</p></li>
+<li><p>気分が落ち込んでいると、無意識にさらにネガティブな情報を選択する傾向がある</p></li>
+</ul>
+<p>このような悪循環を避けるためには、できる限りネガティブな情報との接触を減らすことが望ましいでしょう。
+そのためには、文章から感情を事前に予測する必要があります。</p>
+<p>機械学習では感情分析という技術があり、テキストに含まれる感情や意見を自動的に判別します。</p>
+<p>感情分析は以下の分野でも使われています。</p>
+<ul class="simple">
+<li><p>商品レビューの評判分析</p></li>
+<li><p>SNS上での企業や製品の評判監視</p></li>
+<li><p>カスタマーサポートの自動化</p></li>
+<li><p>マーケティング戦略の立案</p></li>
+</ul>
+<p>ここでは最もシンプルな感情分析を実装してみましょう。
+その方法とは文章を単語に分割し、文章中にあるポジティブ単語とネガティブな単語の出現回数から
+その文章のポジティブ度とネガティブ度を計算するというものです。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sudachipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">dictionary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span> 
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">tokenizer_obj</span> <span class="o">=</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">Tokenizer</span><span class="o">.</span><span class="n">SplitMode</span><span class="o">.</span><span class="n">C</span>
+    <span class="n">morphemes</span> <span class="o">=</span> <span class="n">tokenizer_obj</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">dictionary_form</span><span class="p">()</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">morphemes</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">tokens</span>
+
+<span class="c1"># サンプルテキスト</span>
+<span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;このレストランの料理はとても美味しかった。また行きたい。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;サービスが遅く、値段も高すぎる。二度と利用しない。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;製品の品質は普通だが、配送が早くて助かった。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># ポジティブな単語とネガティブな単語のリスト</span>
+<span class="n">positive_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;美味しい&quot;</span><span class="p">,</span> <span class="s2">&quot;良い&quot;</span><span class="p">,</span> <span class="s2">&quot;素晴らしい&quot;</span><span class="p">,</span> <span class="s2">&quot;助かる&quot;</span><span class="p">,</span> <span class="s2">&quot;早い&quot;</span><span class="p">,</span> <span class="s2">&quot;行く&quot;</span><span class="p">]</span>
+<span class="n">negative_words</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;遅い&quot;</span><span class="p">,</span> <span class="s2">&quot;高い&quot;</span><span class="p">,</span> <span class="s2">&quot;悪い&quot;</span><span class="p">,</span> <span class="s2">&quot;ひどい&quot;</span><span class="p">]</span>
+
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">:</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="n">total_tokens</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+    
+    <span class="n">pos_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">positive_words</span><span class="p">]</span>
+    <span class="n">neg_matches</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">tokens</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">negative_words</span><span class="p">]</span>
+
+    <span class="n">pos_score</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pos_matches</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_tokens</span> <span class="k">if</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">neg_score</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_matches</span><span class="p">)</span> <span class="o">/</span> <span class="n">total_tokens</span> <span class="k">if</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+        
+    <span class="n">compound</span> <span class="o">=</span> <span class="n">pos_score</span> <span class="o">-</span> <span class="n">neg_score</span>
+    
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;テキスト&#39;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+        <span class="s1">&#39;ポジティブ&#39;</span><span class="p">:</span> <span class="n">pos_score</span><span class="p">,</span>
+        <span class="s1">&#39;ネガティブ&#39;</span><span class="p">:</span> <span class="n">neg_score</span><span class="p">,</span>
+        <span class="s1">&#39;複合スコア&#39;</span><span class="p">:</span> <span class="n">compound</span>
+    <span class="p">})</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;plain&#39;</span><span class="p">,</span> <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>テキスト                                                    ポジティブ    ネガティブ    複合スコア
+このレストランの料理はとても美味しかった。また行きたい。      0.153846         0          0.153846
+サービスが遅く、値段も高すぎる。二度と利用しない。            0                0.125     -0.125
+製品の品質は普通だが、配送が早くて助かった。                  0.133333         0          0.133333
+</pre></div>
+</div>
+</div>
+</div>
+<p>このコードは基本的ですが、以下のように発展できます。</p>
+<ul class="simple">
+<li><p>より豊富な感情辞書の使用</p></li>
+<li><p>文脈や否定表現（「美味しくない」など）の考慮</p></li>
+<li><p>感情の強さや複雑な感情の分析</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2><span class="section-number">12.3. </span>トピックモデリング<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>テキストデータを分析する際、感情分析だけでなく「どのような話題について書かれているか」を把握することも重要です。
+トピックモデリングはテキスト集合から自動的に潜在的なトピックを抽出する技術です。
+ここで潜在的とは、トピックが明示的に示されていないということです。</p>
+<p>トピックモデリングを使うと、以下のようなことが可能になります。</p>
+<ul class="simple">
+<li><p>大量の文書からの主要テーマの自動抽出</p></li>
+<li><p>類似したコンテンツのグループ化</p></li>
+<li><p>時間経過による話題の変化の追跡</p></li>
+<li><p>文書の要約や分類の自動化</p></li>
+</ul>
+<p>トピックモデリングで最も広く使われているのがLDA（Latent Dirichlet Allocation）です。
+LDAは各文書が複数のトピックの混合であり、各トピックは単語の確率分布であると仮定します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.feature_extraction.text</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountVectorizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">LatentDirichletAllocation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sudachipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="n">dictionary</span>
+
+<span class="c1"># 文書のサンプル</span>
+<span class="n">documents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;私はラーメンが好きで、週末には新しい店を開拓しています。特に味噌ラーメンが好きです。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;昨日の野球の試合は接戦でした。9回裏にホームランが出て逆転勝ちしました。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;新しいスマートフォンを購入しました。カメラの性能が素晴らしく、バッテリーの持ちも良いです。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;東京では桜が満開です。花見客で公園は賑わっています。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;プログラミングの勉強を始めました。Pythonは初心者にも扱いやすい言語だと思います。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;今日の料理教室ではラーメンの作り方を習いました。スープの取り方が難しかったです。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;プロ野球の開幕戦を見に行きました。球場の雰囲気は最高でした。&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;カメラの新機種が発売されました。高画質で夜景の撮影も綺麗に撮れるそうです。&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># 形態素解析で単語に分割</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">tokenize_ja</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">tokenizer_obj</span> <span class="o">=</span> <span class="n">dictionary</span><span class="o">.</span><span class="n">Dictionary</span><span class="p">()</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">Tokenizer</span><span class="o">.</span><span class="n">SplitMode</span><span class="o">.</span><span class="n">C</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">tokenizer_obj</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">part_of_speech</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;名詞&#39;</span><span class="p">,</span> <span class="s1">&#39;動詞&#39;</span><span class="p">,</span> <span class="s1">&#39;形容詞&#39;</span><span class="p">]:</span>  <span class="c1"># 主要な品詞のみ抽出</span>
+            <span class="n">tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">token</span><span class="o">.</span><span class="n">dictionary_form</span><span class="p">())</span>
+    <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+<span class="c1"># 単語分割を適用</span>
+<span class="n">processed_docs</span> <span class="o">=</span> <span class="p">[</span><span class="n">tokenize_ja</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+
+<span class="c1"># BoWモデルの作成</span>
+<span class="n">vectorizer</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">max_df</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">min_df</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">processed_docs</span><span class="p">)</span>
+
+<span class="c1"># トピック数を3に設定してLDAを実行</span>
+<span class="n">n_topics</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">lda</span> <span class="o">=</span> <span class="n">LatentDirichletAllocation</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_topics</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">lda</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 各トピックの特徴的な単語を表示</span>
+<span class="n">feature_names</span> <span class="o">=</span> <span class="n">vectorizer</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">topic_idx</span><span class="p">,</span> <span class="n">topic</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lda</span><span class="o">.</span><span class="n">components_</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;トピック #</span><span class="si">{</span><span class="n">topic_idx</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">feature_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">topic</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[:</span><span class="o">-</span><span class="mi">6</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 各文書のトピック分布を表示</span>
+<span class="n">doc_topics</span> <span class="o">=</span> <span class="n">lda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">doc</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">documents</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;文書 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">:&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">doc</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span><span class="p">)</span>  <span class="c1"># 最初の50文字だけ表示</span>
+    <span class="n">topic_dist</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;トピック</span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">prob</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">doc_topics</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">topic_dist</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>トピック #1:
+する カメラ 新しい 素晴らしい スマートフォン
+
+トピック #2:
+ラーメン いる python 言語 思う
+
+トピック #3:
+野球 取り方 作り方 料理 教室
+
+文書 1:
+私はラーメンが好きで、週末には新しい店を開拓しています。特に味噌ラーメンが好きです。...
+トピック1: 0.04, トピック2: 0.92, トピック3: 0.04
+
+文書 2:
+昨日の野球の試合は接戦でした。9回裏にホームランが出て逆転勝ちしました。...
+トピック1: 0.03, トピック2: 0.03, トピック3: 0.93
+
+文書 3:
+新しいスマートフォンを購入しました。カメラの性能が素晴らしく、バッテリーの持ちも良いです。...
+トピック1: 0.94, トピック2: 0.03, トピック3: 0.03
+
+文書 4:
+東京では桜が満開です。花見客で公園は賑わっています。...
+トピック1: 0.05, トピック2: 0.90, トピック3: 0.05
+
+文書 5:
+プログラミングの勉強を始めました。Pythonは初心者にも扱いやすい言語だと思います。...
+トピック1: 0.04, トピック2: 0.93, トピック3: 0.04
+
+文書 6:
+今日の料理教室ではラーメンの作り方を習いました。スープの取り方が難しかったです。...
+トピック1: 0.03, トピック2: 0.03, トピック3: 0.93
+
+文書 7:
+プロ野球の開幕戦を見に行きました。球場の雰囲気は最高でした。...
+トピック1: 0.92, トピック2: 0.04, トピック3: 0.04
+
+文書 8:
+カメラの新機種が発売されました。高画質で夜景の撮影も綺麗に撮れるそうです。...
+トピック1: 0.93, トピック2: 0.03, トピック3: 0.03
+</pre></div>
+</div>
+</div>
+</div>
+<p>プログラムでは8つの文書から3つのトピックを抽出しています。
+人間が指定した内容ではなく、プログラムが自動的にトピックを抽出しているので、直感とは異なる結果になっているかもしれません。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter12"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter11/intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">11. </span>テキストデータの分析</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter13/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>グラフ理論の基礎</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">12.1. テキストのベクトル化</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bag-of-words-bow">12.1.1. Bag of Words (BoW)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tf-idf-term-frequency-inverse-document-frequency">12.1.2. TF-IDF (Term Frequency-Inverse Document Frequency)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">12.2. 感情分析</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">12.3. トピックモデリング</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

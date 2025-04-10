@@ -1,0 +1,1244 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3.2. 分布関数 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter03/02';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="4. 推計統計学" href="../chapter04/intro.html" />
+    <link rel="prev" title="3.1. 確率" href="01.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="intro.html">3. 確率</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="01.html">3.1. 確率</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter15/intro.html">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter03/02.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter03/02.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter03/02.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>分布関数</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2.1. 期待値と確率変数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsec-distribution-function">3.2.2. 分布関数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsec-normal">3.2.3. 正規分布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-score">3.2.4. 偏差値（Standard Score）</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">3.2. </span>分布関数<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<section id="id2">
+<h2><span class="section-number">3.2.1. </span>期待値と確率変数<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>サイコロを振って出る目はだいたいどのくらいになるでしょうか？
+つまり、サイコロを十分に多く振った場合の平均値は、おおよそいくつになるかという質問です。</p>
+<p>直感的にはサイコロの目は1から6まであるため、</p>
+<div class="math notranslate nohighlight">
+\[\frac{1 + 2 + 3 + 4 + 5 + 6}{6} = 3.5\]</div>
+<p>という計算をして、平均を求めれば良さそうですね。</p>
+<p>ただし、この計算はサイコロの目の出る確率が等しいという仮定をしています。
+このように確率的に出てくる値に対しての平均は<strong>期待値</strong>といいます。
+期待値は値とその値の確率をかけて足すため</p>
+<div class="math notranslate nohighlight">
+\[1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6} = 3.5\]</div>
+<p>という計算になります。先ほど計算した平均値と同じ結果ですね。</p>
+<p>期待値のより厳密な計算は式<a class="reference internal" href="#equation-expected-value">(3.4)</a>になります。</p>
+<div class="math notranslate nohighlight" id="equation-expected-value">
+<span class="eqno">(3.4)<a class="headerlink" href="#equation-expected-value" title="Link to this equation">#</a></span>\[\sum_{i=1}^{n} X_i \cdot P(X_i)\]</div>
+<p>ここで、<span class="math notranslate nohighlight">\(X_i\)</span>は取りうる値で<strong>確率変数</strong>といいます。
+サイコロの確率変数は1-6になります。<span class="math notranslate nohighlight">\(P(X_i)\)</span>はその確率変数の確率になります。</p>
+<p>期待値は長期的な平均を表しているため、数回のサイコロを振った結果とは異なる可能性があります。
+試行を繰り返すほど、平均値は期待値に近づいていきます。
+このような傾向を<strong>大数の法則</strong>といいます。
+このことをプログラムで確認しましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="linenos"> 3</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">def</span><span class="w"> </span><span class="nf">roll_dice</span><span class="p">():</span>
+<span class="linenos"> 8</span>    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">def</span><span class="w"> </span><span class="nf">simulate_dice_rolls</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">):</span>
+<span class="linenos">11</span>    <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos">12</span>    <span class="n">averages</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="linenos">13</span>    
+<span class="linenos">14</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rolls</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+<span class="linenos">15</span>        <span class="n">roll</span> <span class="o">=</span> <span class="n">roll_dice</span><span class="p">()</span>
+<span class="linenos">16</span>        <span class="n">total</span> <span class="o">+=</span> <span class="n">roll</span>
+<span class="linenos">17</span>        <span class="n">average</span> <span class="o">=</span> <span class="n">total</span> <span class="o">/</span> <span class="n">i</span>
+<span class="linenos">18</span>        <span class="n">averages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">average</span><span class="p">)</span>
+<span class="linenos">19</span>    
+<span class="linenos">20</span>    <span class="k">return</span> <span class="n">averages</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="n">num_rolls</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="linenos">23</span><span class="n">expected_value</span> <span class="o">=</span> <span class="mf">3.5</span>
+<span class="linenos">24</span>
+<span class="linenos">25</span><span class="n">results</span> <span class="o">=</span> <span class="n">simulate_dice_rolls</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">)</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="linenos">28</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_rolls</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">results</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;平均&#39;</span><span class="p">)</span>
+<span class="linenos">29</span><span class="n">plt</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">expected_value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;期待値(3.5)&#39;</span><span class="p">)</span>
+<span class="linenos">30</span><span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;回数&#39;</span><span class="p">)</span>
+<span class="linenos">31</span><span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;平均値&#39;</span><span class="p">)</span>
+<span class="linenos">32</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;平均値と期待値&#39;</span><span class="p">)</span>
+<span class="linenos">33</span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="linenos">34</span><span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+<span class="linenos">35</span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">36</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="linenos">37</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;最終的な平均値: </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fd8764847f0b1b07b2ef16c394dc662934bb8a7ccc332931a70666f75f73fcb8.png" src="../_images/fd8764847f0b1b07b2ef16c394dc662934bb8a7ccc332931a70666f75f73fcb8.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>最終的な平均値: 3.5408
+</pre></div>
+</div>
+</div>
+</div>
+<p>5行目は<code class="docutils literal notranslate"><span class="pre">random</span></code>ライブラリの<code class="docutils literal notranslate"><span class="pre">seed</span></code>関数を引数42で呼んでいます。
+これは乱数生成器の初期状態を設定しています。
+シード値を設定すると、乱数の生成順序が固定されます。
+つまり、同じシード値を使用すれば、プログラムを何度実行しても同じ結果が得られます。
+42という数字自体に特別な意味はなく、任意の整数を使用できます。
+異なるシード値を使用すると、異なる乱数列が生成されます。</p>
+<p>34行目でx軸を対数（log）スケールにした理由は、線形スケールと比較して以下のようなメリットがあるためです。</p>
+<ul class="simple">
+<li><p>データの広範囲な表示</p>
+<ul>
+<li><p>広い範囲のデータを1つのグラフ上で効果的に表示できます。初期の変動から長期的な収束まで、10,000回の試行全体を見やすく表現できます。</p></li>
+</ul>
+</li>
+<li><p>初期変動の詳細な観察</p>
+<ul>
+<li><p>最初の数十回や数百回での平均値の大きな変動を詳細に観察できます。線形スケールでは見えにくい初期の急激な変化が明確になります。</p></li>
+</ul>
+</li>
+<li><p>収束過程の可視化</p>
+<ul>
+<li><p>平均値が期待値に近づいていく過程がより明確に表現されます。初期の不安定な状態から徐々に安定していく様子が分かりやすくなります。</p></li>
+</ul>
+</li>
+<li><p>データ分布の均一化</p>
+<ul>
+<li><p>線形スケールでは後半のデータが密集して見えてしまいますが、対数スケールを使用することで、データの分布が均一化され、全体の傾向がより把握しやすくなります。</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="subsec-distribution-function">
+<span id="id3"></span><h2><span class="section-number">3.2.2. </span>分布関数<a class="headerlink" href="#subsec-distribution-function" title="Link to this heading">#</a></h2>
+<p>プログラムでは、<code class="docutils literal notranslate"><span class="pre">random.randint(1,</span> <span class="pre">6)</span></code>と書いてサイコロのシミュレーションをしていました。
+この関数は1から6までの整数をランダムに返します。
+この関数を十分に多く実行すると、各数字が等しい確率で出現するようになります。</p>
+<p>このような振る舞いを理解するために<strong>確率分布</strong>という概念を導入します。
+確率分布とは、ある事象（この場合はサイコロの目）が起こる可能性の度合いを表します。</p>
+<p>サイコロの場合、1から6までの各目が出る確率が等しいという特徴があります。
+このように、すべての可能な結果が等しい確率で発生するパターンを<strong>一様分布</strong>と呼びます。</p>
+<p>逆に考えると、一様分布に従うデータが必要な場合、<code class="docutils literal notranslate"><span class="pre">random.randint</span></code>関数を使用します。</p>
+<p>では一様分布ではなく、何か偏った分布が必要な場合はどうでしょうか？
+一様分布以外にもよく用いられる分布を以下に挙げます。</p>
+<ul class="simple">
+<li><p>ベルヌーイ分布</p>
+<ul>
+<li><p>成功か失敗の2つの結果しかない試行（例：コイン投げ）を表す分布です。成功の確率をpとすると、失敗の確率は1-pになります。</p></li>
+</ul>
+</li>
+<li><p>二項分布</p>
+<ul>
+<li><p>ベルヌーイ試行を複数回繰り返したときの成功回数の分布です。例えば、コインを10回投げて表が出る回数の分布などです。</p></li>
+</ul>
+</li>
+<li><p>ポアソン分布</p>
+<ul>
+<li><p>一定時間内に発生する事象の回数を表す分布です。例えば、1時間あたりに店に来る客の数などがこの分布に従います。</p></li>
+</ul>
+</li>
+<li><p>正規分布（ガウス分布）</p>
+<ul>
+<li><p>自然界の多くの現象を表す釣鐘型の分布です。身長や体重などの人間の特性がこの分布に従います。</p></li>
+</ul>
+</li>
+</ul>
+<p>Pythonを使ってこれらの分布のサンプルコードを書いてみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">n_samples</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_distribution</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">title</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">discrete</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">.8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xticks</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">xticks</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># 一様分布</span>
+<span class="n">uniform_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">uniform_samples</span><span class="p">,</span> <span class="s1">&#39;一様分布&#39;</span><span class="p">,</span> <span class="s2">&quot;skyblue&quot;</span><span class="p">)</span>
+
+<span class="c1"># ベルヌーイ分布</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">bernoulli_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">bernoulli_samples</span><span class="p">,</span> <span class="s1">&#39;ベルヌーイ分布&#39;</span><span class="p">,</span> <span class="s2">&quot;salmon&quot;</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># 二項分布</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">binomial_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">binomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">binomial_samples</span><span class="p">,</span> <span class="s1">&#39;二項分布&#39;</span><span class="p">,</span> <span class="s2">&quot;lightgreen&quot;</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># ポアソン分布</span>
+<span class="n">lambda_param</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">poisson_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">poisson</span><span class="p">(</span><span class="n">lambda_param</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">poisson_samples</span><span class="p">,</span> <span class="s1">&#39;ポアソン分布&#39;</span><span class="p">,</span> <span class="s2">&quot;plum&quot;</span><span class="p">,</span> <span class="n">discrete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 正規分布</span>
+<span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
+<span class="n">normal_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">n_samples</span><span class="p">)</span>
+<span class="n">plot_distribution</span><span class="p">(</span><span class="n">normal_samples</span><span class="p">,</span> <span class="s1">&#39;正規分布&#39;</span><span class="p">,</span> <span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/c22119ab91cc655ecea8bedf70f7dfab7ffa77dd09d7ad58a1c478f8634a39a7.png" src="../_images/c22119ab91cc655ecea8bedf70f7dfab7ffa77dd09d7ad58a1c478f8634a39a7.png" />
+<img alt="../_images/eda278f630e1d4e4f678e047721bc71a78ab5f07b8a81c8049be92c61f48086c.png" src="../_images/eda278f630e1d4e4f678e047721bc71a78ab5f07b8a81c8049be92c61f48086c.png" />
+<img alt="../_images/57241db12897dd98fca2fc2a2bf35ca2620f4320e8348b31cf2e7aabcd5608b0.png" src="../_images/57241db12897dd98fca2fc2a2bf35ca2620f4320e8348b31cf2e7aabcd5608b0.png" />
+<img alt="../_images/730ee170d75a2aaa4fddfb13bb6e5f05be6ec6ebaff616d061455d6f08191247.png" src="../_images/730ee170d75a2aaa4fddfb13bb6e5f05be6ec6ebaff616d061455d6f08191247.png" />
+<img alt="../_images/b8f5a45c981b9b3c9ee90be227f2f72b9948381617bafce052ccecafc5e22f97.png" src="../_images/b8f5a45c981b9b3c9ee90be227f2f72b9948381617bafce052ccecafc5e22f97.png" />
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">numpy.random</span></code>モジュールには、確率分布に従ってデータを生成する様々な関数が用意されています。
+それぞれについて説明します。</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">np.random.uniform(low,</span> <span class="pre">high,</span> <span class="pre">size)</span></code></p>
+<ul>
+<li><p>一様分布 (Uniform Distribution)</p></li>
+<li><p>指定された範囲内（<code class="docutils literal notranslate"><span class="pre">low</span> <span class="pre">-</span> <span class="pre">high</span></code>）のすべての値が等確率で<code class="docutils literal notranslate"><span class="pre">size</span></code>個のサンプルを生成</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.random.binomial(n=1,</span> <span class="pre">p,</span> <span class="pre">size)</span></code>（nを1に設定するとベルヌーイ分布になります）</p>
+<ul>
+<li><p>ベルヌーイ分布 (Bernoulli Distribution)</p></li>
+<li><p>成功（1）または失敗（0）の2つの値のみを生成</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.random.binomial(n,</span> <span class="pre">p,</span> <span class="pre">size)</span></code></p>
+<ul>
+<li><p>二項分布 (Binomial Distribution)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code>回の独立した試行における成功回数を生成</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.random.poisson(lam,</span> <span class="pre">size)</span></code></p>
+<ul>
+<li><p>ポアソン分布 (Poisson Distribution)</p></li>
+<li><p>一定期間内に発生する事象の平均回数（期待値）<code class="docutils literal notranslate"><span class="pre">lam</span></code>に基づいて、その期間の事象発生回数を生成</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">np.random.normal(mu,</span> <span class="pre">sigma,</span> <span class="pre">size)</span></code></p>
+<ul>
+<li><p>正規分布（ガウス分布）(Normal/Gaussian Distribution)</p></li>
+<li><p>平均（<code class="docutils literal notranslate"><span class="pre">mu</span></code>）と標準偏差（<code class="docutils literal notranslate"><span class="pre">sigma</span></code>）で特徴づけられる連続確率分布からサンプルを生成</p></li>
+</ul>
+</li>
+</ul>
+<p>実行結果を見ると、以下のような特徴が観察できます。</p>
+<ul class="simple">
+<li><p>一様分布</p>
+<ul>
+<li><p>すべての値が等しい確率で発生しているため、ヒストグラムはほぼ平らになります。</p></li>
+</ul>
+</li>
+<li><p>ベルヌーイ分布</p>
+<ul>
+<li><p>0と1の2つの値のみが存在し、その比率が設定した確率pに近くなります。</p></li>
+</ul>
+</li>
+<li><p>二項分布</p>
+<ul>
+<li><p>n回の試行での成功回数を示す釣鐘型の分布になります。</p></li>
+</ul>
+</li>
+<li><p>ポアソン分布</p>
+<ul>
+<li><p>離散的な値を取る右寄りの分布になります。</p></li>
+</ul>
+</li>
+<li><p>正規分布</p>
+<ul>
+<li><p>ベル型の対称な分布になります。</p></li>
+</ul>
+</li>
+</ul>
+<p>プログラムでは、これらの分布を表示するため<code class="docutils literal notranslate"><span class="pre">plot_distribution</span></code>という関数を定義し使っています。</p>
+<p><code class="docutils literal notranslate"><span class="pre">discrete</span></code>という引数で離散データの場合は棒グラフ、連続データの場合はヒストグラムを表示するように変更しています。表示するときはseabornライブラリの<code class="docutils literal notranslate"><span class="pre">histplot</span></code>関数を使っています。
+<code class="docutils literal notranslate"><span class="pre">histplot</span></code>は、データの分布を表示するときに使用します。</p>
+<p><code class="docutils literal notranslate"><span class="pre">xticks</span></code>はx軸の目盛りを指定しています。
+指定しない場合は、デフォルトの目盛りが使用されます。
+通常は<code class="docutils literal notranslate"><span class="pre">xticks</span></code>を指定しなくてもよいのですが、
+ベルヌーイ分布の場合は最初から0と1しか値がないことがわかっているため、
+<code class="docutils literal notranslate"><span class="pre">xticks</span></code>で目盛りを明示的に指定しています。</p>
+</section>
+<section id="subsec-normal">
+<span id="id4"></span><h2><span class="section-number">3.2.3. </span>正規分布<a class="headerlink" href="#subsec-normal" title="Link to this heading">#</a></h2>
+<p>私たちの身の回りには、さまざまな<strong>ばらつき</strong>が存在します。
+例えば</p>
+<ul class="simple">
+<li><p>クラスの生徒の身長</p></li>
+<li><p>工場で生産される製品の重さ</p></li>
+<li><p>毎日の気温の変化</p></li>
+<li><p>テストの得点分布</p></li>
+</ul>
+<p>これらの現象を観察すると、多くの場合、特定の特徴を持つ分布パターンが現れます。
+そのパターンの中で最も有名で、統計学の基礎となる分布が<span class="target" id="index-0"></span>正規分布です。</p>
+<p>正規分布は、データが中心の値（平均）を中心にして左右対称に分布し、
+中心から離れるほどデータの出現頻度が少なくなるという特徴を持っています。
+その形状から<strong>ベル曲線</strong>や<strong>釣鐘型の曲線</strong>とも呼ばれます。</p>
+<p>統計解析等でよく使われるRのデータセットからDavisというデータを使って正規分布をみてましょう。
+このデータセットには200人分の性別、身長、体重、また自己申告した身長、体重があります。</p>
+<p>プログラムを使ってデータの中身を確認するプログラムを書きます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://vincentarelbundock.github.io/Rdatasets/csv/carData/Davis.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>rownames</th>
+      <th>sex</th>
+      <th>weight</th>
+      <th>height</th>
+      <th>repwt</th>
+      <th>repht</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>M</td>
+      <td>77</td>
+      <td>182</td>
+      <td>77.0</td>
+      <td>180.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>F</td>
+      <td>58</td>
+      <td>161</td>
+      <td>51.0</td>
+      <td>159.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>F</td>
+      <td>53</td>
+      <td>161</td>
+      <td>54.0</td>
+      <td>158.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>M</td>
+      <td>68</td>
+      <td>177</td>
+      <td>70.0</td>
+      <td>175.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>F</td>
+      <td>59</td>
+      <td>157</td>
+      <td>59.0</td>
+      <td>155.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>では、体重をヒストグラムで見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;https://vincentarelbundock.github.io/Rdatasets/csv/carData/Davis.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;体重 (kg)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;人数&#39;</span><span class="p">)</span>
+
+<span class="c1"># プロットの表示</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/a815b6abc2485d3b5035587f6db2e5c0178aa875239fc7f5318c73199583eefa.png" src="../_images/a815b6abc2485d3b5035587f6db2e5c0178aa875239fc7f5318c73199583eefa.png" />
+</div>
+</div>
+<p>釣鐘型になっているでしょうか。</p>
+<p>このような分布パターンは、自然界や社会現象の多くの場面で観察されます。
+そのため、正規分布は統計学や確率論において非常に重要な役割を果たしています。</p>
+<p>では、正規分布とは具体的にどのようなものなのか、その特徴や性質について詳しく見ていきましょう。</p>
+<p>正規分布は式<a class="reference internal" href="#equation-normal-dist">(3.5)</a>で表されます。
+式中の<span class="math notranslate nohighlight">\(\mu\)</span>、<span class="math notranslate nohighlight">\(\sigma\)</span>はそれぞれ平均と標準偏差を表します。
+平均0、標準偏差1の正規分布は<strong>標準正規分布</strong>と呼ばれる特別な分布です。</p>
+<div class="math notranslate nohighlight" id="equation-normal-dist">
+<span class="eqno">(3.5)<a class="headerlink" href="#equation-normal-dist" title="Link to this equation">#</a></span>\[f(x) = \frac{1}{\sqrt{2\pi \sigma}} \exp \left(-\frac{(x - \mu)^2}
+{2\sigma^2} \right) \hspace{20px} (-\infty &lt; x &lt; \infty)\]</div>
+<p>正規分布をプログラムを使って書いてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">mu</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">normal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\mu$ (平均)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\mu \pm \sigma$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;$\mu \pm 2\sigma$&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-.&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;正規分布 ($\mu=0$, $\sigma=1$)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;値&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;確率密度&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.45</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu$&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="n">sigma</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu - \sigma$&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="n">sigma</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu + \sigma$&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mu</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu - 2\sigma$&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">mu</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="p">,</span> <span class="mf">0.41</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;$\mu + 2\sigma$&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d28aafd80ba8241bb72c1bfec29abed70486010e782e92e3582bbef374d19bab.png" src="../_images/d28aafd80ba8241bb72c1bfec29abed70486010e782e92e3582bbef374d19bab.png" />
+</div>
+</div>
+<p>プログラムの説明をします。
+プログラムの結果は正規分布と平均、またその平均から標準偏差分離れている場所を表示しています。</p>
+<p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>ライブラリの説明は機能を使っているだけなので、省略します。
+興味がある人は<a class="reference external" href="https://matplotlib.org/cheatsheets/">こちらの資料</a>を見るとよいでしょう。</p>
+<p><code class="docutils literal notranslate"><span class="pre">np.linspace(-4,</span> <span class="pre">4,</span> <span class="pre">1000)</span></code>は、<span class="math notranslate nohighlight">\(-4\)</span>から<span class="math notranslate nohighlight">\(4\)</span>までの範囲を1000個の等間隔の点に分割した数列を生成します。
+ここではその数列をx軸の値として使用しています。</p>
+<p>プログラムの結果を見て、以下の正規分布の性質を確認しましょう。</p>
+<ul class="simple">
+<li><p>平均を中心として左右対称のベル型をしている</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu \pm \sigma\)</span>の区間に約68%の確率が含まれる</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu \pm 2\sigma\)</span>の区間に約95%の確率が含まれる</p></li>
+</ul>
+<p>この分布では、ある区間で事象が起こる確率は、その区間で曲線と横軸に囲まれた部分の面積で表されます。
+そのため、正規分布の曲線下の全面積は1（つまり100%）となります。</p>
+<p>これらの性質は、正規分布の<strong>68-95-99.7ルール</strong>として知られています。
+このルールによると、<span class="math notranslate nohighlight">\(\mu \pm 3\sigma\)</span>の区間内に全データの約99.7%が含まれます。</p>
+<p>このルールは、データの分布や異常値の検出などにおいて非常に有用です。
+例えば、平均から3標準偏差以上離れたデータは、正規分布に従うデータセットでは非常にまれであり、
+約0.3%しか発生しません。
+そのため、異常値や外れ値を判定する基準として、平均から3標準偏差以上離れたデータを用いることがよくあります。</p>
+<p>正規分布と関連のある<strong>中心極限定理</strong>について説明します。
+中心極限定理とは、独立した確率変数の和（または平均）の分布が、サンプルサイズが大きくなるにつれて正規分布に近づくという定理です。
+サイコロの例を使うと、</p>
+<p>以下のPythonコードを使って、サイコロを振る実験をシミュレートし、中心極限定理を確認してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">roll_dice</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">normal_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="c1"># シミュレーションの設定</span>
+<span class="n">num_rolls</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">num_experiments</span> <span class="o">=</span> <span class="mi">100000</span>
+
+<span class="n">averages</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_experiments</span><span class="p">):</span>
+    <span class="n">rolls</span> <span class="o">=</span> <span class="p">[</span><span class="n">roll_dice</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">)]</span>
+    <span class="n">averages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rolls</span><span class="p">))</span>
+
+<span class="c1"># グラフの設定</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axs</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;中心極限定理のデモンストレーション（サイコロの平均）&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="n">sample_sizes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">,</span> <span class="mi">100000</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample_size</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_sizes</span><span class="p">):</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="n">i</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">col</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span>
+    
+    <span class="n">s_average</span> <span class="o">=</span> <span class="n">averages</span><span class="p">[:</span><span class="n">sample_size</span><span class="p">]</span>
+    
+    <span class="c1"># ヒストグラムの描画</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">bins</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">s_average</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">density</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    
+    <span class="c1"># 理論的な正規分布の計算</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="mf">3.5</span>  <span class="c1"># サイコロの期待値</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">35</span><span class="o">/</span><span class="mi">12</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">num_rolls</span><span class="p">)</span>  <span class="c1"># 理論的な標準偏差</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">bins</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">bins</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">normal_pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    
+    <span class="c1"># 理論的な正規分布の描画</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;r--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;サンプルサイズ: </span><span class="si">{</span><span class="n">sample_size</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;平均値&quot;</span><span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;頻度&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># y軸の範囲を調整</span>
+    <span class="n">axs</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/204d2a8b8a06bed8f35f7f68ce98762c9c810f74c1ade55c922819cc5d22833b.png" src="../_images/204d2a8b8a06bed8f35f7f68ce98762c9c810f74c1ade55c922819cc5d22833b.png" />
+</div>
+</div>
+<p>このコードは以下のことを行います：</p>
+<ol class="arabic simple">
+<li><p>1個、2個、3個、10個のサイコロを振るシミュレーションを行います。</p></li>
+<li><p>各ケースで10,000回の実験を行い、結果をヒストグラムで表示します。</p></li>
+<li><p>理論的な正規分布を赤い点線で重ねて表示します。</p></li>
+</ol>
+<p>結果の解釈：</p>
+<ol class="arabic simple">
+<li><p>1個のサイコロ：</p>
+<ul class="simple">
+<li><p>結果は離散的で、1から6の間の一様分布に近い形になります。</p></li>
+<li><p>正規分布からは程遠い形状です。</p></li>
+</ul>
+</li>
+<li><p>2個のサイコロ：</p>
+<ul class="simple">
+<li><p>分布は三角形に近い形になります。</p></li>
+<li><p>まだ完全な正規分布ではありませんが、1個の時よりも滑らかになります。</p></li>
+</ul>
+</li>
+<li><p>3個のサイコロ：</p>
+<ul class="simple">
+<li><p>分布はより滑らかになり、正規分布に近づきます。</p></li>
+<li><p>中央が盛り上がり、裾野が広がる形状が見られます。</p></li>
+</ul>
+</li>
+<li><p>10個のサイコロ：</p>
+<ul class="simple">
+<li><p>分布は明らかに正規分布に近い形状になります。</p></li>
+<li><p>理論的な正規分布（赤い点線）とほぼ一致しています。</p></li>
+</ul>
+</li>
+</ol>
+<p>中心極限定理の重要なポイント：</p>
+<ol class="arabic simple">
+<li><p>サンプルサイズ（この場合はサイコロの数）が大きくなるほど、合計値の分布は正規分布に近づきます。</p></li>
+<li><p>元の分布（1個のサイコロの結果）が一様分布であっても、合計値は正規分布に近づきます。</p></li>
+<li><p>この定理は、多くの自然現象や統計的処理において正規分布が頻繁に現れる理由を説明しています。</p></li>
+</ol>
+<p>この例は、中心極限定理が実際にどのように機能するかを視覚的に示しています。この定理は統計学の基礎となる重要な概念で、多くの統計的推論や分析の基盤となっています。</p>
+</section>
+<section id="standard-score">
+<h2><span class="section-number">3.2.4. </span>偏差値（Standard Score）<a class="headerlink" href="#standard-score" title="Link to this heading">#</a></h2>
+<p><strong>偏差値</strong>という言葉を聞いたことがない人はほとんどいないでしょう。
+偏差値は高校や大学の入試、模擬試験の結果評価などで広く活用されており、正規分布を理解していればその意味がよくわかります。</p>
+<p>偏差値は、個々のデータが平均からどれだけ離れているかを、標準偏差を単位として表した値です。
+平均を50とし、標準偏差10を1単位として換算します。これにより、異なるデータセット間での相対的な位置を比較しやすくなります。</p>
+<p>偏差値は以下の式<a class="reference internal" href="#equation-standard-score-formula">(3.6)</a>で計算できます。</p>
+<div class="math notranslate nohighlight" id="equation-standard-score-formula">
+<span class="eqno">(3.6)<a class="headerlink" href="#equation-standard-score-formula" title="Link to this equation">#</a></span>\[\text{偏差値} = 50 + 10 \times \frac{x - \mu}{\sigma}\]</div>
+<p>ここで、</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(x\)</span>は個々のデータ</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu\)</span>は平均</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span>は標準偏差</p></li>
+</ul>
+<p>を表しています。</p>
+<p>Pythonを使って偏差値を計算するプログラムを書いてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">stdev</span>
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">75</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">78</span><span class="p">]</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="c1"># 平均と標準偏差を計算</span>
+<span class="linenos"> 6</span><span class="n">mu</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos"> 7</span><span class="n">sigma</span> <span class="o">=</span> <span class="n">stdev</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="c1"># 偏差値を計算</span>
+<span class="linenos">10</span><span class="n">standard_scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c1"># 結果を表示</span>
+<span class="linenos">13</span><span class="k">for</span> <span class="n">original</span><span class="p">,</span> <span class="n">standard</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">standard_scores</span><span class="p">):</span>
+<span class="linenos">14</span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original score: </span><span class="si">{</span><span class="n">original</span><span class="si">}</span><span class="s2">, Standard score: </span><span class="si">{</span><span class="n">standard</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Original score: 75, Standard score: 45.60
+Original score: 82, Standard score: 54.16
+Original score: 68, Standard score: 37.03
+Original score: 90, Standard score: 63.95
+Original score: 78, Standard score: 49.27
+</pre></div>
+</div>
+</div>
+</div>
+<p>2行目は<code class="docutils literal notranslate"><span class="pre">statistics</span></code>モジュールから<code class="docutils literal notranslate"><span class="pre">mean</span></code>と<code class="docutils literal notranslate"><span class="pre">stdev</span></code>関数をインポートしています。
+それぞれ平均と標準偏差を計算する関数です。</p>
+<p>14行目の<code class="docutils literal notranslate"><span class="pre">zip</span></code>関数は、複数のリストを同時に処理するために使用されています。
+この場合、zip関数は元のスコアのリスト（<code class="docutils literal notranslate"><span class="pre">scores</span></code>）と計算された偏差値のリスト（<code class="docutils literal notranslate"><span class="pre">standard_scores</span></code>）を組み合わせます。
+これにより、各ループで、元のスコアとそれに対応する偏差値を一緒に取り出せます。</p>
+<p>例えば、</p>
+<ul class="simple">
+<li><p>1回目のループでは、最初の元のスコアと最初の偏差値</p></li>
+<li><p>2回目のループでは、2番目の元のスコアと2番目の偏差値</p></li>
+</ul>
+<p>というように、対応するペアを順番に処理できます。</p>
+<p>zip関数を使うと、元のスコアと偏差値を並べて表示や比較が簡単にできます。</p>
+<p>偏差値の特徴は</p>
+<ul class="simple">
+<li><p>平均が常に50になります。</p></li>
+<li><p>約68%のデータが40から60の間に入ります（正規分布を仮定した場合）。</p></li>
+<li><p>異なるテストや科目間でも、相対的な位置を比較できます。</p></li>
+</ul>
+<p>偏差値は、特に教育現場やテストの結果を評価する際によく使用されます。
+例えば、異なる試験や年度間での成績の比較に役立ちます。
+しかし、元のデータの分布が正規分布に従っていない場合は、解釈に注意が必要です。</p>
+<p>また、偏差値は相対的な位置を示すものであり、絶対的な能力や達成度を直接表すものではないことに注意してください。
+データの文脈や他の統計量と併せて解釈することが重要です。</p>
+<p>ちなみに、30人クラスで一人だけ100点でそれ以外の人が0点の場合の偏差値を計算するプログラムを書いてみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">statistics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mean</span><span class="p">,</span> <span class="n">stdev</span>
+
+<span class="n">scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">29</span> <span class="o">+</span> <span class="p">[</span><span class="mi">100</span><span class="p">]</span>
+
+<span class="n">mu</span> <span class="o">=</span> <span class="n">mean</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">stdev</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+<span class="n">standard_scores</span> <span class="o">=</span> <span class="p">[</span><span class="mi">50</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Minimum standard score: </span><span class="si">{</span><span class="nb">min</span><span class="p">(</span><span class="n">standard_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Maximum standard score: </span><span class="si">{</span><span class="nb">max</span><span class="p">(</span><span class="n">standard_scores</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Minimum standard score: 48.17
+
+Maximum standard score: 102.95
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">[0]</span> <span class="pre">*</span> <span class="pre">29</span></code>という表現は、<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">0,</span> <span class="pre">0,</span> <span class="pre">...]</span></code>というように0を29個持つリストを生成しています。</p>
+<p>100点を取った人の偏差値は100を超えます。
+ただし、この分布は正規分布に従っているとはいえず、偏差値の解釈には注意が必要です。
+このような極端な分布の場合、偏差値が通常の意味を持たなくなる可能性があります。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter03"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="01.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">3.1. </span>確率</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chapter04/intro.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">4. </span>推計統計学</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2.1. 期待値と確率変数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsec-distribution-function">3.2.2. 分布関数</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#subsec-normal">3.2.3. 正規分布</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-score">3.2.4. 偏差値（Standard Score）</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

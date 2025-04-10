@@ -1,0 +1,931 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>15. 強化学習 &#8212; Pythonで学ぶ！データサイエンス講座</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/proof.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=2566f88a" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/translations.js?v=91613774"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapter15/intro';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/logo.png"/>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="16. Index" href="../genindex.html" />
+    <link rel="prev" title="14. グラフの応用" href="../chapter14/intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="Pythonで学ぶ！データサイエンス講座 - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">検索</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    まえがき
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter01/intro.html">1. 記述統計</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/01.html">1.1. 中心傾向の指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter01/02.html">1.2. ばらつきの指標</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../notebooks/01.html">1.3. 演習</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter02/intro.html">2. データ処理と可視化</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/01.html">2.1. データ取得・保存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/02.html">2.2. ヒストグラム（Histogram）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter02/03.html">2.3. 散布図と相関係数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter03/intro.html">3. 確率</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/01.html">3.1. 確率</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter03/02.html">3.2. 分布関数</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter04/intro.html">4. 推計統計学</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/01.html">4.1. 推定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter04/02.html">4.2. 有意性検定</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../chapter05/intro.html">5. 回帰分析</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/01.html">5.1. 線形単回帰分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/02.html">5.2. 多項式回帰</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../chapter05/03.html">5.3. ロジスティック回帰</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter06/intro.html">6. 決定木</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter07/intro.html">7. クラスタリング</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter08/intro.html">8. ガウス混合モデル</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter09/intro.html">9. サポートベクトルマシン</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter10/intro.html">10. 次元削減</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter11/intro.html">11. テキストデータの分析</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter12/intro.html">12. テキストマイニングの応用</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter13/intro.html">13. グラフ理論の基礎</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chapter14/intro.html">14. グラフの応用</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">15. 強化学習</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">索引</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter15/intro.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/chapter15/intro.ipynb" target="_blank"
+   class="btn btn-sm btn-download-notebook-button dropdown-item"
+   title="ノートブックファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-code"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="../_sources/chapter15/intro.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>強化学習</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">15.1. 強化学習の基本</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">15.2. Q-Learningとは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qq">15.2.1. Q値とQテーブル</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">15.2.2. Q-Learningの更新式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">15.2.3. 探索と活用のバランス</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">15.3. Q-Learningアルゴリズムの実装</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路環境の準備</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.2. 環境の可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q">15.3.3. Q学習アルゴリズムの実装</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.4. 学習した方策</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1><span class="section-number">15. </span>強化学習<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<blockquote class="epigraph">
+<div><p>兵に常勢なく水に常形なし</p>
+<p class="attribution">—孫子</p>
+</div></blockquote>
+<p>私たちは日常生活で様々な状況に直面し、行動を選択します。
+その結果に基づいて次の行動を調整していきます。<br />
+「この行動は良い結果をもたらした」「あの選択は失敗だった」という経験から学習するプロセスは、まさに<strong>強化学習</strong>の考え方そのものです。</p>
+<p>強化学習とは、<strong>環境との相互作用</strong>を通じて、<strong>報酬を最大化</strong>するように行動を学習する機械学習の一分野です。
+エージェントは行動を選択し、環境から状態と報酬を受け取り、これらの経験に基づいて方策を改善していきます。</p>
+<p>強化学習の応用例は多岐にわたります。</p>
+<ul class="simple">
+<li><p>ゲームAIの開発</p></li>
+<li><p>ロボット制御</p></li>
+<li><p>自動運転技術</p></li>
+<li><p>推薦システム</p></li>
+<li><p>トレーディングアルゴリズム</p></li>
+</ul>
+<section id="id2">
+<h2><span class="section-number">15.1. </span>強化学習の基本<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>強化学習には以下の基本要素があります：</p>
+<ol class="arabic simple">
+<li><p><strong>エージェント</strong>：学習し行動する主体</p></li>
+<li><p><strong>環境</strong>：エージェントが相互作用する外部世界</p></li>
+<li><p><strong>状態 (S)</strong>：環境の現在の状況</p></li>
+<li><p><strong>行動 (A)</strong>：エージェントが選択できる選択肢</p></li>
+<li><p><strong>報酬 (R)</strong>：行動の結果として環境から得られる数値</p></li>
+<li><p><strong>方策 (Policy)</strong>：各状態でどの行動を選ぶかを決める戦略</p></li>
+</ol>
+<p>強化学習の目標は、将来の報酬の総和（累積報酬）を最大化する最適な方策を見つけることです。</p>
+</section>
+<section id="q-learning">
+<h2><span class="section-number">15.2. </span>Q-Learningとは<a class="headerlink" href="#q-learning" title="Link to this heading">#</a></h2>
+<p>Q-Learningは、環境と相互作用しながら最適な決定を行うようにエージェントを訓練するためのモデルフリー強化学習アルゴリズムです。
+Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特定の行動をとることの価値（Q値）を学習します。</p>
+<p><strong>モデルフリー</strong>とは、環境のモデル（状態遷移確率や報酬の仕組み）を事前に知らなくても、試行錯誤を通じて学習できるという意味です。</p>
+<section id="qq">
+<h3><span class="section-number">15.2.1. </span>Q値とQテーブル<a class="headerlink" href="#qq" title="Link to this heading">#</a></h3>
+<p>Q値は特定の状態で特定の行動をとることの期待報酬を表します。
+これらの値はQテーブルに格納され、エージェントの記憶構造として機能します。</p>
+<p>Qテーブルの構造：</p>
+<ul class="simple">
+<li><p>行は状態を表す</p></li>
+<li><p>列は可能な行動を表す</p></li>
+<li><p>各セルには、その状態-行動ペアのQ値が含まれる</p></li>
+</ul>
+<p>エージェントが環境を探索し、相互作用から学習するにつれて、Qテーブルを更新し、意思決定能力を徐々に向上させていきます。</p>
+</section>
+<section id="id3">
+<h3><span class="section-number">15.2.2. </span>Q-Learningの更新式<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<p>Q-learningの核心は、時間差分（Temporal Difference）更新式です。</p>
+<div class="math notranslate nohighlight" id="equation-td-eq">
+<span class="eqno">(15.1)<a class="headerlink" href="#equation-td-eq" title="Link to this equation">#</a></span>\[Q(S,A) \leftarrow Q(S,A) + \alpha (R + \gamma \max_{A'} Q(S',A') - Q(S,A))\]</div>
+<p>ここで：</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Q(S,A)\)</span> は状態Sで行動Aをとる現在のQ値</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> （アルファ）は学習率（0～1）で、新しい情報をどの程度Q値に反映させるかを決定します</p></li>
+<li><p><span class="math notranslate nohighlight">\(R\)</span> は状態Sで行動Aをとった際に得られる報酬</p></li>
+<li><p><span class="math notranslate nohighlight">\(\gamma\)</span> （ガンマ）は割引率（0～1）で、即時報酬と将来の報酬のバランスを取る</p></li>
+<li><p><span class="math notranslate nohighlight">\(S'\)</span> はエージェントが次に移動する状態</p></li>
+<li><p><span class="math notranslate nohighlight">\(A'\)</span> は状態<span class="math notranslate nohighlight">\(S'\)</span>での最良の次の行動</p></li>
+<li><p><span class="math notranslate nohighlight">\(\max_{A'} Q(S',A')\)</span> は次の状態での最大Q値</p></li>
+</ul>
+<p>この式は、「現在の見積もり」と「新しい情報に基づく見積もり」の差を取り、その一部を現在の見積もりに加えることで、エージェントが徐々にQ値を洗練させる助けとなります。</p>
+</section>
+<section id="id4">
+<h3><span class="section-number">15.2.3. </span>探索と活用のバランス<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<p>Q-learningの重要な側面は、探索（より良い戦略を発見するために新しい行動を試す）と活用（既知の良い戦略を使用する）のバランスを取ることです。これは通常、<span class="math notranslate nohighlight">\(\epsilon\)</span>-greedy方策によって実現されます。</p>
+<ul class="simple">
+<li><p><strong>活用</strong>：確率<span class="math notranslate nohighlight">\(1-\epsilon\)</span>で、エージェントは最高のQ値を持つ行動を選択</p></li>
+<li><p><strong>探索</strong>：確率<span class="math notranslate nohighlight">\(\epsilon\)</span>で、エージェントはランダムな行動を選択</p></li>
+</ul>
+<p>時間の経過とともに、<span class="math notranslate nohighlight">\(\epsilon\)</span>の値は通常減少し、エージェントが環境についてより多くを学ぶにつれて、探索から活用への移行を可能にします。</p>
+</section>
+</section>
+<section id="id5">
+<h2><span class="section-number">15.3. </span>Q-Learningアルゴリズムの実装<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>簡単な迷路問題でQ-Learningを実装してみましょう。
+4×4のグリッド上で、スタートから目標地点まで最短経路を学習させます。</p>
+<section id="id6">
+<h3><span class="section-number">15.3.1. </span>迷路環境の準備<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>まずは迷路環境を定義します。この環境では</p>
+<ul class="simple">
+<li><p>0は通路</p></li>
+<li><p>1は壁</p></li>
+<li><p>2はゴール地点</p></li>
+</ul>
+<p>となります。</p>
+<p>エージェントはスタート地点からゴールまでを目指します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MazeEnvironment</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="c1"># 0: 通路, 1: 壁, 2: ゴール</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span> <span class="o">=</span> <span class="n">start</span>  <span class="c1"># スタート位置</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_state</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># ゴール位置</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">]</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_state</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span>
+        
+        <span class="c1"># 行動に基づいて次の状態を計算</span>
+        <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;up&quot;</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;right&quot;</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;down&quot;</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s2">&quot;left&quot;</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            
+        <span class="c1"># 壁に当たった場合は移動しない</span>
+        <span class="n">next_i</span><span class="p">,</span> <span class="n">next_j</span> <span class="o">=</span> <span class="n">next_state</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">maze</span><span class="p">[</span><span class="n">next_i</span><span class="p">,</span> <span class="n">next_j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_state</span> <span class="o">=</span> <span class="n">next_state</span>
+        
+        <span class="k">if</span> <span class="n">next_state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal_state</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># ゴールに到達した場合の報酬</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># 各ステップのペナルティ</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+            
+        <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>この環境クラスでは、エージェントが取れる行動（上、右、下、左）と、それに対する状態遷移、報酬の計算を定義しています。
+ゴールに到達すると大きな報酬（+100）を得られますが、それ以外の各ステップでは小さなペナルティ（-1）を受けるため、
+エージェントには最短経路を見つける動機が生まれます。</p>
+</section>
+<section id="id7">
+<h3><span class="section-number">15.3.2. </span>環境の可視化<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<p>迷路や学習状況を視覚化するための関数を追加します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">maze</span><span class="p">,</span> <span class="n">q_table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># 迷路の可視化</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># 色分けの設定</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">maze</span><span class="o">.</span><span class="n">maze</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+    
+    <span class="c1"># グリッド線の表示</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[])</span>
+    
+    <span class="c1"># 現在位置の表示</span>
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">maze</span><span class="o">.</span><span class="n">current_state</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Maze Environment&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>この関数は迷路の状態を視覚的に表示します。</p>
+<p>実際に迷路を可視化してみましょう。
+このプログラムを実行すると、迷路の初期状態が表示されます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">MazeEnvironment</span><span class="p">()</span>
+<span class="n">render</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" src="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" />
+</div>
+</div>
+<p>青い点がエージェントの位置になります。
+次に、このエージェントを上に動かし、その結果を見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="s2">&quot;up&quot;</span><span class="p">)</span>
+<span class="n">render</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/aa4e99d953cffe663cf90db5cd0d98fa3412dbc5c5b5921fe24e8426e3b5caf1.png" src="../_images/aa4e99d953cffe663cf90db5cd0d98fa3412dbc5c5b5921fe24e8426e3b5caf1.png" />
+</div>
+</div>
+<p>エージェントが上に動いた結果を確認できましたね。</p>
+</section>
+<section id="q">
+<h3><span class="section-number">15.3.3. </span>Q学習アルゴリズムの実装<a class="headerlink" href="#q" title="Link to this heading">#</a></h3>
+<p>Q学習のアルゴリズムを実装します。</p>
+<p>q_tableは、状態と行動のペアをキーとして、Q値を格納する辞書になります。
+また、初期値は全て0にしておきます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">q_table</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Q-tableの初期化</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">]:</span>
+            <span class="n">q_table</span><span class="p">[((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">),</span> <span class="n">a</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Q-Learningのアルゴリズムを実装します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">def</span><span class="w"> </span><span class="nf">q_learning</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">q_table</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">discount_factor</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="o">=</span><span class="mf">0.995</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">num_episodes</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="linenos"> 2</span>    <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">,</span> <span class="s2">&quot;right&quot;</span><span class="p">,</span> <span class="s2">&quot;down&quot;</span><span class="p">,</span> <span class="s2">&quot;left&quot;</span><span class="p">]</span>
+<span class="linenos"> 3</span>    <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_episodes</span><span class="p">):</span>
+<span class="linenos"> 4</span>        <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="linenos"> 5</span>        <span class="n">total_reward</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 6</span>        <span class="n">steps</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="linenos"> 7</span>        <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="linenos"> 8</span>        
+<span class="linenos"> 9</span>        <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+<span class="linenos">10</span>            <span class="c1"># 行動選択（ε-greedy方策）</span>
+<span class="linenos">11</span>            <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+<span class="linenos">12</span>                <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">actions</span><span class="p">)</span>
+<span class="linenos">13</span>            <span class="k">else</span><span class="p">:</span>
+<span class="linenos">14</span>                <span class="n">q_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">q_table</span><span class="p">[(</span><span class="n">state</span><span class="p">,</span> <span class="n">a</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">]</span>
+<span class="linenos">15</span>                <span class="n">action</span> <span class="o">=</span> <span class="n">actions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">q_values</span><span class="p">)]</span>
+<span class="linenos">16</span>                        
+<span class="linenos">17</span>            <span class="c1"># 行動を実行し、次の状態と報酬を観測</span>
+<span class="linenos">18</span>            <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+<span class="linenos">19</span>            
+<span class="linenos">20</span>            <span class="c1"># Q値の更新</span>
+<span class="linenos">21</span>            <span class="n">old_q_value</span> <span class="o">=</span> <span class="n">q_table</span><span class="p">[(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)]</span>
+<span class="linenos">22</span>            <span class="n">next_max_q</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">q_table</span><span class="p">[(</span><span class="n">next_state</span><span class="p">,</span> <span class="n">a</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">])</span>
+<span class="linenos">23</span>            
+<span class="linenos">24</span>            <span class="n">new_q_value</span> <span class="o">=</span> <span class="n">old_q_value</span> <span class="o">+</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="p">(</span><span class="n">reward</span> <span class="o">+</span> <span class="n">discount_factor</span> <span class="o">*</span> <span class="n">next_max_q</span> <span class="o">-</span> <span class="n">old_q_value</span><span class="p">)</span>
+<span class="linenos">25</span>            <span class="n">q_table</span><span class="p">[(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)]</span> <span class="o">=</span> <span class="n">new_q_value</span>
+<span class="linenos">26</span>            
+<span class="linenos">27</span>            <span class="c1"># 状態を更新</span>
+<span class="linenos">28</span>            <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+<span class="linenos">29</span>            <span class="n">steps</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="linenos">30</span>            
+<span class="linenos">31</span>            <span class="k">if</span> <span class="n">steps</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>  <span class="c1"># 無限ループ防止</span>
+<span class="linenos">32</span>                <span class="k">break</span>
+<span class="linenos">33</span>                
+<span class="linenos">34</span>        <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">epsilon_min</span><span class="p">,</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">epsilon_decay</span><span class="p">)</span>        
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">q_learning</span></code>関数は、Q-Learningのアルゴリズムを実装しています。
+引数は</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">env</span></code>: 環境</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">q_table</span></code>: Qテーブル</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code>: 学習率</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">discount_factor</span></code>: 割引率</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon</span></code>: ε-greedyパラメータ</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon_decay</span></code>: εの減衰率</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epsilon_min</span></code>: εの最小値</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">num_episodes</span></code>: エピソード数</p></li>
+</ul>
+<p>を受け取ります。
+環境とQテーブルは必須で、それ以外はデフォルト値を設定しています。
+学習率0.1、割引率0.95を使用しています。
+学習率が小さいほど慎重に学習し、大きいほど新しい情報を強く反映します。
+割引率が大きいほど将来の報酬を重視します。</p>
+<p>21-25行目は、Q値の更新式<a class="reference internal" href="#equation-td-eq">(15.1)</a>に対応しています。</p>
+<p>では実際に学習して、start地点のQ値を見てみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">MazeEnvironment</span><span class="p">()</span>
+<span class="n">q_learning</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">q_table</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">actions</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">a</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">q_table</span><span class="p">[(</span><span class="n">env</span><span class="o">.</span><span class="n">start_state</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">)]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>up: 72.41179575563001
+right: 82.88499999999976
+down: 77.68768163804306
+left: 77.65631629149306
+</pre></div>
+</div>
+</div>
+</div>
+<p>Q値の結果から、start地点からは右に行くと良さそうですね。</p>
+</section>
+<section id="id8">
+<h3><span class="section-number">15.3.4. </span>学習した方策<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<p>学習したQ値を使って、エージェントに最適な経路をたどらせてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="n">state</span><span class="p">]</span>
+<span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">render</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">:</span>
+    <span class="n">q_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">q_table</span><span class="p">[(</span><span class="n">state</span><span class="p">,</span> <span class="n">a</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">env</span><span class="o">.</span><span class="n">actions</span><span class="p">]</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">q_values</span><span class="p">)]</span>
+
+    <span class="n">next_state</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_state</span><span class="p">)</span>
+
+    <span class="n">render</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" src="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" />
+<img alt="../_images/4469716101e59413d17f57f0404549cd11fa40a7deed908e3a17870e18b5bd69.png" src="../_images/4469716101e59413d17f57f0404549cd11fa40a7deed908e3a17870e18b5bd69.png" />
+<img alt="../_images/04057fb284f8844e8ff4a0ba7c55f63b798d1b2eef21f2f13ae85373bda0e4d2.png" src="../_images/04057fb284f8844e8ff4a0ba7c55f63b798d1b2eef21f2f13ae85373bda0e4d2.png" />
+<img alt="../_images/7c09f33eda8254087abfbef3d9a3636e9805507dde86646c68764e51f23bd9e0.png" src="../_images/7c09f33eda8254087abfbef3d9a3636e9805507dde86646c68764e51f23bd9e0.png" />
+<img alt="../_images/05207a40d5928792a3b14bcb946f0f54fed554c68b6aa7a944acb62e5ee27df1.png" src="../_images/05207a40d5928792a3b14bcb946f0f54fed554c68b6aa7a944acb62e5ee27df1.png" />
+</div>
+</div>
+<p>ちゃんとゴールに到達していますね。</p>
+<ul class="simple">
+<li><p>Q-tableの初期値を<code class="docutils literal notranslate"><span class="pre">random</span></code>にしてみましょう。</p></li>
+<li><p>各マスでQ値が大きいほうに矢印を表示してみましょう。</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapter15"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chapter14/intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title"><span class="section-number">14. </span>グラフの応用</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../genindex.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Index</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">15.1. 強化学習の基本</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#q-learning">15.2. Q-Learningとは</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#qq">15.2.1. Q値とQテーブル</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">15.2.2. Q-Learningの更新式</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">15.2.3. 探索と活用のバランス</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">15.3. Q-Learningアルゴリズムの実装</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路環境の準備</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.2. 環境の可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q">15.3.3. Q学習アルゴリズムの実装</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.4. 学習した方策</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 木山 真人
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
