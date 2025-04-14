@@ -422,18 +422,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. ガウス混合モデルの数学的表現</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#em">8.2. EMアルゴリズム</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm">8.3. GMMの実装例</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-meansgmm">8.4. k-means法とGMMの比較</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means">8.5. k-meansクラスタリングの欠点</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.6. まとめ</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.7. よくある質問</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1">8.7.1. Q1. ガウス混合モデルとは何ですか?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2">8.7.2. Q2. ガウス混合モデルは何に使用されますか?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3">8.7.3. Q3. ガウス混合モデルはいつ使用すべきですか?</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. 基本的な考え方</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.2. ガウス混合モデルによるクラスタリング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.3. ガウス混合モデルの数学的表現</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#em">8.4. EMアルゴリズム</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm">8.5. GMMの適用例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">8.6. クラスタの形状確認</a></li>
 </ul>
             </nav>
         </div>
@@ -447,13 +441,19 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1><span class="section-number">8. </span>ガウス混合モデル<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>ガウス混合モデル（Gaussian Mixture Model, GMM）は、
+データがいくつかの異なる正規分布（ガウス分布）の組み合わせから生成されていると仮定する確率モデルです。
+この章では、GMMの概念、数学的な定式化、そしてクラスタリング問題への応用について説明します。</p>
+<section id="id2">
+<h2><span class="section-number">8.1. </span>基本的な考え方<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>まずはGMMの動機となる例を見てみましょう。以下のようなデータを考えます。</p>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <img alt="../_images/47134ce8bcb14d1ec3d3c84fc2999a4fb8345a405ff1fbf7f71fae1fb06738a4.png" src="../_images/47134ce8bcb14d1ec3d3c84fc2999a4fb8345a405ff1fbf7f71fae1fb06738a4.png" />
 </div>
 </div>
-<p>このようなデータがあり、クラスタリングしたいとします。</p>
-<p><a class="reference internal" href="../chapter07/intro.html#k-means"><span class="std std-ref">k-means</span></a>でクラスタリングしてみましょう。</p>
+<p>このデータは明らかに複数のクラスタに分かれていて、各クラスタは楕円形の形状をしています。
+このようなデータに対して、まずは<a class="reference internal" href="../chapter07/intro.html#k-means"><span class="std std-ref">k-means</span></a>法でクラスタリングを試みてみましょう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -476,10 +476,19 @@ document.write(`
 <img alt="../_images/39e1cbf2b28f58085e4a03030fbf3c78f83ad836c4c824320b11bcae345bff76.png" src="../_images/39e1cbf2b28f58085e4a03030fbf3c78f83ad836c4c824320b11bcae345bff76.png" />
 </div>
 </div>
-<p>自分が思ったようにクラスタリングされたでしょうか？</p>
-<p>k-means法では、クラスタの中心を平均値を用いて繰り返し更新して決めるため、クラスターは円形になります。
-そのため、今回のようなデータに対してはうまくいきません。</p>
-<p>本章で学ぶガウス混合モデル（GMM）は、このようなデータに対して思ったようにクラスタリングしてくれます。</p>
+<p>k-means法では思ったようにクラスタリングできていないことがわかります。
+これは、k-means法の持つ以下の特性によるものです。</p>
+<ul class="simple">
+<li><p>クラスタ内の分散を最小化するため、球形のクラスタを仮定する</p></li>
+<li><p>各データポイントは距離が最も近いクラスタに割り当てられる</p></li>
+<li><p>各クラスタは単一の中心点で表現される</p></li>
+</ul>
+<p>しかし、実際のデータはしばしば楕円形の分布を持ち、クラスタの形状や大きさが異なることがあります。
+このような場合にGMMが効果的です。</p>
+</section>
+<section id="id3">
+<h2><span class="section-number">8.2. </span>ガウス混合モデルによるクラスタリング<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>同じデータをGMMでクラスタリングしてみましょう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -499,45 +508,18 @@ document.write(`
 <img alt="../_images/a8a34553bd8678412a2709836c2cda031b1ebecdf2ca086a4c03a50ad82c1762.png" src="../_images/a8a34553bd8678412a2709836c2cda031b1ebecdf2ca086a4c03a50ad82c1762.png" />
 </div>
 </div>
-<p>k-means法ではデータの距離でクラスタリングしますが、
-GMMは分布によってクラスタリングします。</p>
-<p>GMMは複数の正規分布（ガウス分布）の重ね合わせでデータの分布を表現し、クラスタリングを行う手法です。
-k-means法が各データポイントを明確に1つのクラスタに割り当てるのに対し、GMMは各データポイントが各クラスタに属する確率を計算します。</p>
-<p>GMMは以下のような状況で有用です。</p>
+<p>GMMでは正しくクラスタリングできています。
+なぜGMMがこのような状況で優れているのでしょうか？</p>
+<p>GMMは以下の特長を持っています。</p>
 <ul class="simple">
-<li><p>データが正規分布に従っている</p></li>
-<li><p>クラスタの形が楕円形である</p></li>
-<li><p>クラスタの大きさや密度が異なる</p></li>
+<li><p>各クラスタを多変量正規分布で表現できるため、楕円形の形状を捉えられる</p></li>
+<li><p>確率的なモデルであり、各データポイントが各クラスタに属する確率を計算できる</p></li>
+<li><p>クラスタの大きさや形状が異なる場合でも対応できる</p></li>
+<li><p>データ生成過程をモデル化するため、新しいデータの生成やクラスタごとの特性の理解が可能</p></li>
 </ul>
-<section id="id2">
-<h2><span class="section-number">8.1. </span>ガウス混合モデルの数学的表現<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>偏差値は成績が正規分布に従うという仮定を元に計算されています。
-しかし、その過程を満たさない分布もありそうです。</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-
-<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-
-<span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
-
-<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;hist&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/2e6ad2f025fda63af1013d2cb9a297d409a4a5c3ef924540d1667d372b93f688.png" src="../_images/2e6ad2f025fda63af1013d2cb9a297d409a4a5c3ef924540d1667d372b93f688.png" />
-</div>
-</div>
+</section>
+<section id="id4">
+<h2><span class="section-number">8.3. </span>ガウス混合モデルの数学的表現<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>GMMは、K個の正規分布の重み付き和として以下のように表現されます。</p>
 <p><span class="math notranslate nohighlight">\(p(x) = \sum_{k=1}^K \pi_k \mathcal{N}(x|\mu_k, \Sigma_k)\)</span></p>
 <p>ここで：</p>
@@ -547,10 +529,15 @@ k-means法が各データポイントを明確に1つのクラスタに割り当
 <li><p><span class="math notranslate nohighlight">\(\Sigma_k\)</span>は各成分の共分散行列</p></li>
 <li><p><span class="math notranslate nohighlight">\(\mathcal{N}(x|\mu_k, \Sigma_k)\)</span>は多変量正規分布</p></li>
 </ul>
+<p>多変量正規分布は以下の確率密度関数で表されます。</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{N}(x|\mu_k, \Sigma_k) = \frac{1}{(2\pi)^{d/2}|\Sigma_k|^{1/2}} \exp\left(-\frac{1}{2}(x-\mu_k)^T\Sigma_k^{-1}(x-\mu_k)\right)\]</div>
+<p>ここで <span class="math notranslate nohighlight">\(d\)</span> はデータの次元数、<span class="math notranslate nohighlight">\(|\Sigma_k|\)</span> は共分散行列の行列式です。</p>
 </section>
 <section id="em">
-<h2><span class="section-number">8.2. </span>EMアルゴリズム<a class="headerlink" href="#em" title="Link to this heading">#</a></h2>
-<p>GMMのパラメータ推定には、Expectation-Maximization（EM）アルゴリズムが使用されます。</p>
+<h2><span class="section-number">8.4. </span>EMアルゴリズム<a class="headerlink" href="#em" title="Link to this heading">#</a></h2>
+<p>GMMのパラメータ推定には、Expectation-Maximization（EM）アルゴリズムが使用されます。
+これは、直接最適化が難しい問題を、繰り返し計算で解く手法です。</p>
 <div class="proof algorithm admonition" id="gmm-algo">
 <p class="admonition-title"><span class="caption-number">Algorithm 8.1 </span> (GMMのEMアルゴリズム)</p>
 <section class="algorithm-content" id="proof-content">
@@ -571,10 +558,112 @@ k-means法が各データポイントを明確に1つのクラスタに割り当
 </li>
 </ol>
 </section>
-</div></section>
+</div><p>このアルゴリズムは、対数尤度を単調に増加させながら収束していきます。</p>
+</section>
 <section id="gmm">
-<h2><span class="section-number">8.3. </span>GMMの実装例<a class="headerlink" href="#gmm" title="Link to this heading">#</a></h2>
-<p>先ほどと同じirisデータセットを使用して、GMMによるクラスタリングを実装してみましょう。</p>
+<h2><span class="section-number">8.5. </span>GMMの適用例<a class="headerlink" href="#gmm" title="Link to this heading">#</a></h2>
+<p>偏差値は成績が正規分布に従うという仮定を元に計算されています。
+しかし、その過程を満たさない分布もあります。
+以下のような2峰性の分布を持つ成績を考えてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+<span class="n">total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">]),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;score&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;hist&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/fccf8a12ee701b91b2e087f89f36abc6ec97069b42d24817717c3f020f12e1dd.png" src="../_images/fccf8a12ee701b91b2e087f89f36abc6ec97069b42d24817717c3f020f12e1dd.png" />
+</div>
+</div>
+<p>このような成績の分布は、例えば「基礎的な内容が理解できている学生」と「発展的な内容まで理解できている学生」が混在しているクラスで見られるかもしれません。このデータにGMMを適用してみましょう</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">japanize_matplotlib</span>
+
+<span class="c1"># GMMを適用（2つの成分を使用）</span>
+<span class="n">X_1d</span> <span class="o">=</span> <span class="n">total</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># GMMに入力するために2D配列に変換</span>
+<span class="n">gmm_1d</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">gmm_1d</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_1d</span><span class="p">)</span>
+
+<span class="c1"># 各成分の平均と標準偏差を表示</span>
+<span class="n">means</span> <span class="o">=</span> <span class="n">gmm_1d</span><span class="o">.</span><span class="n">means_</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="n">stds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">gmm_1d</span><span class="o">.</span><span class="n">covariances_</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">gmm_1d</span><span class="o">.</span><span class="n">weights_</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;成分1: 平均 = </span><span class="si">{</span><span class="n">means</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, 標準偏差 = </span><span class="si">{</span><span class="n">stds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, 重み = </span><span class="si">{</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;成分2: 平均 = </span><span class="si">{</span><span class="n">means</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, 標準偏差 = </span><span class="si">{</span><span class="n">stds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, 重み = </span><span class="si">{</span><span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># 元のデータと、GMM成分のプロット</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">total</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">stat</span><span class="o">=</span><span class="s2">&quot;density&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="c1"># 各ガウス成分を描画</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> 
+             <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">means</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">stds</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> 
+             <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;成分 </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># 全体の分布を描画</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> 
+                   <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">means</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">stds</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> 
+                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+         <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;合計&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;スコア&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;密度&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;テストスコアのGMMによる分解&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># データポイントのクラスタ割り当て</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">gmm_1d</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_1d</span><span class="p">)</span>
+
+<span class="c1"># クラスタごとのヒストグラム</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+    <span class="n">sns</span><span class="o">.</span><span class="n">histplot</span><span class="p">(</span><span class="n">total</span><span class="p">[</span><span class="n">clusters</span> <span class="o">==</span> <span class="n">i</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> 
+                 <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;クラスタ </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;スコア&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;頻度&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;GMMによるクラスタリング結果&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>成分1: 平均 = 24.79, 標準偏差 = 9.44, 重み = 0.50
+成分2: 平均 = 79.59, 標準偏差 = 9.59, 重み = 0.50
+</pre></div>
+</div>
+<img alt="../_images/810d69fd93017bb179a5905f977f7671cd73943de87a24f6c1a5d94b517605e9.png" src="../_images/810d69fd93017bb179a5905f977f7671cd73943de87a24f6c1a5d94b517605e9.png" />
+<img alt="../_images/424ad34af1dbad322f0452e3407a2ba2f5d5e8b7208e17a909cac8a48470814c.png" src="../_images/424ad34af1dbad322f0452e3407a2ba2f5d5e8b7208e17a909cac8a48470814c.png" />
+</div>
+</div>
+<p>この例では、2つの異なる成分に分けることで、データの背後にある2つの分布を特定できました。</p>
+</section>
+<section id="id5">
+<h2><span class="section-number">8.6. </span>クラスタの形状確認<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>では、最初のデータセットを使用して、クラスタの形状や重なり具合を視覚的に見てみましょう。
+このプロットでは、データポイントの色分けに加えて、各ガウス分布の確率密度を等高線で表示しています。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -623,180 +712,9 @@ k-means法が各データポイントを明確に1つのクラスタに割り当
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/e456dedf8a2dca983e522adb2489b6ad7a7da8060b63d90756bf564addc09349.png" src="../_images/e456dedf8a2dca983e522adb2489b6ad7a7da8060b63d90756bf564addc09349.png" />
+<img alt="../_images/552dad0b0f55401c670a737b2a4763ca94b9ac5097749853152306e4c6b8ffb4.png" src="../_images/552dad0b0f55401c670a737b2a4763ca94b9ac5097749853152306e4c6b8ffb4.png" />
 </div>
 </div>
-<p>このプロットでは、データポイントの色分けに加えて、各ガウス分布の確率密度を等高線で表示しています。
-これにより、クラスタの形状や重なり具合を視覚的に理解できます。</p>
-</section>
-<section id="k-meansgmm">
-<h2><span class="section-number">8.4. </span>k-means法とGMMの比較<a class="headerlink" href="#k-meansgmm" title="Link to this heading">#</a></h2>
-<p>GMMはk-means法と比べて以下のような特徴があります：</p>
-<p>長所：</p>
-<ul class="simple">
-<li><p>クラスタの形状が楕円形の場合に適している</p></li>
-<li><p>クラスタの大きさや密度が異なる場合でも対応可能</p></li>
-<li><p>各データポイントの所属確率が得られる</p></li>
-<li><p>クラスタの重なりを自然に扱える</p></li>
-</ul>
-<p>短所：</p>
-<ul class="simple">
-<li><p>計算コストが高い</p></li>
-<li><p>パラメータ数が多く、過学習のリスクがある</p></li>
-<li><p>初期値の選択に敏感</p></li>
-<li><p>収束が遅い場合がある</p></li>
-</ul>
-</section>
-<section id="k-means">
-<h2><span class="section-number">8.5. </span>k-meansクラスタリングの欠点<a class="headerlink" href="#k-means" title="Link to this heading">#</a></h2>
-<p>k-meansクラスタリングの概念は素晴らしく聞こえますよね?理解が簡単で、実装も比較的容易で、多くのユースケースに適用できます。しかし、注意すべきいくつかの欠点と制限があります。</p>
-<p>先ほどの収入-支出の例を見てみましょう。K-meansアルゴリズムはうまく機能しているように見えますね?しかし - よく見ると、作成されたすべてのクラスタが円形であることに気づくでしょう。これは、クラスタの重心が平均値を使用して反復的に更新されるためです。</p>
-<p>では、ポイントの分布が円形でない次の例を考えてみましょう。このデータにk-meansクラスタリングを使用するとどうなると思いますか?依然として円形にデータポイントをグループ化しようとします。それは良くありません!k-meansは正しいクラスタを識別できません。</p>
-<p>したがって、データポイントにクラスタを割り当てる異なる方法が必要です。</p>
-<p>そこで、距離ベースのモデルの代わりに、分布ベースのモデルを使用します。</p>
-<p>そしてここでガウス混合モデルの登場です!</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="linenos"> 2</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="linenos"> 3</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_blobs</span>
-<span class="linenos"> 4</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.mixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianMixture</span>
-<span class="linenos"> 5</span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-<span class="linenos"> 6</span>
-<span class="linenos"> 7</span><span class="c1"># 4つの楕円形クラスターを生成</span>
-<span class="linenos"> 8</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">600</span>
-<span class="linenos"> 9</span><span class="n">centers</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]]</span>
-<span class="linenos">10</span><span class="c1"># それぞれのクラスターの標準偏差を調整して傾きを作る</span>
-<span class="linenos">11</span><span class="n">cluster_std</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]</span>
-<span class="linenos">12</span>
-<span class="linenos">13</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
-<span class="linenos">14</span>                  <span class="n">centers</span><span class="o">=</span><span class="n">centers</span><span class="p">,</span>
-<span class="linenos">15</span>                  <span class="n">cluster_std</span><span class="o">=</span><span class="n">cluster_std</span><span class="p">,</span>
-<span class="linenos">16</span>                  <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="linenos">17</span>
-<span class="linenos">18</span><span class="c1"># 回転行列を使って傾きを加える</span>
-<span class="linenos">19</span><span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># 45度の回転</span>
-<span class="linenos">20</span><span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
-<span class="linenos">21</span>                           <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]])</span>
-<span class="linenos">22</span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">rotation_matrix</span><span class="p">)</span>
-<span class="linenos">23</span>
-<span class="linenos">24</span><span class="c1"># K-meansとGMMで分類</span>
-<span class="linenos">25</span><span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="linenos">26</span><span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="linenos">27</span>
-<span class="linenos">28</span><span class="n">kmeans_labels</span> <span class="o">=</span> <span class="n">kmeans</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="linenos">29</span><span class="n">gmm_labels</span> <span class="o">=</span> <span class="n">gmm</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="linenos">30</span>
-<span class="linenos">31</span><span class="c1"># プロット</span>
-<span class="linenos">32</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="linenos">33</span>
-<span class="linenos">34</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-<span class="linenos">35</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">kmeans_labels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
-<span class="linenos">36</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;K-means clustering&#39;</span><span class="p">)</span>
-<span class="linenos">37</span>
-<span class="linenos">38</span><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-<span class="linenos">39</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">gmm_labels</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
-<span class="linenos">40</span><span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;GMM clustering&#39;</span><span class="p">)</span>
-<span class="linenos">41</span>
-<span class="linenos">42</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="linenos">43</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/1cb709f3b1047557c1cd55c69da8e37621f8bc20a840a3f71a380929135921cd.png" src="../_images/1cb709f3b1047557c1cd55c69da8e37621f8bc20a840a3f71a380929135921cd.png" />
-</div>
-</div>
-<p>プログラムの説明をします。
-6行目で<code class="docutils literal notranslate"><span class="pre">make_blobs</span></code>関数を使ってデータを作成しています。
-<code class="docutils literal notranslate"><span class="pre">make_blobs</span></code>は、<code class="docutils literal notranslate"><span class="pre">scikit-learn</span></code>ライブラリに含まれる関数で、
-クラスタリングアルゴリズムのテストやデモンストレーション用に設計された
-人工的なデータセットを生成します。
-この関数は、指定された数の中心点の周りにガウス分布に従うデータ点を生成します。
-各パラメータの意味は以下の通りです。</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">n_samples=300</span></code>: 生成するデータ点の総数を300に設定しています。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">n_features=2</span></code>: 各データ点の特徴量（次元）を2に設定しています。これにより、2次元平面上にプロットできるデータが生成されます。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">centers=3</span></code>: 生成するクラスタの数を3に設定しています。これは、データが3つの異なる中心点の周りに集まることを意味します。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">random_state=42</span></code>: 乱数生成のシード値を42に設定しています。これにより、コードを実行するたびに同じデータセットが生成されます。</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">X,</span> <span class="pre">_</span> <span class="pre">=</span></code>: 関数の戻り値のうち、生成されたデータ点の座標のみを<code class="docutils literal notranslate"><span class="pre">X</span></code>に代入しています。<code class="docutils literal notranslate"><span class="pre">_</span></code>は、通常使用しない2つ目の戻り値（この場合はデータ点のラベル）を受け取るために使用されています。</p></li>
-</ul>
-<p>この関数呼び出しの結果、<code class="docutils literal notranslate"><span class="pre">X</span></code>には300個の2次元データ点が格納され、これらのデータ点は3つのクラスタを形成するように分布しています。</p>
-<p>8行目で<code class="docutils literal notranslate"><span class="pre">KMeans</span></code>クラスをインスタンス化し、k-means法のモデルを作成しています。
-ここでは、クラスタ数を3に設定しています。
-k-meansではユーザーが事前にクラスタ数を指定する必要があります。</p>
-<p>9行目で<code class="docutils literal notranslate"><span class="pre">fit</span></code>メソッドを使ってk-means法を実行し、データをクラスタリングしています。</p>
-<p>結果として、3つのクラスタとそれぞれの中心点が異なる色で表示されたグラフが生成されます。
-これにより、k-means法がどのようにデータをグループ分けしたかを視覚的に理解できます。</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-
-<span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;Clustering_gmm.csv&#39;</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Weight&quot;</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Height&quot;</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Weight&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Height&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Data Distribution&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>これが私たちのデータの見た目です。まず、このデータでk-meansモデルを構築しましょう:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
-
-<span class="n">kmeans</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">kmeans</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Weight&quot;</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Height&quot;</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">kmeans</span><span class="o">.</span><span class="n">labels_</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Weight&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Height&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;K-means Clustering&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>あまり良くありません。k-meansモデルは正しいクラスタを識別できませんでした。中央のクラスタをよく見てください - データ分布が楕円形であるにもかかわらず、k-meansは円形クラスタを構築しようとしています(先ほど説明した欠点を覚えていますか?)。</p>
-<p>では、同じデータでガウス混合モデルを構築し、k-meansと比較してみましょう:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.mixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianMixture</span>
-
-<span class="n">gmm</span> <span class="o">=</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">gmm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Weight&quot;</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;Height&quot;</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">gmm</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Weight&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Height&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Gaussian Mixture Model Clustering&#39;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>素晴らしい!これこそが私たちが期待していたクラスタです。ガウス混合モデルはk-meansを完全に凌駕しました。</p>
-</section>
-<section id="id3">
-<h2><span class="section-number">8.6. </span>まとめ<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>これはガウス混合モデルの初心者向けガイドでした。私の目的は、この強力なクラスタリング手法を紹介し、従来のアルゴリズムと比較してどれほど効果的で効率的であるかを示すことでした。</p>
-<p>クラスタリングプロジェクトを始めてGMMを試してみることをお勧めします。それが概念を学び、定着させる最良の方法です - そして、このアルゴリズムがどれほど有用であるかを実感するでしょう。</p>
-</section>
-<section id="id4">
-<h2><span class="section-number">8.7. </span>よくある質問<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<section id="q1">
-<h3><span class="section-number">8.7.1. </span>Q1. ガウス混合モデルとは何ですか?<a class="headerlink" href="#q1" title="Link to this heading">#</a></h3>
-<p>A. ガウス混合モデル(GMM)は、クラスタリングと密度推定に使用される確率モデルです。データポイントが複数のガウス分布から生成されると仮定し、各分布がクラスタを表します。GMMはこれらのガウスのパラメータを推定して、基礎となるクラスタとそれらの対応する確率を識別し、複雑なデータ分布と重複するクラスタを処理できます。</p>
-</section>
-<section id="q2">
-<h3><span class="section-number">8.7.2. </span>Q2. ガウス混合モデルは何に使用されますか?<a class="headerlink" href="#q2" title="Link to this heading">#</a></h3>
-<p>A. ガウス混合モデル(GMM)は以下のようなタスクに使用されます:</p>
-<ol class="arabic simple">
-<li><p>クラスタリング: GMMは非球形クラスタと重複パターンに対応した基礎となるクラスタを識別します</p></li>
-<li><p>密度推定: GMMはデータの基礎となる確率密度関数を推定します</p></li>
-<li><p>異常検知: フィットしたGMMの下で低確率を持つデータポイントを異常として検出できます</p></li>
-<li><p>特徴抽出: GMMは特徴抽出と次元削減のために、データポイントを低次元の潜在空間で表現できます</p></li>
-</ol>
-</section>
-<section id="q3">
-<h3><span class="section-number">8.7.3. </span>Q3. ガウス混合モデルはいつ使用すべきですか?<a class="headerlink" href="#q3" title="Link to this heading">#</a></h3>
-<p>A. ガウス混合モデル(GMM)は、クラスタ数が不明な多峰性データのクラスタリングに適しています。連続データに最適ですが、離散データにも使用できます。データの値分布に複数のピークがある場合や、クラスタ数が不確かな場合にGMMの使用を検討してください。</p>
-</section>
 </section>
 </section>
 
@@ -864,18 +782,12 @@ k-meansではユーザーが事前にクラスタ数を指定する必要があ�
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. ガウス混合モデルの数学的表現</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#em">8.2. EMアルゴリズム</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm">8.3. GMMの実装例</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-meansgmm">8.4. k-means法とGMMの比較</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-means">8.5. k-meansクラスタリングの欠点</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.6. まとめ</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.7. よくある質問</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q1">8.7.1. Q1. ガウス混合モデルとは何ですか?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q2">8.7.2. Q2. ガウス混合モデルは何に使用されますか?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q3">8.7.3. Q3. ガウス混合モデルはいつ使用すべきですか?</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">8.1. 基本的な考え方</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">8.2. ガウス混合モデルによるクラスタリング</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">8.3. ガウス混合モデルの数学的表現</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#em">8.4. EMアルゴリズム</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gmm">8.5. GMMの適用例</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">8.6. クラスタの形状確認</a></li>
 </ul>
   </nav></div>
 
