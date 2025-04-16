@@ -196,9 +196,12 @@ Word2Vecは単語を数値ベクトルとして表現（ベクトル化）する
 ```{code-cell}
 import gensim.downloader as api
 import numpy as np
+import logging
 
-# 事前学習済みのWord2Vecモデルをダウンロード
-# 'word2vec-google-news-300'は300次元のGoogleNewsデータセットで学習されたモデル
+# ロギングレベルを変更してプログレスバーを抑制
+logging.getLogger('gensim.downloader').setLevel(logging.ERROR)
+logging.getLogger('smart_open').setLevel(logging.ERROR)
+
 model = api.load('word2vec-google-news-300')
 
 # 単語ベクトルを取得
