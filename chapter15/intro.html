@@ -430,10 +430,17 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">15.3. Q-Learningアルゴリズムの実装</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路環境の準備</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.2. 環境の可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.1.1. オブジェクト指向</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.1.2. クラスの定義</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">15.3.1.3. 継承</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">15.3.1.4. カプセル化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">15.3.1.5. 迷路のクラス化</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">15.3.2. 環境の可視化</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q">15.3.3. Q学習アルゴリズムの実装</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.4. 学習した方策</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">15.3.4. 学習した方策</a></li>
 </ul>
 </li>
 </ul>
@@ -525,18 +532,425 @@ Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特�
 </section>
 <section id="id5">
 <h2><span class="section-number">15.3. </span>Q-Learningアルゴリズムの実装<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<p>簡単な迷路問題でQ-Learningを実装してみましょう。
-4×4のグリッド上で、スタートから目標地点まで最短経路を学習させます。</p>
+<p>簡単な迷路を解くプログラムをQ-Learningで実装してみましょう。
+4×4のグリッド上で、スタートからゴールまで最短経路を学習させます。</p>
 <section id="id6">
-<h3><span class="section-number">15.3.1. </span>迷路環境の準備<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
-<p>まずは迷路環境を定義します。この環境では</p>
+<h3><span class="section-number">15.3.1. </span>迷路<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<p>まずは迷路を定義します。この迷路では</p>
 <ul class="simple">
 <li><p>0は通路</p></li>
 <li><p>1は壁</p></li>
-<li><p>2はゴール地点</p></li>
+<li><p>2はゴール</p></li>
 </ul>
-<p>となります。</p>
-<p>エージェントはスタート地点からゴールまでを目指します。</p>
+<p>として表します。</p>
+<p>numpyを使って迷路を表現すると以下のようになるでしょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="n">maze</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>このままだと分かりにくいので、
+matplotを使って迷路を可視化してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">maze</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+    
+    <span class="c1"># 色分けの設定</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">maze</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colors</span><span class="p">)</span>
+    
+    <span class="c1"># グリッド線の表示</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">.5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">[])</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Maze&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">render</span><span class="p">(</span><span class="n">maze</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5dc2244ebf1cc98c89c3729f6a7c01bf24188fe9195ab3cfe0502dc8e1af815b.png" src="../_images/5dc2244ebf1cc98c89c3729f6a7c01bf24188fe9195ab3cfe0502dc8e1af815b.png" />
+</div>
+</div>
+<p>このようにして、迷路に対してどんどん関数を追加していくのですが、
+このままでは迷路用の関数が増え、プログラムが分かりにくくなっていきます。
+そこで、<strong>オブジェクト指向</strong>の考え方を使ってプログラムを作成し、分かりやすくします。</p>
+<p>オブジェクト指向プログラミングでは<strong>オブジェクト</strong>を中心としてプログラミングを行います。
+オブジェクトとは、データとそれらを操作する関数をまとめて1つにしたものです。</p>
+<p>オブジェクト指向の定義は様々ありますが、ここではPythonで提供されている機能</p>
+<ul class="simple">
+<li><p>クラス</p></li>
+<li><p>継承</p></li>
+<li><p>カプセル化</p></li>
+</ul>
+<p>を用いて、オブジェクト指向について学びます。</p>
+<section id="id7">
+<h4><span class="section-number">15.3.1.1. </span>オブジェクト指向<a class="headerlink" href="#id7" title="Link to this heading">#</a></h4>
+<p><strong>オブジェクト指向プログラミング</strong> (Object-Oriented Programming)で使われる用語</p>
+<ul class="simple">
+<li><p><strong>クラス (class)</strong></p></li>
+<li><p><strong>インスタンス (instance)</strong></p></li>
+</ul>
+<p>について説明します。</p>
+<p>プログラムの中で猫のデータを作成したいとします。
+それぞれの猫は同じように歩けるし、鳴けます。
+猫に共通した部分のコードがクラスとなります。</p>
+<p>クラスは設計図のようなもので、それだけでは動く<strong>実体</strong>とはなりません。
+そのため、クラスから実体を作る必要があります。
+クラスから作成された実体のことを<strong>インスタンス</strong>(instance)または<strong>オブジェクト</strong>(object)といいます。
+また、クラスから実体を作ることを<strong>インスタンス化</strong>(instantiation)といいます。</p>
+</section>
+<section id="id8">
+<h4><span class="section-number">15.3.1.2. </span>クラスの定義<a class="headerlink" href="#id8" title="Link to this heading">#</a></h4>
+<p>Pythonで猫の設計図を表す<code class="docutils literal notranslate"><span class="pre">Cat</span></code>というクラスを定義してみます。
+猫の動作として鳴くメソッド<code class="docutils literal notranslate"><span class="pre">mew</span></code>を定義します。
+オブジェクトから呼ばれる関数のことを<strong>メソッド</strong>といいます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># クラスの定義</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Cat</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">mew</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;にゃー&quot;</span><span class="p">)</span>
+
+<span class="c1">#インスタンス化</span>
+<span class="n">tama</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">()</span>
+
+<span class="c1">#メソッド呼び出し</span>
+<span class="n">tama</span><span class="o">.</span><span class="n">mew</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>にゃー
+</pre></div>
+</div>
+</div>
+</div>
+<p>メソッドの最初の引数は<code class="docutils literal notranslate"><span class="pre">self</span></code>になります。
+今回のように引数を必要としないメソッドでも必ずselfが引数として必要になります。
+<code class="docutils literal notranslate"><span class="pre">self</span></code>というのは作成されたインスタンス自身を参照するために用いられます。</p>
+<p>メソッドはインスタンスから呼び出されるとき自動的に第一引数にそのインスタンスへの参照を渡します。
+そのため、メソッドの第一引数は<code class="docutils literal notranslate"><span class="pre">self</span></code>となり、渡されてくる自分自身への参照を受け取るようになっています。
+ただし、呼び出す際にはそのインスタンスを引数に指定する必要はありません。</p>
+<p>mewに鳴く回数を引数として渡せるようにしてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Cat</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="nf">mew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;にゃー&quot;</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1">#インスタンス化</span>
+<span class="n">tama</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">()</span>
+
+<span class="c1">#メソッド呼び出し</span>
+<span class="n">tama</span><span class="o">.</span><span class="n">mew</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>にゃーにゃーにゃー
+</pre></div>
+</div>
+</div>
+</div>
+<p>例のコードでは猫共通の動作であるmewを定義しましたが、
+それぞれの猫が保つ属性（例えば名前など）がありません。</p>
+<p>猫が名前を持てるようにしてみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Cat</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+  <span class="k">def</span><span class="w"> </span><span class="nf">mew</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;にゃー&quot;</span><span class="o">*</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1">#インスタンス化</span>
+<span class="n">my_cat</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="s1">&#39;タマ&#39;</span><span class="p">)</span>
+<span class="n">tibi</span> <span class="o">=</span> <span class="n">Cat</span><span class="p">(</span><span class="s1">&#39;チビ&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">my_cat</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tibi</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">my_cat</span><span class="o">.</span><span class="n">mew</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">tibi</span><span class="o">.</span><span class="n">mew</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>タマ
+チビ
+にゃーにゃーにゃー
+にゃーにゃーにゃーにゃーにゃー
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Cat</span></code>というクラスの<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドに、<code class="docutils literal notranslate"><span class="pre">'タマ'</span></code>という文字列を渡しています。
+<code class="docutils literal notranslate"><span class="pre">my_cat</span></code>が、<code class="docutils literal notranslate"><span class="pre">Cat</span></code>クラスから作成されたインスタンスです。</p>
+<p><code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドは特別なメソッドで、クラスがインスタンス化されるときに必ず呼ばれます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">self.name</span></code>はそのクラスの属性で、どのメソッドからも参照できます。</p>
+</section>
+<section id="id9">
+<h4><span class="section-number">15.3.1.3. </span>継承<a class="headerlink" href="#id9" title="Link to this heading">#</a></h4>
+<p><strong>継承</strong>(inheritance)を使うと、あるクラスの一部の機能を変更したり、新しい機能を付け足したりできるようになります。</p>
+<p>例として、<code class="docutils literal notranslate"><span class="pre">R</span></code>というクラスを定義し、そのクラスを継承した<code class="docutils literal notranslate"><span class="pre">SR</span></code>という新しいクラスを作ってみましょう。</p>
+<p><code class="docutils literal notranslate"><span class="pre">R</span></code>クラスを定義します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">R</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">R</span></code>というクラスは、インスタンス化を行う際に引数をとりませんが、
+属性として<code class="docutils literal notranslate"><span class="pre">a</span></code>と<code class="docutils literal notranslate"><span class="pre">b</span></code>の2つの変数を保持し、それぞれには<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドで<code class="docutils literal notranslate"><span class="pre">1</span></code>と<code class="docutils literal notranslate"><span class="pre">2</span></code>という値が代入されます。</p>
+<p>次に、このクラスを継承する<code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスを定義します。
+継承を行う場合は、クラス定義の際にクラス名に続けて<code class="docutils literal notranslate"><span class="pre">()</span></code>を書き、その中に継承したいクラスの名前を書きます。
+<code class="docutils literal notranslate"><span class="pre">()</span></code>の中に書かれたクラスは、定義されるクラスの親クラスといいます。
+それに対し、<code class="docutils literal notranslate"><span class="pre">()</span></code>の中に書かれたクラスからすると、定義されるクラスは子クラスとなります。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SR</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスは <code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドの定義がありません。
+<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドが定義されていない場合は、親クラスの<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドが自動的に呼び出されます。
+そのため、<code class="docutils literal notranslate"><span class="pre">SR</span></code> クラスでは一見何も属性を定義していないように見えますが、
+インスタンス化を行うと親クラスである<code class="docutils literal notranslate"><span class="pre">R</span></code>の<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドが自動的に実行され、<code class="docutils literal notranslate"><span class="pre">a</span></code>、<code class="docutils literal notranslate"><span class="pre">b</span></code> という属性が定義されます。
+以下のコードで動きを確認してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">SR</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">b</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1 2
+3
+</pre></div>
+</div>
+</div>
+</div>
+<p>このように、親クラスを継承し、新しい機能が追加された新しいクラスを定義できるようになります。
+継承を使えば、既存のクラスの差分を簡単に作れます。</p>
+<p>この<code class="docutils literal notranslate"><span class="pre">SR</span></code>というクラスにも<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドを定義し、新しい属性<code class="docutils literal notranslate"><span class="pre">c</span></code>を定義しましょう。
+<code class="docutils literal notranslate"><span class="pre">sum()</span></code>メソッドでは親クラスの <code class="docutils literal notranslate"><span class="pre">a</span></code>、<code class="docutils literal notranslate"><span class="pre">b</span></code>という属性と、新たな<code class="docutils literal notranslate"><span class="pre">c</span></code>という属性の3つの和を返すように変更します。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SR</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># self.c を新たに追加</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
+
+<span class="c1"># インスタンス化</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">SR</span><span class="p">()</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;SR&#39; object has no attribute &#39;a&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">c.sum()</span></code>の部分でエラーが出るのですが、そのままだと分かりずらいので、try-except文を使ってエラーを表示しています。</p>
+<p>try-except文は</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># エラーが発生する可能性のある処理</span>
+<span class="k">except</span> <span class="n">エラーの種類</span><span class="p">:</span>
+    <span class="c1"># エラーが発生したときの処理</span>
+</pre></div>
+</div>
+<p>という書き方をします。</p>
+<p>エラーメッセージを読んでみましょう。</p>
+<p>エラーには「<code class="docutils literal notranslate"><span class="pre">'SR'</span></code> というオブジェクトは<code class="docutils literal notranslate"><span class="pre">'a'</span></code> という名前の属性を持っていない」と書いてあります。
+<code class="docutils literal notranslate"><span class="pre">a</span></code> という属性は、<code class="docutils literal notranslate"><span class="pre">SR</span></code>の親クラスである<code class="docutils literal notranslate"><span class="pre">R</span></code>の<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドで定義されています。
+そのため、<code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスをインスタンス化する際に、
+親クラスである<code class="docutils literal notranslate"><span class="pre">R</span></code>の<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドが呼ばれているのであれば、
+このエラーは起こらないはずです。</p>
+<p><code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスにも<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドを定義したため、
+親クラスである<code class="docutils literal notranslate"><span class="pre">R</span></code>の<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドが上書きされてしまい、
+実行されなかったことがエラーの原因です。</p>
+<p>親クラスの<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドを明示的に呼べば、このエラーは解決できます。
+それには、<code class="docutils literal notranslate"><span class="pre">super()</span></code>という組み込み関数を用います。
+この関数を使うと、子クラスから親クラスを参照できるようになります。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SR</span><span class="p">(</span><span class="n">R</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 親クラスの `__init__()` メソッドを呼び出す</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="c1"># self.c を新たに追加</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">5</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
+
+<span class="c1"># インスタンス化</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">SR</span><span class="p">()</span>
+<span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>8
+</pre></div>
+</div>
+</div>
+</div>
+<p>今回は実行できましたね。
+<code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスの<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドの最初で、親クラスの<code class="docutils literal notranslate"><span class="pre">__init__()</span></code>メソッドを実行し、
+<code class="docutils literal notranslate"><span class="pre">a</span></code>、<code class="docutils literal notranslate"><span class="pre">b</span></code>という属性を定義しているため、エラーは起きなくなっています。</p>
+<p>あるクラスを継承して作られたクラスを、さらに継承して別のクラスを定義できます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SSR</span><span class="p">(</span><span class="n">SR</span><span class="p">):</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SSR</span></code>クラスは、<code class="docutils literal notranslate"><span class="pre">R</span></code>クラスを継承した<code class="docutils literal notranslate"><span class="pre">SR</span></code>クラスをさらに継承したクラスで、
+<code class="docutils literal notranslate"><span class="pre">a</span></code>、<code class="docutils literal notranslate"><span class="pre">b</span></code>、<code class="docutils literal notranslate"><span class="pre">c</span></code>という3つの属性を掛け合わせた結果を返す<code class="docutils literal notranslate"><span class="pre">mul()</span></code>というメソッドを持ちます。</p>
+<p>このクラスのインスタンスを作成し、<code class="docutils literal notranslate"><span class="pre">mul()</span></code>を実行してみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">SSR</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">mul</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span> <span class="c1">#もちろんこれもできる</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>10
+8
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id10">
+<h4><span class="section-number">15.3.1.4. </span>カプセル化<a class="headerlink" href="#id10" title="Link to this heading">#</a></h4>
+<p>カプセル化とは、操作とその操作に関連するデータをまとめることをいいます。</p>
+<p>Personという人間を表すクラスをつかって考えてみましょう。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">hight</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">hight</span> <span class="o">=</span> <span class="n">hight</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+  
+  <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hight</span><span class="si">}</span><span class="s2">cm </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="si">}</span><span class="s2">kg&quot;</span><span class="p">)</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s1">&#39;Tanjiro&#39;</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tanjiro - 165cm 61kg
+</pre></div>
+</div>
+</div>
+</div>
+<p>このクラスにBMIを計算するメソッドを追加してみます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">hight</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">hight</span> <span class="o">=</span> <span class="n">hight</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+  
+  <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hight</span><span class="si">}</span><span class="s2">cm </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="si">}</span><span class="s2">kg&quot;</span><span class="p">)</span>
+  
+  <span class="k">def</span><span class="w"> </span><span class="nf">bmi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hight</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s1">&#39;Tanjiro&#39;</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">bmi</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>22.4058769513315
+</pre></div>
+</div>
+</div>
+</div>
+<p>このように、関連するデータ（クラスの属性）を使うメソッドをまとめたものがクラスになっていると考えても良いでしょう。</p>
+<p>データの属性やメソッドへのアクセスをさせたくない場合は、_を属性の名前やメソッドの名前の前に２つ付けます。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span>
+  <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">hight</span><span class="p">,</span> <span class="n">weight</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">hight</span> <span class="o">=</span> <span class="n">hight</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">__weight</span> <span class="o">=</span> <span class="n">weight</span>
+  
+  <span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hight</span><span class="si">}</span><span class="s2">cm </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">__weight</span><span class="si">}</span><span class="s2">kg&quot;</span><span class="p">)</span>
+  
+  <span class="k">def</span><span class="w"> </span><span class="nf">__bmi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hight</span> <span class="o">/</span> <span class="mf">100.</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">k</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s1">&#39;Tanjiro&#39;</span><span class="p">,</span> <span class="mi">165</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span>
+
+<span class="n">k</span><span class="o">.</span><span class="n">check</span><span class="p">()</span>
+<span class="c1">## print(k.__weight) #コメントアウトしてエラーが出ることを確認</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tanjiro - 165cm 61kg
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id11">
+<h4><span class="section-number">15.3.1.5. </span>迷路のクラス化<a class="headerlink" href="#id11" title="Link to this heading">#</a></h4>
+<p>では、迷路をクラスで書いてみます。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -596,16 +1010,20 @@ Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特�
 </div>
 </div>
 </div>
-<p>この環境クラスでは、エージェントが取れる行動（上、右、下、左）と、それに対する状態遷移、報酬の計算を定義しています。
-ゴールに到達すると大きな報酬（+100）を得られますが、それ以外の各ステップでは小さなペナルティ（-1）を受けるため、
+<p>この迷路環境クラスでは、迷路の状態だけでなく、
+エージェントが取れる行動（上、右、下、左）と、それに対する状態遷移、報酬の計算を定義しています。
+ゴールに到達すると大きな報酬（+100）を得られますが、
+それ以外の各ステップでは小さなペナルティ（<code class="docutils literal notranslate"><span class="pre">-1</span></code>）を受けるため、
 エージェントには最短経路を見つける動機が生まれます。</p>
 </section>
-<section id="id7">
-<h3><span class="section-number">15.3.2. </span>環境の可視化<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
-<p>迷路や学習状況を視覚化するための関数を追加します。</p>
+</section>
+<section id="id12">
+<h3><span class="section-number">15.3.2. </span>環境の可視化<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<p>迷路や学習状況を視覚化するための関数を追加します。
+今回は関数として実装しましたが、迷路環境クラスにメソッドとして定義した方が良いでしょう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">maze</span><span class="p">,</span> <span class="n">q_table</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">maze</span><span class="p">):</span>
     <span class="c1"># 迷路の可視化</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
     
@@ -628,7 +1046,6 @@ Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特�
 </div>
 </div>
 </div>
-<p>この関数は迷路の状態を視覚的に表示します。</p>
 <p>実際に迷路を可視化してみましょう。
 このプログラムを実行すると、迷路の初期状態が表示されます。</p>
 <div class="cell docutils container">
@@ -655,7 +1072,8 @@ Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特�
 <img alt="../_images/aa4e99d953cffe663cf90db5cd0d98fa3412dbc5c5b5921fe24e8426e3b5caf1.png" src="../_images/aa4e99d953cffe663cf90db5cd0d98fa3412dbc5c5b5921fe24e8426e3b5caf1.png" />
 </div>
 </div>
-<p>エージェントが上に動いた結果を確認できましたね。</p>
+<p>エージェントが上に動いた結果を確認できましたね。
+迷路環境をクラスで定義しているので、操作に集中でき、プログラムが簡潔で分かりやすくなっています。</p>
 </section>
 <section id="q">
 <h3><span class="section-number">15.3.3. </span>Q学習アルゴリズムの実装<a class="headerlink" href="#q" title="Link to this heading">#</a></h3>
@@ -744,18 +1162,18 @@ Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特�
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>up: 72.20808844477696
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>up: 71.94267086743876
 right: 82.88499999999976
-down: 77.72092636858899
-left: 77.55126388568382
+down: 77.68122999055687
+left: 77.63210150341472
 </pre></div>
 </div>
 </div>
 </div>
 <p>Q値の結果から、start地点からは右に行くと良さそうですね。</p>
 </section>
-<section id="id8">
-<h3><span class="section-number">15.3.4. </span>学習した方策<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id13">
+<h3><span class="section-number">15.3.4. </span>学習した方策<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
 <p>学習したQ値を使って、エージェントに最適な経路をたどらせてみましょう。</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -783,7 +1201,7 @@ left: 77.55126388568382
 <img alt="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" src="../_images/d50149a0ea524b3e71f79107910072535ea0592e5068bd252c3af1e1196a02b4.png" />
 <img alt="../_images/4469716101e59413d17f57f0404549cd11fa40a7deed908e3a17870e18b5bd69.png" src="../_images/4469716101e59413d17f57f0404549cd11fa40a7deed908e3a17870e18b5bd69.png" />
 <img alt="../_images/04057fb284f8844e8ff4a0ba7c55f63b798d1b2eef21f2f13ae85373bda0e4d2.png" src="../_images/04057fb284f8844e8ff4a0ba7c55f63b798d1b2eef21f2f13ae85373bda0e4d2.png" />
-<img alt="../_images/1ade29e733d209ff5fbf6ccaf7d03d0449b528285aeda087536c44b677c81912.png" src="../_images/1ade29e733d209ff5fbf6ccaf7d03d0449b528285aeda087536c44b677c81912.png" />
+<img alt="../_images/7c09f33eda8254087abfbef3d9a3636e9805507dde86646c68764e51f23bd9e0.png" src="../_images/7c09f33eda8254087abfbef3d9a3636e9805507dde86646c68764e51f23bd9e0.png" />
 <img alt="../_images/05207a40d5928792a3b14bcb946f0f54fed554c68b6aa7a944acb62e5ee27df1.png" src="../_images/05207a40d5928792a3b14bcb946f0f54fed554c68b6aa7a944acb62e5ee27df1.png" />
 </div>
 </div>
@@ -868,10 +1286,17 @@ left: 77.55126388568382
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">15.3. Q-Learningアルゴリズムの実装</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路環境の準備</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.2. 環境の可視化</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">15.3.1. 迷路</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">15.3.1.1. オブジェクト指向</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.1.2. クラスの定義</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">15.3.1.3. 継承</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">15.3.1.4. カプセル化</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">15.3.1.5. 迷路のクラス化</a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">15.3.2. 環境の可視化</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#q">15.3.3. Q学習アルゴリズムの実装</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">15.3.4. 学習した方策</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">15.3.4. 学習した方策</a></li>
 </ul>
 </li>
 </ul>
