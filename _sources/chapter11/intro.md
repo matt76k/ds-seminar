@@ -196,13 +196,12 @@ Word2Vecは単語を数値ベクトルとして表現（ベクトル化）する
 ```{code-cell}
 import gensim.downloader as api
 import numpy as np
-import logging
+from contextlib import redirect_stdout, redirect_stderr
+import io
 
-# ロギングレベルを変更してプログレスバーを抑制
-logging.getLogger('gensim.downloader').setLevel(logging.ERROR)
-logging.getLogger('smart_open').setLevel(logging.ERROR)
-
-model = api.load('word2vec-google-news-300')
+# 初回はモデルのダウンロードされちゃうので、それを表示しないように
+with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+    model = api.load('glove-wiki-gigaword-50')
 
 # 単語ベクトルを取得
 king_vec = model['king']
