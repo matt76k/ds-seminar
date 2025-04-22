@@ -550,6 +550,20 @@ Webスクレイピングを行うためには、それ専用のプログラム�
 </table>
 </div></div></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<p>google colabで実行する場合は、エラーが出るので、
+以下のように書き直せば、自分のパソコンからcsvをアップロードして読み込むようにできます。</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">google.colab</span><span class="w"> </span><span class="kn">import</span> <span class="n">files</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="n">uploaded</span> <span class="o">=</span> <span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">()</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">uploaded</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_name</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 <p>出力結果は、<code class="docutils literal notranslate"><span class="pre">data.csv</span></code>の中身の5行分を表示しています。</p>
 <p>プログラムの説明をします。
 1行目は<code class="docutils literal notranslate"><span class="pre">pandas</span></code>というライブラリを<code class="docutils literal notranslate"><span class="pre">pd</span></code>という名前で使えるようにインポートしています。
