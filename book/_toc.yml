@@ -41,5 +41,9 @@ chapters:
 - file: chapter13/intro
 - file: chapter14/intro
 - file: chapter15/intro
+
+- file: programming/intro
+  sections:
+  - file: programming/recursion
   
 - file: genindex
