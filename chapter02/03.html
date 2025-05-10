@@ -678,8 +678,16 @@ versicolorとvirginicaは一部重なっているがある程度の分離して�
 <p>ここでは、<code class="docutils literal notranslate"><span class="pre">numpy</span></code>ライブラリにある共分散を計算する関数<code class="docutils literal notranslate"><span class="pre">cov</span></code>を使います。
 numpyは、Pythonで科学技術計算を行うための基本的なライブラリです。
 大量の数値データを効率的に扱うための多次元配列や、それらを操作するための多くの数学関数を提供しています。</p>
-<p><code class="docutils literal notranslate"><span class="pre">cov</span></code>関数は計算結果として複数の数値を返しますが、今回必要なのは1つの数値だけです。
-そのため、<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>を使って必要な値だけを取り出しています。</p>
+<p><code class="docutils literal notranslate"><span class="pre">cov</span></code>関数は計算結果として2×2の共分散行列を返します。
+この行列の形式は以下のようになります。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+  <span class="p">[</span><span class="n">lengthの分散</span><span class="p">,</span>    <span class="n">lengthとwidthの共分散</span><span class="p">],</span>
+  <span class="p">[</span><span class="n">widthとlengthの共分散</span><span class="p">,</span> <span class="n">widthの分散</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>今回必要なのは<code class="docutils literal notranslate"><span class="pre">length</span></code>と<code class="docutils literal notranslate"><span class="pre">width</span></code>の共分散になるので、
+行列の<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>の位置にある要素だけを取り出しています。</p>
 <p>プログラムの実行結果を見ると、散布図で見た内容と同様の結果が数値で確認できます。</p>
 <ul class="simple">
 <li><p>がくの長さと幅の共分散（<code class="docutils literal notranslate"><span class="pre">sepal_cov</span></code>）</p>
