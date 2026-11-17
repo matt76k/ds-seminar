@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 140" width="600" height="140">
+<rect width="600" height="140" fill="#fff"/>
+<text x="80" y="40" font-size="20" font-weight="bold" text-anchor="middle" dominant-baseline="central" font-family="'BIZ UDPGothic', 'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">変数名</text>
+<rect x="22" y="66" width="118" height="50" rx="10" fill="#fff" stroke="#000" stroke-width="1.5"/>
+<text x="81" y="91" font-size="20" text-anchor="middle" dominant-baseline="central" font-family="Menlo, 'DejaVu Sans Mono', monospace">scores</text>
+<path d="M162,86 H235 V78 L258,91 L235,104 V96 H162 Z" fill="#fff" stroke="#000" stroke-width="1.2"/>
+<text x="430" y="91" font-size="22" font-weight="bold" text-anchor="middle" dominant-baseline="central" font-family="'BIZ UDPGothic', 'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">[75, 82, 68, 90, 78]</text>
+</svg>
