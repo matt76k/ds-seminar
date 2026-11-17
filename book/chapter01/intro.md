@@ -14,9 +14,9 @@ kernelspec:
 記述統計
 ========
 ```{epigraph}
-lies, damned lies, and statistics.
+Lies, damned lies, and statistics.
 
--- Mark Twain
+-- Mark Twain（Twain がディズレーリの言葉として紹介したもの）
 ```
 
 ここでは{index}`記述統計<きじゅつとうけい - 記述統計>`（Descriptive Statistics）について学びます。

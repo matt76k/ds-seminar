@@ -170,7 +170,7 @@ texts = [
 ]
 
 # ポジティブな単語とネガティブな単語のリスト
-positive_words = ["美味しい", "良い", "素晴らしい", "助かる", "早い", "行く"]
+positive_words = ["美味しい", "良い", "素晴らしい", "助かる", "早い"]
 negative_words = ["遅い", "高い", "悪い", "ひどい"]
 
 results = []
@@ -253,7 +253,7 @@ def tokenize_ja(text):
 processed_docs = [tokenize_ja(doc) for doc in documents]
 
 # BoWモデルの作成
-vectorizer = CountVectorizer(max_df=0.95, min_df=1)
+vectorizer = CountVectorizer(max_df=0.95, min_df=1, token_pattern=r"(?u)\b\w+\b")
 X = vectorizer.fit_transform(processed_docs)
 
 # トピック数を3に設定してLDAを実行

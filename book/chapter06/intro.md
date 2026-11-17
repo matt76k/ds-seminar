@@ -156,8 +156,8 @@ $\text{Gini}_{\text{分割後}} = \displaystyle\frac{4}{6} \times 0.375 + \displ
 
 このことから、Xを3.5で分けるより、Xを4.5で分けた方が不純度の値が小さいため、Xを4.5で分ける方が良い分け方だとわかります。
 
-分割前と分割後のジニ不純度の差を{index}`情報利得<じょうほうりとく - 情報利得>`（Information Gain）といい、
-この情報利得が大きいほど、その分割が有効であると言えます。
+分割前と分割後のジニ不純度の差を不純度の減少量といい、
+この値が大きいほど、その分割が有効であると言えます。
 
 分割が決まれば、その分割した領域に対して、また不純度を計算して分割を繰り返します。
 これが決定木の分割アルゴリズムになります。
@@ -165,7 +165,7 @@ $\text{Gini}_{\text{分割後}} = \displaystyle\frac{4}{6} \times 0.375 + \displ
 ```{prf:algorithm} 決定木のアルゴリズム
 :label: decision-tree-algo
 1. 特徴量で分割し、不純度を計算
-2. 情報利得が最も大きな分割を選択
+2. 不純度の減少量が最も大きな分割を選択
 3. 分割後の領域に対して 1. から繰り返す
 ```
 
@@ -230,7 +230,8 @@ $X=4.5$ で分割した後の左側（$X \leq 4.5$）のエントロピーは
 \text{Entropy}_{\text{分割後}} = \frac{4}{6} \times 0.8113 + \frac{2}{6} \times 0 \approx 0.5409
 ```
 
-エントロピーを使用した場合の情報利得は：
+分割前と分割後のエントロピーの差を{index}`情報利得<じょうほうりとく - 情報利得>`（Information Gain）といいます。
+今回の例の情報利得は：
 
 ```{math}
 \text{Information Gain} = \text{Entropy}_{\text{分割前}} - \text{Entropy}_{\text{分割後}} = 1 - 0.5409 \approx 0.4591
@@ -242,15 +243,11 @@ $X=4.5$ で分割した後の左側（$X \leq 4.5$）のエントロピーは
 それぞれの観点からの使い分けについて以下に示します。
 
 - 計算速度
-  - ジニ不純度の方が計算が速いため、大規模なデータセットや迅速な処理が必要な場合に適しています。
+  - ジニ不純度は対数の計算が不要なため、エントロピーよりやや計算が速いです。
 
-- クラスの分布
-   - クラスが均等に分布している場合、両者はほぼ同じ結果を生みます。
-   - クラスの分布に偏りがある場合、ジニ不純度の方がより良い結果を出すことがあります。
-
-- 多数クラスと少数クラス:
-   - エントロピーは少数クラスをより重視する傾向があります。
-   - ジニ不純度は多数クラスをより重視する傾向があります。
+- 分類の結果
+   - 両者は似た分割を選ぶことが多く、実用上の差は小さいことが多いです。
+   - クラスの分布に偏りがある場合などに差が出ることもありますが、どちらが良いかはデータによります。
 
 `scikit-learn`では、ジニ不純度がデフォルトとして使用されていますので、大抵の場合はジニ不純度で問題ないと思います。
 
@@ -330,11 +327,6 @@ plt.show()
 `scikit-learn`の決定木では、デフォルトでジニ不純度が使用されますが、`criterion`パラメータを`entropy`に設定すれば
 エントロピーを使用できます。
 
-線形回帰との主な違いは以下の点です。
-
-- モデルの作成：`DecisionTreeRegressor`を使用
-- 予測結果の可視化：決定木の予測は階段状になるため、細かい間隔で予測を行い、それをプロットしています
-
 ## 特徴量の重要度
 
 決定木では、特徴量の重要度を確認できます。
@@ -364,7 +356,7 @@ print(importance_df)
 以下のプログラムでは、異なる最大深さの決定木モデルを作成し、その性能を比較しています。
 
 ```{code-cell}
-from sklearn.metrics import r2_score
+from sklearn.metrics import accuracy_score
 
 max_depths = [1, 3, 5, 10, None]
 train_scores = []
@@ -373,15 +365,15 @@ test_scores = []
 for depth in max_depths:
     model = DecisionTreeClassifier(max_depth=depth, random_state=42)
     model.fit(X_train, y_train)
-    train_scores.append(r2_score(y_train, model.predict(X_train)))
-    test_scores.append(r2_score(y_test, model.predict(X_test)))
+    train_scores.append(accuracy_score(y_train, model.predict(X_train)))
+    test_scores.append(accuracy_score(y_test, model.predict(X_test)))
 
 x_axis = [1, 3, 5, 10, 15]
 plt.figure(figsize=(10, 6))
 plt.plot(x_axis, train_scores, 'o-', label='訓練データ')
 plt.plot(x_axis, test_scores, 'o-', label='テストデータ')
 plt.xlabel('最大深さ')
-plt.ylabel('R2スコア')
+plt.ylabel('正解率')
 plt.title('決定木の深さとモデルの性能')
 plt.legend()
 
@@ -393,8 +385,8 @@ plt.show()
 
 このグラフから、以下のことが分かります。
 
-- 木の深さが増えるにつれて訓練データに対する性能は向上
-- テストデータに対する性能は一定以上深くなるとかえって低下する
+- 木の深さが増えるにつれて訓練データに対する正解率は向上
+- テストデータに対する正解率は一定以上深くなるとかえって低下する
 
 これは過学習の典型的な例になります。
 決定木の学習では適切な木の深さを選んで過学習を避ける必要があります。

@@ -26,14 +26,14 @@ Words are loaded pistols
 最初の文字体系である楔形文字が発明されました。
 この時期のテキスト量は非常に限られており、主に商業や宗教的な記録に使用されていました。
 
-15世紀の印刷技術の発明により、書籍の生産が飛躍的に増加しました。
+15世紀の活版印刷技術の発明により、書籍の生産が飛躍的に増加しました。
 この時期、特に宗教書や学術書が多く出版され、テキスト量は急増しました。
 
 19世紀から20世紀にかけて、新聞や雑誌の普及により、一般市民がアクセスできるテキスト量が大幅に増加しました。
 また、教育の普及もテキストの消費を促進しました。
 
 21世紀に入ると、インターネットの普及に伴い、テキスト量は爆発的に増加しました。
-ブログ、SNS、電子書籍など、多様な形式での情報発信が行われ、1日に受け取る情報量は平安時代の一生分に相当すると言われています。
+ブログ、SNS、電子書籍など、多様な形式での情報発信が行われるようになりました。
 
 デジタル技術の発達により、誰もが簡単に文字情報を
 
@@ -198,10 +198,11 @@ print(ord('A'))
 例えば、有名な例だと「King - Man + Woman = Queen」というような計算ができます。
 
 実際に確認してみましょう。
+ここではWord2Vecと同じく単語をベクトルで表す、GloVeという手法の学習済みモデル（`glove-wiki-gigaword-50`）を使います。
+`most_similar`の`positive`に足す単語、`negative`に引く単語を指定すると、「King - Man + Woman」のベクトルに近い単語を探せます。
 
 ```{code-cell}
 import gensim.downloader as api
-import numpy as np
 from contextlib import redirect_stdout, redirect_stderr
 import io
 
@@ -209,23 +210,15 @@ import io
 with redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
     model = api.load('glove-wiki-gigaword-50')
 
-# 単語ベクトルを取得
-king_vec = model['king']
-man_vec = model['man']
-woman_vec = model['woman']
-
-# King - Man + Woman の計算
-result_vec = king_vec - man_vec + woman_vec
-
-# 結果ベクトルに最も近い単語を取得
-result = model.most_similar([result_vec], topn=5)
+# King - Man + Woman に近い単語を取得
+result = model.most_similar(positive=['king', 'woman'], negative=['man'], topn=5)
 
 print("King - Man + Woman の類似単語:")
 for word, similarity in result:
     print(f"{word}: {similarity:.4f}")
 ```
 
-Word2Vecを使って、他の単語の近さなどを確認してみましょう。
+他の単語でも近さなどを確認してみましょう。
 
 Word2Vecは**{index}`分布仮説<ぶんぷかせつ - 分布仮説>`**に基づいています。
 分布仮説とは「似た文脈で使われる単語は、似た意味を持つ」という言語学の考え方です。

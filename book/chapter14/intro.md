@@ -25,7 +25,7 @@ kernelspec:
 - 海外の大学の空手クラブで2人のリーダーが仲間割れしたときの内部の人間関係
 - 部員をノード、交友関係をエッジとして表している
 - ノードは34個、エッジは78本です
-- ノードIDが0は空手クラブの会長、ノードIDが33はインストラクターです
+- ノードIDが0はインストラクター（`Mr. Hi`）、ノードIDが33は空手クラブの会長（`Officer`の代表）です
 - ノードは、会長派とインストラクター派に分かれています
 
 ```{code-cell}
@@ -81,7 +81,7 @@ print(sorted(c3.items(), key=lambda x: -x[1])[0:2])
 ```
 
 多くの中心性で会長とインストラクターは重要だとわかります。
-ただ、近接中心性にはインストラクターが入ってません。
+ただ、近接中心性には会長（ノード33）が入ってません。
 この結果から何が言えるか、考えてみるとよいでしょう。
 
 ## 最短経路
@@ -96,8 +96,8 @@ import pandas as pd
 from tabulate import tabulate
 
 # 会長とインストラクターへの最短パス距離を計算
-president_paths = nx.shortest_path_length(G, target=0)
-instructor_paths = nx.shortest_path_length(G, target=33)
+president_paths = nx.shortest_path_length(G, target=33)
+instructor_paths = nx.shortest_path_length(G, target=0)
 
 # 結果を格納するデータフレームを作成
 results = []
@@ -105,7 +105,7 @@ results = []
 # 各ノードについて情報を収集
 for node in G.nodes():
     # 予測派閥を決定
-    if president_paths[node] < instructor_paths[node]:
+    if instructor_paths[node] < president_paths[node]:
         predicted_label = 'Mr. Hi'
     else:
         predicted_label = 'Officer'
@@ -286,8 +286,9 @@ pos = nx.spring_layout(walk_graph, seed=42)
 nx.draw_networkx(walk_graph, pos=pos)
 ```
 
-このプログラムでは、特定のノードから開始して、そのノードから移動できる（繋がっている）ノードに移動していき、
-指定された個数のノードを移動したらランダムウォークを終了しています。
+このプログラムでは、特定のノードから開始して、そのノードから移動できる（繋がっている）ノードの中からランダムに1つを選んで移動していき、
+指定された回数（ここでは20回）移動したらランダムウォークを終了しています。
+そのため、得られる系列には開始ノードを含めて21個のノードが並びます。
 
 このようにして得られたノードの列を文として考えると、それぞれのノードは単語となり、
 その系列をWord2Vecで学習すると、ノードのベクトル表現が得られます。
@@ -324,7 +325,7 @@ def train_deepwalk_gensim(walks, vec_dim=2, window_size=2, epochs=5):
                     window=window_size,
                     min_count=0,
                     sg=1,
-                    workers=4,
+                    workers=1, seed=42,
                     epochs=epochs)
     
     return model
@@ -338,7 +339,7 @@ def visualize_embeddings(G, model):
     node_embeddings = np.array([model.wv[str(node)] for node in node_ids])
     
     # クラブ属性に基づいて色を設定
-    colors = ['r' if G.nodes[node].get('club') == 'Officer' else 'b' for node in node_ids]
+    colors = ['b' if G.nodes[node].get('club') == 'Officer' else 'r' for node in node_ids]
     
     x, y = node_embeddings[:, 0], node_embeddings[:, 1]
     
@@ -375,7 +376,7 @@ model = run_deepwalk(G)
 
 プログラムの説明をします。
 
-9行目の`generate_walks`は、全てのノードからランダムに1つのノードを選び、ランダムウォークを`num_walks`回実行して、ノードの系列を生成します。
+9行目の`generate_walks`は、全てのノードの順番をシャッフルし、各ノードを開始ノードとしてランダムウォークを1回ずつ実行します。これを`num_walks`回繰り返して、ノードの系列を生成します。
 19行目は、ノードの系列を文字列にしています。これは、Word2Vecの入力形式に合わせるためです。
 
 21行目の`train_deepwalk_gensim`は、Word2Vecを学習する関数です。
