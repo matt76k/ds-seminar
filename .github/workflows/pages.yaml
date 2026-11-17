@@ -13,34 +13,24 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Japanese fonts
         run: |
           sudo apt-get update
-          sudo apt-get install -y fonts-ipafont fonts-ipaexfont      
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v4
+          sudo apt-get install -y fonts-ipafont fonts-ipaexfont
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.11"
+          python-version: "3.13"
       - name: Install dependencies
-        env:
-          RYE_INSTALL_OPTION: "--yes"
-          RYE_TOOLCHAIN_VERSION: "3.11"
-        run: |
-          curl -sSf https://rye.astral.sh/get | bash
-          source "$HOME/.rye/env"
-          rye sync
-      
+        run: uv sync --locked
+
       - name: Build Book
         run: |
-          source "$HOME/.rye/env"
-          cd book
-          rye run jupyter book build .
-          cd ..
-          rye run python src/fix_link.py
+          (cd book && uv run jupyter book build .)
+          uv run python src/fix_link.py
 
       - name: Publish to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3.8.0
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./book/_build/html
