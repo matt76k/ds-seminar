@@ -16,3 +16,4 @@ book/notebooks/.ipynb_checkpoints
 # macOS
 .DS_Store
 .python-version
+book/exports/
