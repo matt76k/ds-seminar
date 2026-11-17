@@ -1,5 +1,7 @@
 version: 1
 project:
+  plugins:
+    - japanese-index.mjs
   title: Pythonで学ぶ！データサイエンス講座
   authors:
     - name: 木山 真人
