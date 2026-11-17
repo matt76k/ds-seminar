@@ -1,6 +1,5 @@
 # Pythonで学ぶ！データサイエンス講座
 
-[熊本大学情報学環](https://www.soi.kumamoto-u.ac.jp/)「DSゼミナールI」の教材です。
 統計の基礎から機械学習、テキスト分析、グラフ、強化学習までを、Pythonのコードを動かしながら学びます。
 
 **公開サイト: https://matt76k.github.io/ds-seminar/**
