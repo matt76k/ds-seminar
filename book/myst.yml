@@ -47,9 +47,6 @@ project:
     - file: chapter13/intro.md
     - file: chapter14/intro.md
     - file: chapter15/intro.md
-    - file: programming/intro.md
-      children:
-        - file: programming/recursion.md
     - file: genindex.md
 site:
   options:
