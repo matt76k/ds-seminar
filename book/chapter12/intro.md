@@ -62,7 +62,7 @@ texts = [
 ]
 
 def tokenize_text(text):
-    tokenizer_obj = dictionary.Dictionary().create()
+    tokenizer_obj = dictionary.Dictionary().tokenizer()
     mode = tokenizer.Tokenizer.SplitMode.C  # 分割モードC（最も長い単位）
     tokens = []
     for token in tokenizer_obj.tokenize(text, mode):
@@ -147,7 +147,7 @@ from sudachipy import tokenizer, dictionary
 from tabulate import tabulate 
 
 def tokenize(text):
-    tokenizer_obj = dictionary.Dictionary().create()
+    tokenizer_obj = dictionary.Dictionary().tokenizer()
     mode = tokenizer.Tokenizer.SplitMode.C
     morphemes = tokenizer_obj.tokenize(text, mode)
     tokens = [m.dictionary_form() for m in morphemes]
@@ -232,7 +232,7 @@ documents = [
 
 # 形態素解析で単語に分割
 def tokenize_ja(text):
-    tokenizer_obj = dictionary.Dictionary().create()
+    tokenizer_obj = dictionary.Dictionary().tokenizer()
     mode = tokenizer.Tokenizer.SplitMode.C
     tokens = []
     for token in tokenizer_obj.tokenize(text, mode):

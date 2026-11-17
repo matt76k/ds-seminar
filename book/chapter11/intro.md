@@ -85,7 +85,7 @@ import sudachipy
 from sudachipy import tokenizer
 from sudachipy import dictionary
 
-tokenizer_obj = dictionary.Dictionary().create()
+tokenizer_obj = dictionary.Dictionary().tokenizer()
 mode = tokenizer.Tokenizer.SplitMode.C
 
 # サンプルテキスト
@@ -119,7 +119,7 @@ Sudachiを使って簡単な正規化を行ってみます。
 import sudachipy
 from sudachipy import tokenizer, dictionary
 
-tokenizer_obj = dictionary.Dictionary().create()
+tokenizer_obj = dictionary.Dictionary().tokenizer()
 mode = tokenizer.Tokenizer.SplitMode.C
 
 text = "２０２５年7月に私はＰｙｔｈｏｎでProgramを書いていた。"
@@ -157,7 +157,7 @@ from sudachipy import tokenizer, dictionary
 
 stop_words = ['や', 'れ', 'は', 'な', 'から', 'て', 'この', 'ため', 'の', 'か', 'を', 'など', 'よう', 'あれ', 'である', 'に', 'もの', 'こと', 'で', 'です', 'その', 'さ', 'た', 'あの', 'と', 'し', 'ある', 'いる', 'へ', 'が', 'ます', 'まで', 'それ', 'これ', 'える']
 
-tokenizer_obj = dictionary.Dictionary().create()
+tokenizer_obj = dictionary.Dictionary().tokenizer()
 mode = tokenizer.Tokenizer.SplitMode.C
 
 text = "夏の草が生い茂る場所は、かつて兵士たちが夢を抱いて戦った跡地である。"
@@ -269,7 +269,7 @@ soup = BeautifulSoup(response.text, features="html.parser")
 text = soup.get_text()
 
 # Sudachiの設定
-tokenizer_obj = dictionary.Dictionary().create()
+tokenizer_obj = dictionary.Dictionary().tokenizer()
 mode = tokenizer.Tokenizer.SplitMode.C
 
 # 単語の抽出
