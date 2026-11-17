@@ -1,4 +1,11 @@
 ---
+numbering:
+  figure:
+    enumerator: "8.%s"
+  table:
+    enumerator: "8.%s"
+  equation:
+    enumerator: "8.%s"
 edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter08/intro.ipynb
 jupytext:
   formats: md:myst
