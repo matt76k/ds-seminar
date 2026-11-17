@@ -51,7 +51,7 @@ kernelspec:
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+import matplotlib_fontja
 
 data = pd.DataFrame([
     (1, 1, '青'), (5, 6, '青'), (6, 2, '青'),

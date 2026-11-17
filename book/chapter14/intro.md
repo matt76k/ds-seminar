@@ -180,13 +180,13 @@ Louvain法のアルゴリズムは、
 import networkx as nx
 import matplotlib.pyplot as plt
 import numpy as np
-from community.community_louvain import best_partition
 
 # カラテクラブグラフを生成
 G = nx.karate_club_graph()
 
 # Louvain法によるコミュニティ検出
-partition = best_partition(G)
+communities = nx.community.louvain_communities(G, seed=42)
+partition = {node: i for i, c in enumerate(communities) for node in c}
 louvain_labels = [partition[node] for node in G.nodes()]
 
 # 検出されたコミュニティに基づいてノードに色を付ける

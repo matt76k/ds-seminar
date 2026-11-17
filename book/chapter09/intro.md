@@ -95,7 +95,7 @@ SVMを実行する前は、事前に説明変数を標準化する必要があ�
 from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler
 import numpy as np
-import japanize_matplotlib
+import matplotlib_fontja
 
 # データの正規化
 scaler = StandardScaler()

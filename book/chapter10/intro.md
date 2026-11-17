@@ -58,7 +58,7 @@ PCAは以下のような特徴を持っています。
 :tags: [remove-input]
 import numpy as np
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+import matplotlib_fontja
 import seaborn as sns
 from sklearn.decomposition import PCA
 
@@ -161,7 +161,7 @@ df
 
 ```{code-cell}
 import matplotlib.pyplot as plt
-import japanize_matplotlib
+import matplotlib_fontja
 import seaborn as sns
 
 sns.pairplot(df.iloc[:, :4], hue='target', palette='deep')

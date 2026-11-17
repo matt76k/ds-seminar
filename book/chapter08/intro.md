@@ -170,7 +170,7 @@ plt.show()
 
 ```{code-cell}
 import scipy
-import japanize_matplotlib
+import matplotlib_fontja
 
 # GMMを適用（2つの成分を使用）
 X_1d = total.reshape(-1, 1)  # GMMに入力するために2D配列に変換
