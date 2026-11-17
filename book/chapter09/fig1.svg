@@ -10,8 +10,8 @@
 </defs>
 <line x1="120" y1="280" x2="120" y2="120" stroke="#000" marker-end="url(#arrow)"/>
 <line x1="120" y1="280" x2="280" y2="280" stroke="#000" marker-end="url(#arrow)"/>
-<text x="100" y="195" font-size="12" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 100 195)" font-family="'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">説明変数Y</text>
-<text x="200" y="295" font-size="12" text-anchor="middle" dominant-baseline="central" font-family="'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">説明変数X</text>
+<text x="100" y="195" font-size="12" text-anchor="middle" dominant-baseline="central" transform="rotate(-90 100 195)" font-family="'BIZ UDPGothic', 'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">説明変数Y</text>
+<text x="200" y="295" font-size="12" text-anchor="middle" dominant-baseline="central" font-family="'BIZ UDPGothic', 'Hiragino Sans', 'IPAexGothic', 'Noto Sans CJK JP', sans-serif">説明変数X</text>
 <circle cx="145" cy="235" r="5" fill="#33FFFF" stroke="#000"/>
 <circle cx="165" cy="245" r="5" fill="#33FFFF" stroke="#000"/>
 <circle cx="215" cy="255" r="5" fill="#33FFFF" stroke="#000"/>
