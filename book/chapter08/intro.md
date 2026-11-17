@@ -70,7 +70,7 @@ from sklearn.cluster import KMeans
 kmeans = KMeans(n_clusters=4, random_state=42)
 kmeans_labels = kmeans.fit_predict(X)
 
-sns.scatterplot(x=X[:, 0], y=X[:, 1], c=kmeans_labels, cmap='viridis')
+sns.scatterplot(x=X[:, 0], y=X[:, 1], hue=kmeans_labels, palette='viridis')
 plt.title('K-means clustering')
 plt.show()
 ```
@@ -97,7 +97,7 @@ from sklearn.mixture import GaussianMixture
 gmm = GaussianMixture(n_components=4, random_state=42)
 gmm_labels = gmm.fit_predict(X)
 
-sns.scatterplot(x=X[:, 0], y=X[:, 1], c=gmm_labels, cmap='viridis')
+sns.scatterplot(x=X[:, 0], y=X[:, 1], hue=gmm_labels, palette='viridis')
 plt.title('GMM clustering')
 plt.show()
 ```

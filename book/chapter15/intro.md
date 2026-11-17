@@ -589,7 +589,6 @@ def q_learning(env, q_table, learning_rate=0.1, discount_factor=0.95, epsilon=1.
     actions = ["up", "right", "down", "left"]
     for episode in range(num_episodes):
         state = env.reset()
-        total_reward = 0
         steps = 0
         done = False
         
@@ -639,7 +638,7 @@ def q_learning(env, q_table, learning_rate=0.1, discount_factor=0.95, epsilon=1.
 学習率が小さいほど慎重に学習し、大きいほど新しい情報を強く反映します。
 割引率が大きいほど将来の報酬を重視します。
 
-21-25行目は、Q値の更新式{eq}`td-eq`に対応しています。
+20-24行目は、Q値の更新式{eq}`td-eq`に対応しています。
 
 では実際に学習して、start地点のQ値を見てみましょう。
 

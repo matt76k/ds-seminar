@@ -128,7 +128,7 @@ G = nx.Graph()
 G.add_nodes_from(["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K"])
 G.add_edges_from([("A", "C"), ("B", "C"), ("C", "D"), ("C", "E"), ("D", "F"), ("D", "G"), ("E", "G"), ("F", "H"), ("G", "H"), ("H", "I"), ("I", "J"), ("I", "K")])
 
-pos = nx.spring_layout(G)
+pos = nx.spring_layout(G, seed=42)
 nx.draw(G, pos=pos, node_size=400, node_color='red', with_labels=True, font_weight='bold')
 ```
 
@@ -210,6 +210,9 @@ draw_color(G, pos, c3, 'Eigenvector Centrality')
 ```{code-cell}
 hist = nx.degree_histogram(G)
 plt.bar(range(len(hist)), hist)
+plt.xlabel('Degree')
+plt.ylabel('Number of nodes')
+plt.show()
 ```
 
 ```{code-cell}
