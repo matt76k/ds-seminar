@@ -3,7 +3,8 @@
 // 原稿の {index}`表示<よみ - 表記>` を読み、表記を五十音の行ごとに並べる。
 import { readFileSync } from "node:fs";
 
-const INDEX_ROLE = /\{index\}`([^`]+)`/g;
+// 太字の中に置くと日本語の前後で強調が効かなくなる箇所は、段落の前の :::{index} ディレクティブで登録している。
+const INDEX_ROLE = /\{index\}`([^`]+)`|^:::\{index\} (.+)$/gm;
 const READING_KEY = /^([ぁ-ゖァ-ヺー]+)\s*-\s*(.+)$/;
 const ROWS = [
   ["あ行", "あいうえお"], ["か行", "かきくけこ"], ["さ行", "さしすせそ"], ["た行", "たちつてと"], ["な行", "なにぬねの"],
@@ -34,8 +35,8 @@ function collectEntries() {
   const files = [...readFileSync("myst.yml", "utf8").matchAll(/- file: (\S+\.md)/g)].map((m) => m[1]);
   const entries = new Map();
   for (const file of files) {
-    for (const [, content] of readFileSync(file, "utf8").matchAll(INDEX_ROLE)) {
-      const { display, sortKey } = parseEntry(content);
+    for (const [, role, directive] of readFileSync(file, "utf8").matchAll(INDEX_ROLE)) {
+      const { display, sortKey } = parseEntry(role ?? directive);
       const entry = entries.get(display) ?? { display, sortKey, files: [] };
       if (!entry.files.includes(file)) entry.files.push(file);
       entries.set(display, entry);
