@@ -15,7 +15,7 @@ kernelspec:
 ガウス混合モデル
 ==============
 
-ガウス混合モデル（Gaussian Mixture Model, GMM）は、
+{index}`ガウス混合モデル<がうすこんごうもでる - ガウス混合モデル>`（Gaussian Mixture Model, {index}`GMM<GMM>`）は、
 データがいくつかの異なる正規分布（ガウス分布）の組み合わせから生成されていると仮定する確率モデルです。
 この章では、GMMの概念、数学的な定式化、そしてクラスタリング問題への応用について説明します。
 
@@ -121,7 +121,7 @@ $p(x) = \sum_{k=1}^K \pi_k \mathcal{N}(x|\mu_k, \Sigma_k)$
 ここで：
 - $\pi_k$は各成分（クラスタ）の混合重み（$\sum_{k=1}^K \pi_k = 1$）
 - $\mu_k$は各成分の平均ベクトル
-- $\Sigma_k$は各成分の共分散行列
+- $\Sigma_k$は各成分の{index}`共分散行列<きょうぶんさんぎょうれつ - 共分散行列>`
 - $\mathcal{N}(x|\mu_k, \Sigma_k)$は多変量正規分布
 
 多変量正規分布は以下の確率密度関数で表されます。
@@ -132,7 +132,7 @@ $$\mathcal{N}(x|\mu_k, \Sigma_k) = \frac{1}{(2\pi)^{d/2}|\Sigma_k|^{1/2}} \exp\l
 
 ## EMアルゴリズム
 
-GMMのパラメータ推定には、Expectation-Maximization（EM）アルゴリズムが使用されます。
+GMMのパラメータ推定には、{index}`Expectation-Maximization（EM）アルゴリズム<EMアルゴリズム>`が使用されます。
 これは、直接最適化が難しい問題を、繰り返し計算で解く手法です。
 
 ```{prf:algorithm} GMMのEMアルゴリズム
@@ -148,7 +148,7 @@ GMMのパラメータ推定には、Expectation-Maximization（EM）アルゴリ
       - $\Sigma_k^{new} = \frac{\sum_{i=1}^N \gamma_{ik}(x_i-\mu_k^{new})(x_i-\mu_k^{new})^T}{\sum_{i=1}^N \gamma_{ik}}$
 ```
 
-このアルゴリズムは、対数尤度を単調に増加させながら収束していきます。
+このアルゴリズムは、{index}`対数尤度<たいすうゆうど - 対数尤度>`を単調に増加させながら収束していきます。
 
 ## GMMの適用例
 

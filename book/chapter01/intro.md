@@ -19,7 +19,7 @@ lies, damned lies, and statistics.
 -- Mark Twain
 ```
 
-ここでは{index}`記述統計<きじゅつとうけい - 記述統計>`（{index}`Descriptive Statistics`）について学びます。
+ここでは{index}`記述統計<きじゅつとうけい - 記述統計>`（Descriptive Statistics）について学びます。
 記述統計は、データ全体の特徴を把握し、分かりやすく表現するための手法です。
 
 本章では以下の内容を取り上げます。
