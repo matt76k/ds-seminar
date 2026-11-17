@@ -64,10 +64,10 @@ ax + by + c = 0
 ```{math}
 \frac{|ax_i+by_i+c|}{\sqrt{a^2+b^2}}
 ```
-となるので、全ての学習データ(i=1,2,‥n)に対して
+となるので、全ての学習データ(i=1,2,…,n)に対して
 
 ```{math}
-min_{i=1,2‥n}\frac{|ax_i+by_i+c|}{\sqrt{a^2+b^2}}
+\min_{i=1,2,\ldots,n}\frac{|ax_i+by_i+c|}{\sqrt{a^2+b^2}}
 ```
 を最大化する係数 $a$, $b$ の組み合わせを探します。
 これが2次元におけるSVMの学習プロセスとなります。
@@ -239,7 +239,7 @@ plt.show()
 それは
 
 ```{math}
-K(X_i,X_j)＝\phi(X_i)^T \phi(X_j) 
+K(X_i,X_j)=\phi(X_i)^T \phi(X_j) 
 ```
 と定義して計算します。
 このような変換法を**カーネルトリック**と呼びます。
@@ -247,8 +247,8 @@ K(X_i,X_j)＝\phi(X_i)^T \phi(X_j)
 カーネル関数の中でも特によく使われるのが
 
 ```{math}
-K(X_i,X_j)＝exp\biggl(-\frac{||X_i-X_j||^2}{2\sigma^2}\biggl)\\
-＝exp \Bigl(-\gamma||X_i-X_j||^2 \Bigl)
+K(X_i,X_j)=\exp\biggl(-\frac{||X_i-X_j||^2}{2\sigma^2}\biggr)\\
+=\exp \Bigl(-\gamma||X_i-X_j||^2 \Bigr)
 ```
 と定義される**RBFカーネル**（Radial Basis Function kernel）です。
 この式中に含まれる$\gamma$が、重要な**ハイパーパラメータ**の1つです。
