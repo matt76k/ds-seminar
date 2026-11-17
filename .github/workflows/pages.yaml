@@ -36,6 +36,7 @@ jobs:
           BASE_URL: /ds-seminar
         # HTML 生成でまれに接続がリセットされる（ECONNRESET）ので、そのときだけやり直す
         run: |
+          set -o pipefail
           for attempt in 1 2 3; do
             uv run jupyter book build --html --execute --strict 2>&1 | tee build.log && exit 0
             grep -q ECONNRESET build.log || exit 1
