@@ -580,10 +580,7 @@ for i in range(4):
 Q-Learningのアルゴリズムを実装します。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 def q_learning(env, q_table, learning_rate=0.1, discount_factor=0.95, epsilon=1.0, epsilon_decay=0.995, epsilon_min=0.01, num_episodes=1000):
     actions = ["up", "right", "down", "left"]
     for episode in range(num_episodes):

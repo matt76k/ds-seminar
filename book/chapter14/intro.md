@@ -28,10 +28,7 @@ kernelspec:
 - ノードは、会長派とインストラクター派に分かれています
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import networkx as nx
 
 G = nx.karate_club_graph()
@@ -289,10 +286,7 @@ nx.draw_networkx(walk_graph, pos=pos)
 では、このベクトル表現を可視化してみましょう。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt

@@ -6,9 +6,7 @@ authors = [
     { name = "matt", email = "matt76k@gmail.com" }
 ]
 dependencies = [
-    "jupyter-book>=1.0.4.post1,<2",
-    "myst-nb>=1.4.0",
-    "sphinx-proof>=0.4.1",
+    "jupyter-book>=2.1.7",
     "numpy>=2.5",
     "scipy>=1.18",
     "pandas>=3.1",

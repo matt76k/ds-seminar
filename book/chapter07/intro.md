@@ -112,10 +112,7 @@ k-means法はこれらを繰り返し計算し、似たデータを同じグル�
 k-means法の動作を視覚的に理解するために、{ref}`scatter-fig`で使用した`iris`データを使って、クラスタリングをしてみます。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt

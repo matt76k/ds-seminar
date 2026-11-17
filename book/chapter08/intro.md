@@ -231,10 +231,7 @@ plt.show()
 このプロットでは、データポイントの色分けに加えて、各ガウス分布の確率密度を等高線で表示しています。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt

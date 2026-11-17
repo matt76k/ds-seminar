@@ -77,10 +77,7 @@ Words are loaded pistols
 ここでは、Sudachiを使って単語を分割してみましょう。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import sudachipy
 from sudachipy import tokenizer
 from sudachipy import dictionary
@@ -246,10 +243,7 @@ WordCloud（ワードクラウド）とは、文書内の単語の出現頻度�
 Webサイトから情報を取得し、そこに含まれる名詞をWordCloudで可視化してみましょう。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from sudachipy import tokenizer, dictionary

@@ -176,10 +176,7 @@ plt.show()
 ここで、13個の特徴量からPCAを使って2つの特徴量にしてみましょう。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
@@ -238,10 +235,7 @@ t-SNEはPCAよりも計算コストが高く、特に大規模なデータセッ
 では、t-SNEを使ってワインデータを可視化してみましょう。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 from sklearn.manifold import TSNE
 
 tsne = TSNE(n_components=2, random_state=42)

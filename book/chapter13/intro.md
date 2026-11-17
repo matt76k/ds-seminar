@@ -62,10 +62,7 @@ kernelspec:
 ここでは、NetworkXというライブラリを使ってグラフを作ります。
 
 ```{code-cell}
----
-mystnb:
-  number_source_lines: true
----
+:linenos:
 import networkx as nx
 
 G = nx.Graph()

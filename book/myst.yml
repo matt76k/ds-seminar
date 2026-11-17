@@ -1,0 +1,56 @@
+version: 1
+project:
+  title: Pythonで学ぶ！データサイエンス講座
+  authors:
+    - name: 木山 真人
+  copyright: '2025'
+  github: matt76k/ds-seminar
+  exports:
+    - format: pdf
+      template: plain_latex_book
+      output: exports/book.pdf
+  toc:
+    - file: intro.md
+    - file: chapter01/intro.md
+      children:
+        - file: chapter01/01.md
+        - file: chapter01/02.md
+        - file: notebooks/01.ipynb
+    - file: chapter02/intro.md
+      children:
+        - file: chapter02/01.md
+        - file: chapter02/02.md
+        - file: chapter02/03.md
+    - file: chapter03/intro.md
+      children:
+        - file: chapter03/01.md
+        - file: chapter03/02.md
+    - file: chapter04/intro.md
+      children:
+        - file: chapter04/01.md
+        - file: chapter04/02.md
+    - file: chapter05/intro.md
+      children:
+        - file: chapter05/01.md
+        - file: chapter05/02.md
+        - file: chapter05/03.md
+    - file: chapter06/intro.md
+    - file: chapter07/intro.md
+    - file: chapter08/intro.md
+    - file: chapter09/intro.md
+    - file: chapter10/intro.md
+    - file: chapter11/intro.md
+    - file: chapter12/intro.md
+    - file: chapter13/intro.md
+    - file: chapter14/intro.md
+    - file: chapter15/intro.md
+    - file: programming/intro.md
+      children:
+        - file: programming/recursion.md
+    - file: genindex.md
+site:
+  options:
+    logo: logo.png
+    favicon: logo.png
+    folders: true
+  template: book-theme
