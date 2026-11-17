@@ -11,6 +11,7 @@ project:
   exports:
     - format: typst
       template: plain_typst_book
+      fontstyle: BIZ UDPGothic
       output: exports/book.pdf
   toc:
     - file: intro.md
