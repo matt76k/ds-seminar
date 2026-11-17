@@ -77,7 +77,7 @@ principal_component = pca.components_[0]
 
 # 図の設定
 fig = plt.figure(figsize=(14, 5))
-fig.suptitle('次元削減のイメージ', fontsize=20, fontweight='bold', y=0.95)
+fig.suptitle('次元削減のイメージ', fontsize=20, y=0.95)
 
 # 元のレイアウトに近づけるために、手動でaxesを作成
 axes = [fig.add_subplot(131), fig.add_subplot(132), fig.add_subplot(133)]
