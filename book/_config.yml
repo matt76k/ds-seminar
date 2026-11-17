@@ -25,8 +25,6 @@ latex:
 
 html:
   favicon: logo.png
-  extra_css: 
-    - https://fonts.googleapis.com/css2?family=BIZ+UDGothic
 
 sphinx:
   config:
