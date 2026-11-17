@@ -14,6 +14,12 @@ kernelspec:
 ---
 テキストマイニングの応用
 ====================
+```{epigraph}
+The limits of my language mean the limits of my world.
+
+-- Ludwig Wittgenstein
+```
+
 SNSの投稿、ニュース記事、商品レビュー、メール、ウェブサイトのコンテンツなど、テキストデータは私たちの周りに溢れています。
 これらの膨大なテキストデータから価値ある情報や洞察を引き出すことは、現代のビジネスや研究において極めて重要になっています。
 

@@ -21,6 +21,11 @@ kernelspec:
 ---
 決定木
 ======
+```{epigraph}
+The important thing is not to stop questioning.
+
+-- Albert Einstein
+```
 
 `アキネーター`というゲームを知っていますか？
 このゲームは、プレイヤーが頭の中で考えたキャラクターや人物を、
