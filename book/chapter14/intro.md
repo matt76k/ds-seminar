@@ -22,7 +22,7 @@ kernelspec:
 
 このデータの特徴は以下の通りです。
 
-- 海外の大学の空手クラブで２人のリーダーが仲間割れしたときの内部の人間関係
+- 海外の大学の空手クラブで2人のリーダーが仲間割れしたときの内部の人間関係
 - 部員をノード、交友関係をエッジとして表している
 - ノードは34個、エッジは78本です
 - ノードIDが0は空手クラブの会長、ノードIDが33はインストラクターです
@@ -129,10 +129,10 @@ df = pd.DataFrame(results)
 # 表として表示
 print(tabulate(df, headers='keys', tablefmt='fancy_grid', showindex=False))
 
-# 正確度を計算
+# 正解率を計算
 correct = sum(1 for i, j in zip(df['予測派閥'], true_labels) if i == j)
 accuracy = correct / len(G.nodes())
-print(f"\n予測精度: {correct}/{len(G.nodes())} = {accuracy:.2%}")
+print(f"\n正解率: {correct}/{len(G.nodes())} = {accuracy:.2%}")
 ```
 
 3名しか間違ってないですね。他にも自分なりの方法で考えてみましょう。
@@ -164,7 +164,7 @@ $$Q = \frac{1}{2m}\sum_{i,j} \left[ A_{ij} - \frac{k_i k_j}{2m} \right] \delta(c
 
 このモジュラリティを最大化するようにグラフを分ける方法が{index}`Louvain法<Louvain法>`になります。
 
-Louvain法のアルゴリズムは、
+Louvain法のアルゴリズムは次のとおりです。
 
 ```{prf:algorithm} Louvain法
 :label: louvain-algo
@@ -252,12 +252,12 @@ if correct_1 > correct_0:
 
 accuracy = sum(1 for i, j in zip(louvain_binary, true_labels) if i == j) / len(true_labels)
 
-print(f"Accuracy: {accuracy:.4f}")
+print(f"正解率: {accuracy:.4f}")
 ```
 
 ## {index}`グラフ埋め込み<ぐらふうめこみ - グラフ埋め込み>`
 
-Word2Vecの考え方をグラフに適応した方法が{index}`DeepWalk<DeepWalk>`で、
+Word2Vecの考え方をグラフに適用した方法が{index}`DeepWalk<DeepWalk>`で、
 {index}`ランダムウォーク<ランダムウォーク>`を使ってグラフを文のように扱えばノードは単語となり、
 Word2Vecを使うことでノードのベクトル表現が得られるという発想です。
 
@@ -386,5 +386,5 @@ model = run_deepwalk(G)
 34行目の`visualize_embeddings`は、ノードのベクトル表現を可視化する関数です。40行目の`model.wv`でノードのベクトル表現を取得しています。
 
 - 境界線を引いてみましょう。
-- ノードの長さを変えるとどんな結果になりますか？
+- ランダムウォークの長さを変えるとどんな結果になりますか？
 - Word2Vecの`vector_size`を変えて表示してみましょう。

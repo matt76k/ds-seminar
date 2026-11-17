@@ -36,7 +36,7 @@ kernelspec:
 ```
 
 {numref}`fig2`を見てください。
-決定境界AとBが引かれており、どちらも分類は正しくされています。
+決定境界AとBが引かれており、どちらも正しく分類できています。
 では、どちらの決定境界がより優れているでしょうか？
 
 Aの方が優れていると感じるでしょう。
@@ -98,7 +98,7 @@ plt.show()
 ```
 
 このデータを`scikit-learn`を使ってSVMで分類してみましょう。
-SVMを実行する前は、事前に説明変数を標準化する必要があります。
+SVMを実行する前に、説明変数を標準化しておくことが推奨されます。
 
 ```{code-cell}
 from sklearn.svm import SVC
@@ -106,7 +106,7 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 import matplotlib_fontja
 
-# データの正規化
+# データの標準化
 scaler = StandardScaler()
 X = iris_filtered[['sepal_length', 'sepal_width']].values
 X_scaled = scaler.fit_transform(X)
@@ -256,8 +256,10 @@ K(X_i,X_j)=\phi(X_i)^T \phi(X_j)
 カーネル関数の中でも特によく使われるのが
 
 ```{math}
-K(X_i,X_j)=\exp\biggl(-\frac{||X_i-X_j||^2}{2\sigma^2}\biggr)\\
-=\exp \Bigl(-\gamma||X_i-X_j||^2 \Bigr)
+\begin{aligned}
+K(X_i,X_j) &= \exp\biggl(-\frac{||X_i-X_j||^2}{2\sigma^2}\biggr)\\
+&= \exp \Bigl(-\gamma||X_i-X_j||^2 \Bigr)
+\end{aligned}
 ```
 と定義される**{index}`RBFカーネル<RBFカーネル>`**（Radial Basis Function kernel）です。
 この式中に含まれる$\gamma$が、重要な**ハイパーパラメータ**の1つです。

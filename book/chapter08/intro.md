@@ -57,7 +57,7 @@ plt.show()
 ```
 
 このデータは明らかに複数のクラスタに分かれていて、各クラスタは楕円形の形状をしています。
-このようなデータに対して、まずは{ref}`k-means<k-means>`法でクラスタリングを試みてみましょう。
+このようなデータに対して、まずは{ref}`k-means<k-means>`法でクラスタリングを試してみましょう。
 
 ```{code-cell}
 import numpy as np
@@ -153,7 +153,7 @@ GMMのパラメータ推定には、{index}`Expectation-Maximization（EM）ア�
 ## GMMの適用例
 
 偏差値は成績が正規分布に従うという仮定を元に計算されています。
-しかし、その過程を満たさない分布もあります。
+しかし、その仮定を満たさない分布もあります。
 以下のような2峰性の分布を持つ成績を考えてみましょう。
 
 ```{code-cell}
@@ -171,11 +171,11 @@ sns.set_style("whitegrid")
 
 sns.histplot(data=total, bins=30, stat="density", alpha=0.6)
 plt.xlabel('score')
-plt.ylabel('hist')
+plt.ylabel('density')
 plt.xlim(0, 100)
 plt.show()
 ```
-このような成績の分布は、例えば「基礎的な内容が理解できている学生」と「発展的な内容まで理解できている学生」が混在しているクラスで見られるかもしれません。このデータにGMMを適用してみましょう
+このような成績の分布は、例えば「基礎的な内容が理解できている学生」と「発展的な内容まで理解できている学生」が混在しているクラスで見られるかもしれません。このデータにGMMを適用してみましょう。
 
 ```{code-cell}
 import scipy
@@ -237,7 +237,7 @@ plt.show()
 ## クラスタの形状確認
 
 では、最初のデータセットを使用して、クラスタの形状や重なり具合を視覚的に見てみましょう。
-このプロットでは、データポイントの色分けに加えて、各ガウス分布の確率密度を等高線で表示しています。
+このプロットでは、データポイントの色分けに加えて、混合分布全体の確率密度を等高線で表示しています。
 
 ```{code-cell}
 :linenos:
@@ -278,9 +278,9 @@ means = gmm.means_
 plt.scatter(means[:, 0], means[:, 1], c='red', marker='X', s=100, 
             linewidth=2, label='Centroids')
 
-plt.xlabel('Sepal length', fontsize=12)
-plt.ylabel('Sepal width', fontsize=12)
-plt.title('Gaussian Mixture Model Clustering on Iris Dataset', fontsize=14)
+plt.xlabel('Feature 1', fontsize=12)
+plt.ylabel('Feature 2', fontsize=12)
+plt.title('Gaussian Mixture Model Clustering on Synthetic Data', fontsize=14)
 plt.legend()
 plt.show()
 ```

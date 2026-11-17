@@ -48,10 +48,10 @@ kernelspec:
 
 強化学習の目標は、将来の報酬の総和（累積報酬）を最大化する最適な方策を見つけることです。
 
-## Q-Learningとは
+## Q学習とは
 
-Q-Learningは、環境と相互作用しながら最適な決定を行うようにエージェントを訓練するためのモデルフリー強化学習アルゴリズムです。
-Q-Learningの「Q」は「Quality（質）」を表し、特定の状態で特定の行動をとることの価値（Q値）を学習します。
+Q学習は、環境と相互作用しながら最適な決定を行うようにエージェントを訓練するためのモデルフリー強化学習アルゴリズムです。
+Q学習の「Q」は「Quality（質）」を表し、特定の状態で特定の行動をとることの価値（Q値）を学習します。
 
 **モデルフリー**とは、環境のモデル（状態遷移確率や報酬の仕組み）を事前に知らなくても、試行錯誤を通じて学習できるという意味です。
 
@@ -68,9 +68,9 @@ Qテーブルの構造：
 
 エージェントが環境を探索し、相互作用から学習するにつれて、Qテーブルを更新し、意思決定能力を徐々に向上させていきます。
 
-### Q-Learningの更新式
+### Q学習の更新式
 
-Q-learningの核心は、時間差分（Temporal Difference）更新式です。
+Q学習の核心は、時間差分（Temporal Difference）更新式です。
 
 ```{math}
 :label: td-eq
@@ -90,16 +90,16 @@ Q(S,A) \leftarrow Q(S,A) + \alpha (R + \gamma \max_{A'} Q(S',A') - Q(S,A))
 
 ### {index}`探索と活用<たんさくとかつよう - 探索と活用>`のバランス
 
-Q-learningの重要な側面は、探索（より良い戦略を発見するために新しい行動を試す）と活用（既知の良い戦略を使用する）のバランスを取ることです。これは通常、{index}`ε-greedy方策<いぷしろんぐりーでぃほうさく - ε-greedy方策>`によって実現されます。
+Q学習の重要な側面は、探索（より良い戦略を発見するために新しい行動を試す）と活用（既知の良い戦略を使用する）のバランスを取ることです。これは通常、{index}`ε-greedy方策<いぷしろんぐりーでぃほうさく - ε-greedy方策>`によって実現されます。
 
 - **活用**：確率$1-\epsilon$で、エージェントは最高のQ値を持つ行動を選択
 - **探索**：確率$\epsilon$で、エージェントはランダムな行動を選択
 
 時間の経過とともに、$\epsilon$の値は通常減少し、エージェントが環境についてより多くを学ぶにつれて、探索から活用への移行を可能にします。
 
-## Q-Learningアルゴリズムの実装
+## Q学習アルゴリズムの実装
 
-簡単な迷路を解くプログラムをQ-Learningで実装してみましょう。
+簡単な迷路を解くプログラムをQ学習で実装してみましょう。
 4×4のグリッド上で、スタートからゴールまで最短経路を学習させます。
 
 ### 迷路
@@ -126,7 +126,7 @@ maze = np.array([
 ```
 
 このままだと分かりにくいので、
-matplotを使って迷路を可視化してみましょう。
+matplotlibを使って迷路を可視化してみましょう。
 
 ```{code-cell}
 import matplotlib.pyplot as plt
@@ -136,7 +136,7 @@ def render(maze):
     plt.figure(figsize=(6, 6))
     
     # 色分けの設定
-    colors = ListedColormap(['white', 'black', 'green', 'red'])
+    colors = ListedColormap(['white', 'black', 'red'])
     plt.imshow(maze, cmap=colors)
     
     # グリッド線の表示
@@ -225,7 +225,7 @@ tama.mew(3)
 ```
 
 例のコードでは猫共通の動作であるmewを定義しましたが、
-それぞれの猫が保つ属性（例えば名前など）がありません。
+それぞれの猫が持つ属性（例えば名前など）がありません。
 
 猫が名前を持てるようにしてみます。
 
@@ -253,7 +253,7 @@ tibi.mew(5)
 
 `__init__()`メソッドは特別なメソッドで、クラスがインスタンス化されるときに必ず呼ばれます。
 
-`self.name`はそのクラスの属性で、どのメソッドからも参照できます。
+`self.name`はそのインスタンスの属性で、どのメソッドからも参照できます。
 
 #### 継承
 
@@ -318,7 +318,7 @@ except Exception as e:
     print(e)
 ```
 
-`c.sum()`の部分でエラーが出るのですが、そのままだと分かりずらいので、try-except文を使ってエラーを表示しています。
+`c.sum()`の部分でエラーが出るのですが、そのままだと分かりづらいので、try-except文を使ってエラーを表示しています。
 
 try-except文は
 ```python
@@ -394,13 +394,13 @@ Personという人間を表すクラスをつかって考えてみましょう�
 
 ```{code-cell}
 class Person:
-  def __init__(self, name, hight, weight):
+  def __init__(self, name, height, weight):
     self.name = name
-    self.hight = hight
+    self.height = height
     self.weight = weight
   
   def check(self):
-    print(f"{self.name} - {self.hight}cm {self.weight}kg")
+    print(f"{self.name} - {self.height}cm {self.weight}kg")
 
 k = Person('Tanjiro', 165, 61)
 
@@ -411,16 +411,16 @@ k.check()
 
 ```{code-cell}
 class Person:
-  def __init__(self, name, hight, weight):
+  def __init__(self, name, height, weight):
     self.name = name
-    self.hight = hight
+    self.height = height
     self.weight = weight
   
   def check(self):
-    print(f"{self.name} - {self.hight}cm {self.weight}kg")
+    print(f"{self.name} - {self.height}cm {self.weight}kg")
   
   def bmi(self):
-    return self.weight / (self.hight / 100.) ** 2
+    return self.weight / (self.height / 100.) ** 2
 
 k = Person('Tanjiro', 165, 61)
 
@@ -433,21 +433,21 @@ k.bmi()
 
 ```{code-cell}
 class Person:
-  def __init__(self, name, hight, weight):
+  def __init__(self, name, height, weight):
     self.name = name
-    self.hight = hight
+    self.height = height
     self.__weight = weight
   
   def check(self):
-    print(f"{self.name} - {self.hight}cm {self.__weight}kg")
+    print(f"{self.name} - {self.height}cm {self.__weight}kg")
   
   def __bmi(self):
-    return self.weight / (self.hight / 100.) ** 2
+    return self.__weight / (self.height / 100.) ** 2
 
 k = Person('Tanjiro', 165, 61)
 
 k.check()
-## print(k.__weight) #コメントアウトしてエラーが出ることを確認
+## print(k.__weight) #コメントを外してエラーが出ることを確認
 ```
 
 #### 迷路のクラス化
@@ -527,7 +527,7 @@ def render(maze):
     plt.figure(figsize=(6, 6))
     
     # 色分けの設定
-    colors = ListedColormap(['white', 'black', 'green', 'red'])
+    colors = ListedColormap(['white', 'black', 'red'])
     plt.imshow(maze.maze, cmap=colors)
     
     # グリッド線の表示
@@ -571,14 +571,14 @@ q_tableは、状態と行動のペアをキーとして、Q値を格納する辞
 
 ```{code-cell}
 q_table = {}
-# Q-tableの初期化
+# Qテーブルの初期化
 for i in range(4):
     for j in range(4):
         for a in ["up", "right", "down", "left"]:
             q_table[((i, j), a)] = 0
 ```
 
-Q-Learningのアルゴリズムを実装します。
+Q学習のアルゴリズムを実装します。
 
 ```{code-cell}
 :linenos:
@@ -618,7 +618,7 @@ def q_learning(env, q_table, learning_rate=0.1, discount_factor=0.95, epsilon=1.
         epsilon = max(epsilon_min, epsilon * epsilon_decay)        
 ```
 
-`q_learning`関数は、Q-Learningのアルゴリズムを実装しています。
+`q_learning`関数は、Q学習のアルゴリズムを実装しています。
 引数は
 
 - `env`: 環境
@@ -675,5 +675,5 @@ while not done and len(path) < 20:
 
 ちゃんとゴールに到達していますね。
 
-- Q-tableの初期値を`random`にしてみましょう。
+- Qテーブルの初期値を`random`にしてみましょう。
 - 各マスでQ値が大きいほうに矢印を表示してみましょう。
