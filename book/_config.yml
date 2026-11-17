@@ -7,8 +7,8 @@ only_build_toc_files: true
 
 execute:
   timeout: 1000
-  execute_notebooks: force
-
+  execute_notebooks: cache
+  stderr_output: warn
 
 launch_buttons:
   notebook_interface: jupyterlab
@@ -30,7 +30,6 @@ html:
 
 sphinx:
   config:
-    nb_execution_mode: auto
     html_js_files:
       - https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js
     language: ja

@@ -1,13 +1,14 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.1.0
-    workflow_dispatch:
-    
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
 jobs:
-  build_and_release:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,12 +25,19 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
+      - uses: actions/cache@v4
+        with:
+          path: book/_build/.jupyter_cache
+          key: jupyter-cache-${{ hashFiles('uv.lock') }}-${{ hashFiles('book/**/*.md', 'book/**/*.ipynb') }}
+          restore-keys: jupyter-cache-${{ hashFiles('uv.lock') }}-
+
       - name: Build Book
         run: |
-          (cd book && uv run jupyter book build .)
+          (cd book && uv run jupyter book build . -W --keep-going)
           uv run python src/fix_link.py
 
       - name: Publish to GitHub Pages
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
