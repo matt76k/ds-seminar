@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter12/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -47,6 +48,14 @@ SNSの投稿、ニュース記事、商品レビュー、メール、ウェブ�
 ### Bag of Words (BoW)
 
 BoWは最も基本的なテキスト表現方法で、単語の出現回数のみを考慮します。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja', 'sudachipy', 'sudachidict-core', 'wordcloud'], check=True)
+```
 
 ```{code-cell}
 import pandas as pd

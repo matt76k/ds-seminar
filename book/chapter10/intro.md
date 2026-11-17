@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter10/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -53,6 +54,14 @@ PCAは以下のような特徴を持っています。
   - 上位の主成分から順に、元データの情報を最大限保持します。
 
 次に、PCAの処理の具体的なイメージを示します。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja'], check=True)
+```
 
 ```{code-cell}
 :tags: [remove-input]

@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter08/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -21,6 +22,14 @@ kernelspec:
 ## 基本的な考え方
 
 まずはGMMの動機となる例を見てみましょう。以下のようなデータを考えます。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja'], check=True)
+```
 
 ```{code-cell}
 :tags: [remove-input]

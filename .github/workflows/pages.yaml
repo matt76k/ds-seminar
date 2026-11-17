@@ -15,10 +15,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Install Japanese fonts
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y fonts-ipafont fonts-ipaexfont
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.13"
@@ -27,14 +26,24 @@ jobs:
 
       - uses: actions/cache@v4
         with:
-          path: book/_build/.jupyter_cache
+          path: book/_build/execute
           key: jupyter-cache-${{ hashFiles('uv.lock') }}-${{ hashFiles('book/**/*.md', 'book/**/*.ipynb') }}
           restore-keys: jupyter-cache-${{ hashFiles('uv.lock') }}-
 
       - name: Build Book
+        working-directory: book
+        env:
+          BASE_URL: /ds-seminar
+        # HTML 生成でまれに接続がリセットされる（ECONNRESET）ので、そのときだけやり直す
         run: |
-          (cd book && uv run jupyter book build . -W --keep-going)
-          uv run python src/fix_link.py
+          for attempt in 1 2 3; do
+            uv run jupyter book build --html --execute --strict 2>&1 | tee build.log && exit 0
+            grep -q ECONNRESET build.log || exit 1
+          done
+          exit 1
+
+      - name: Make notebooks for Colab
+        run: uv run python src/make_notebooks.py
 
       - name: Publish to GitHub Pages
         if: startsWith(github.ref, 'refs/tags/v')

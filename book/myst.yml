@@ -4,7 +4,6 @@ project:
   authors:
     - name: 木山 真人
   copyright: '2025'
-  github: matt76k/ds-seminar
   numbering:
     title: true
     headings: true

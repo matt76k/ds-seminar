@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter09/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -74,6 +75,14 @@ ax + by + c = 0
 
 irisのデータセットを使って分類を考えてみます。
 irisの種類には3つありますが、`virginica`を考えず、2種類で考えてみます。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja'], check=True)
+```
 
 ```{code-cell}
 import seaborn as sns

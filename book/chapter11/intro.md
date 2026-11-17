@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter11/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -75,6 +76,15 @@ Words are loaded pistols
    - 辞書の更新が活発
 
 ここでは、Sudachiを使って単語を分割してみましょう。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja', 'sudachipy', 'sudachidict-core', 'gensim', 'wordcloud'], check=True)
+import matplotlib_fontja  # ワードクラウドのフォント自動検出で日本語フォントが見つかるようにする
+```
 
 ```{code-cell}
 :linenos:

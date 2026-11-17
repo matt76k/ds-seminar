@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter14/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -26,6 +27,14 @@ kernelspec:
 - ノードは34個、エッジは78本です
 - ノードIDが0は空手クラブの会長、ノードIDが33はインストラクターです
 - ノードは、会長派とインストラクター派に分かれています
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja', 'gensim'], check=True)
+```
 
 ```{code-cell}
 :linenos:

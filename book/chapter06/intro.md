@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter06/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -45,6 +46,14 @@ kernelspec:
 - 非線形の関係性を捉えられる
 
 ## 不純度（impurity）
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja'], check=True)
+```
 
 ```{code-cell}
 :tags: [remove-input]

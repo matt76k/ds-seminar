@@ -1,4 +1,5 @@
 ---
+edit_url: https://colab.research.google.com/github/matt76k/ds-seminar/blob/gh-pages/_sources/chapter07/intro.ipynb
 jupytext:
   formats: md:myst
   text_representation:
@@ -110,6 +111,14 @@ k-means法はこれらを繰り返し計算し、似たデータを同じグル�
 ## k-means法の例
 
 k-means法の動作を視覚的に理解するために、{ref}`scatter-fig`で使用した`iris`データを使って、クラスタリングをしてみます。
+
+```{code-cell}
+:tags: [remove-cell]
+import os, sys
+if "google.colab" in sys.modules:
+    import subprocess
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", 'matplotlib-fontja'], check=True)
+```
 
 ```{code-cell}
 :linenos:
