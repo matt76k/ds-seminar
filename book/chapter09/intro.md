@@ -19,7 +19,7 @@ kernelspec:
 データをプロットすると{numref}`fig1`のようになりました。
 図中の赤四角が合格、青丸が不合格になります。
 
-```{figure} fig1.png
+```{figure} fig1.svg
 :name: fig1
 
 説明変数とクラスの図
@@ -28,7 +28,7 @@ kernelspec:
 分類問題では、クラス間に境目となる直線や曲線を引いて分類を行います。
 この境目となる直線や曲線を**決定境界**と呼びます。
 
-```{figure} fig2.png
+```{figure} fig2.svg
 :name: fig2
 
 決定境界
@@ -41,7 +41,7 @@ kernelspec:
 Aの方が優れていると感じるでしょう。
 その理由は、Bの場合、赤枠で囲まれた学生を誤って判定してしまう可能性が高いからです。
 
-```{figure} fig3.png
+```{figure} fig3.svg
 :name: fig3
 
 マージン
