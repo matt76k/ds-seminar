@@ -36,6 +36,20 @@ uv run jupyter book build --html --execute --strict   # 出力: book/_build/html
 - `--strict` により、セルの例外や警告があるとビルドが失敗します。
 - 描画の段階でまれに `ECONNRESET` で失敗することがあります。その場合は再実行してください。
 
+## EPUB の作成
+
+Jupyter Book 2（mystmd）は EPUB を直接出力できないため、ビルド済みの HTML から本文を取り出して [pandoc](https://pandoc.org/) で epub3 に変換します。
+
+```sh
+(cd book && uv run jupyter book build --html --execute --strict)
+uv run python src/build_epub.py   # 出力: book/exports/book.epub
+```
+
+- サイトの HTML を入力にするので、先に HTML をビルドしておきます（コードの実行結果や図もそのまま入ります）。
+- 章の分割は `book/myst.yml` の目次順です。目次には h1（章・節）だけを載せています。
+- 表紙は `book/logo.png` を使います。差し替えたいときは `src/build_epub.py` の `cover` を変更してください。
+- スタイルは `src/epub.css` です。
+
 ## 構成
 
 - `book/myst.yml`: 目次と設定。新しいページはここの `toc` に追加します。
